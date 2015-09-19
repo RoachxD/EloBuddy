@@ -30,17 +30,39 @@ namespace Marksman_Buddy.Plugin
 
 		private static void _SetupMenu()
 		{
-			Internal.Variables.Config.AddSubMenu("Twitch Combo", "twitch.Combo");
-			Internal.Variables.Config.Add("Twitch.UseE", new Slider("Cast E at x Stacks", 1, 1, 5));
-			Internal.Variables.Config.Add("Twitch.UseW", new CheckBox("Use W in Comco"));
+			Internal.Variables.Config.AddGroupLabel("Combo");
+			Internal.Variables.Config.Add("Twitch.UseECombo", new Slider("Cast E at x Stacks", 5, 1, 5));
+			Internal.Variables.Config.Add("Twitch.UseWCombo", new CheckBox("Use W in Comco"));
+			Internal.Variables.Config.AddGroupLabel("Harrass");
+			Internal.Variables.Config.Add("Twitch.UseEHarrass", new Slider("Cast E at x Stacks", 3, 1, 5));
+			Internal.Variables.Config.Add("Twitch.UseWHarrass", new CheckBox("Use W in Harras", false));
+			Internal.Variables.Config.AddGroupLabel("Misc");
 			Internal.Variables.Config.Add("Twitch.KS", new CheckBox("Use E to KS"));
+
 		}
 
 		static void Game_OnTick(EventArgs args)
 		{
 			if(Internal.Variables.ComboMode)
-					_Combo();
+				_Combo();
+			if (Internal.Variables.HarassMode)
+				_Harrass();
+
 			_KS();
+		}
+
+		private static void _Harrass()
+		{
+			var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
+			if (Internal.Variables.Config["Twitch.UseWHarrass"].Cast<CheckBox>().CurrentValue && !_W.IsOnCooldown)
+				_W.Cast(WTarget);
+			foreach (var Hero in ObjectManager.Get<AIHeroClient>().Where(x => x.Position.Distance(ObjectManager.Player.Position) < 1200))
+			{
+				if (Hero.GetBuffCount("twitchdeadlyvenom") >= Internal.Variables.Config["Twitch.UseEHarrass"].Cast<Slider>().CurrentValue)
+				{
+					_E.Cast();
+				}
+			}
 		}
 
 		private static void _KS()
@@ -57,11 +79,11 @@ namespace Marksman_Buddy.Plugin
 		private static void _Combo()
 		{
 			var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
-			if (Internal.Variables.Config["Twitch.UseW"].Cast<CheckBox>().CurrentValue && !_W.IsOnCooldown)
+			if (Internal.Variables.Config["Twitch.UseWCombo"].Cast<CheckBox>().CurrentValue && !_W.IsOnCooldown)
 				_W.Cast(WTarget);
 			foreach (var Hero in ObjectManager.Get<AIHeroClient>().Where(x => x.Position.Distance(ObjectManager.Player.Position) < 1200))
 			{
-				if (Hero.GetBuffCount("twitchdeadlyvenom") >= Internal.Variables.Config["Twitch.UseE"].Cast<Slider>().CurrentValue)
+				if (Hero.GetBuffCount("twitchdeadlyvenom") >= Internal.Variables.Config["Twitch.UseECombo"].Cast<Slider>().CurrentValue)
 				{
 					_E.Cast();
 				}
