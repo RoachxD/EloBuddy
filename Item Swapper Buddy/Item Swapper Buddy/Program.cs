@@ -51,8 +51,6 @@ namespace Item_Swapper_Buddy
             {
                 return;
             }
-
-			Chat.Print(":D");
 			
             Player.SwapItem(Array.IndexOf(Keys, _firstKey), Array.IndexOf(Keys, key));
             _firstKey = 0x60;
