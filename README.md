@@ -1,6 +1,6 @@
 Utility Scripts:
 ===========
-* Item Swapper
+* Item Swapper Buddy
   * It swaps Items using the Numpad
     * 4 - Item Slot 1
     * 5 - Item Slot 2
