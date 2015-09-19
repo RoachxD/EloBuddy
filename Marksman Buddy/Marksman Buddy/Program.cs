@@ -44,7 +44,7 @@ namespace Marksman_Buddy
             switch (championName)
             {
                 case "ashe":
-                    ChampionPlugin = new Champion();
+                    ChampionPlugin = new Ashe();
                     break;
                 case "caitlyn":
                     ChampionPlugin = new Champion();
