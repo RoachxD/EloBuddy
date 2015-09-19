@@ -5,9 +5,9 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy;
-using System.Text;
+using Marksman_Buddy.Internal;
 
-namespace Marksman_Buddy.Plugin
+namespace Marksman_Buddy.Plugins
 {
 	class Twitch : Internal.PluginBase
 	{
@@ -23,7 +23,7 @@ namespace Marksman_Buddy.Plugin
 			Game.OnTick += Game_OnTick;
 		}
 
-		private void _SetupSpells()
+		private static void _SetupSpells()
 		{
 			_W = new Spell.Skillshot(SpellSlot.W, 900, EloBuddy.SDK.Enumerations.SkillShotType.Circular, 250, 1400, 275);
 			_E = new Spell.Active(SpellSlot.E, 1200);
@@ -31,38 +31,49 @@ namespace Marksman_Buddy.Plugin
 
 		private static void _SetupMenu()
 		{
-			Internal.Variables.Config.AddGroupLabel("Combo");
-			Internal.Variables.Config.Add("Twitch.UseECombo", new CheckBox("Use E in Combo"));
-			Internal.Variables.Config.Add("Twitch.UseEComboStacks", new Slider("Cast E at x Stacks", 5, 1, 5));
-			Internal.Variables.Config.Add("Twitch.UseWCombo", new CheckBox("Use W in Combo"));
-			Internal.Variables.Config.AddGroupLabel("Harrass");
-			Internal.Variables.Config.Add("Twitch.UseEHarass", new CheckBox("Use E in Harass"));
-			Internal.Variables.Config.Add("Twitch.UseEHarassStacks", new Slider("Cast E at x Stacks", 3, 1, 5));
-			Internal.Variables.Config.Add("Twitch.UseWHarass", new CheckBox("Use W in Harass", false));
-			Internal.Variables.Config.AddGroupLabel("Misc");
-			Internal.Variables.Config.Add("Twitch.KS", new CheckBox("Use E to KS"));
-			Internal.Variables.Config.Add("Twitch.EExecute", new CheckBox("Use E to execute Large Minions")); //Kappa
+			Variables.Config.AddGroupLabel("Twitch");
+			Variables.Config.AddGroupLabel("Combo");
+			Variables.Config.Add("Twitch.UseECombo", new CheckBox("Use E in Combo"));
+			Variables.Config.Add("Twitch.UseEComboStacks", new Slider("Cast E at x Stacks", 5, 1, 5));
+			Variables.Config.Add("Twitch.UseWCombo", new CheckBox("Use W in Combo"));
+			Variables.Config.AddGroupLabel("Harrass");
+			Variables.Config.Add("Twitch.UseEHarass", new CheckBox("Use E in Harass"));
+			Variables.Config.Add("Twitch.UseEHarassStacks", new Slider("Cast E at x Stacks", 3, 1, 5));
+			Variables.Config.Add("Twitch.UseWHarass", new CheckBox("Use W in Harass", false));
+			Variables.Config.AddGroupLabel("Misc");
+			Variables.Config.Add("Twitch.KS", new CheckBox("Use E to KS"));
+			Variables.Config.Add("Twitch.EExecute", new CheckBox("Use E to execute Large Minions")); //Kappa
 		}
 
 		static void Game_OnTick(EventArgs args)
 		{
-			if (Internal.Variables.ComboMode)
+			if (Variables.ComboMode)
+			{
 				_Combo();
-			if (Internal.Variables.HarassMode)
+			}
+			if (Variables.HarassMode)
+			{
 				_Harrass();
-
+			}
 			_KS();
 			_Execute();
 		}
 
 		private static void _Execute()
 		{
-			foreach (var minion in ObjectManager.Get<Obj_AI_Minion>().Where(x => x.Position.Distance(ObjectManager.Player.Position) < 1200))
+			foreach (var minion in 
+				ObjectManager.Get<Obj_AI_Minion>()
+					.Where(x => x.Position.Distance(ObjectManager.Player.Position) < 1200))
 			{
-				if (minion.Team != ObjectManager.Player.Team && _ContainsSimiliar(_Minions, minion.Name))
+				if (minion.Team != ObjectManager.Player.Team &&
+						_ContainsSimiliar(_Minions, minion.Name))
 				{
-					if (_ECanKill(minion, _E) && Internal.Variables.Config["Twitch.EExecute"].Cast<CheckBox>().CurrentValue)
+					if (_ECanKill(minion, _E) &&
+						Variables.Config["Twitch.EExecute"].Cast<CheckBox>().CurrentValue)
+					{
 						_E.Cast();
+					}
+						
 				}
 			}
 		}
@@ -80,13 +91,20 @@ namespace Marksman_Buddy.Plugin
 		private static void _Harrass()
 		{
 			var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
-			if (Internal.Variables.Config["Twitch.UseWHarass"].Cast<CheckBox>().CurrentValue && !_W.IsOnCooldown)
-				_W.Cast(WTarget);
-			if (!Internal.Variables.Config["Twitch.UseEHarass"].Cast<CheckBox>().CurrentValue)
-				return;
-			foreach (var Hero in ObjectManager.Get<AIHeroClient>().Where(x => x.Position.Distance(ObjectManager.Player.Position) < 1200))
+			if (Variables.Config["Twitch.UseWHarass"].Cast<CheckBox>().CurrentValue
+				&& !_W.IsOnCooldown)
 			{
-				if (Hero.GetBuffCount("twitchdeadlyvenom") >= Internal.Variables.Config["Twitch.UseEHarassStacks"].Cast<Slider>().CurrentValue)
+				_W.Cast(WTarget);
+			}
+
+			if (!Variables.Config["Twitch.UseEHarass"].Cast<CheckBox>().CurrentValue)
+				return;
+			foreach (var Hero in
+				ObjectManager.Get<AIHeroClient>()
+					.Where(x => x.Position.Distance(ObjectManager.Player.Position) < 1200))
+			{
+				if (Hero.GetBuffCount("twitchdeadlyvenom") >=
+					Variables.Config["Twitch.UseEHarassStacks"].Cast<Slider>().CurrentValue)
 				{
 					_E.Cast();
 				}
@@ -95,10 +113,15 @@ namespace Marksman_Buddy.Plugin
 
 		private static void _KS()
 		{
-			foreach (var Hero in ObjectManager.Get<AIHeroClient>().Where(x => x.Position.Distance(ObjectManager.Player.Position) < 1200))
+			foreach (var Hero in
+				ObjectManager.Get<AIHeroClient>()
+					.Where(x => x.Position.Distance(ObjectManager.Player.Position) < 1200))
 			{
-				if (_ECanKill(Hero, _E) && Internal.Variables.Config["Twitch.KS"].Cast<CheckBox>().CurrentValue)
+				if (_ECanKill(Hero, _E) && Variables.Config["Twitch.KS"].Cast<CheckBox>().CurrentValue)
+				{
 					_E.Cast();
+				}
+					
 			}
 		}
 
@@ -107,13 +130,23 @@ namespace Marksman_Buddy.Plugin
 		private static void _Combo()
 		{
 			var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
-			if (Internal.Variables.Config["Twitch.UseWCombo"].Cast<CheckBox>().CurrentValue && !_W.IsOnCooldown)
-				_W.Cast(WTarget);
-			if (!Internal.Variables.Config["Twitch.UseECombo"].Cast<CheckBox>().CurrentValue)
-				return;
-			foreach (var Hero in ObjectManager.Get<AIHeroClient>().Where(x => x.Position.Distance(ObjectManager.Player.Position) < 1200))
+			if (Variables.Config["Twitch.UseWCombo"].Cast<CheckBox>().CurrentValue
+				&& !_W.IsOnCooldown)
 			{
-				if (Hero.GetBuffCount("twitchdeadlyvenom") >= Internal.Variables.Config["Twitch.UseEComboStacks"].Cast<Slider>().CurrentValue)
+				_W.Cast(WTarget);
+			}
+
+			if (!Variables.Config["Twitch.UseECombo"].Cast<CheckBox>().CurrentValue)
+			{
+				return;
+			}
+				
+			foreach (var Hero in
+				ObjectManager.Get<AIHeroClient>()
+					.Where(x => x.Position.Distance(ObjectManager.Player.Position) < 1200))
+			{
+				if (Hero.GetBuffCount("twitchdeadlyvenom") >=
+					Variables.Config["Twitch.UseEComboStacks"].Cast<Slider>().CurrentValue)
 				{
 					_E.Cast();
 				}
@@ -123,10 +156,11 @@ namespace Marksman_Buddy.Plugin
 
 		private static bool _ECanKill(Obj_AI_Base Hero, Spell.Active _E)
 		{
-			float EDamage = Convert.ToSingle(Hero.GetBuffCount("twitchdeadlyvenom") * (_EDamage[_E.Level] + ObjectManager.Player.TotalAttackDamage * 0.25 + ObjectManager.Player.TotalMagicalDamage * 0.2)) - 20.0f; //Damage Calc is off
-			if (Damage.CalculateDamageOnUnit(ObjectManager.Player, Hero, DamageType.Physical, EDamage) > Hero.Health)
-				return true;
-			return false;
+			float EDamage = Convert.ToSingle(Hero.GetBuffCount("twitchdeadlyvenom") *
+				(_EDamage[_E.Level] +
+				ObjectManager.Player.TotalAttackDamage * 0.25
+				+ ObjectManager.Player.TotalMagicalDamage * 0.2)) - 20.0f; //Damage Calc is off
+			return Damage.CalculateDamageOnUnit(ObjectManager.Player, Hero, DamageType.Physical, EDamage) > Hero.Health;
 
 		}
 	}
