@@ -1,5 +1,3 @@
-# EloBuddy
-
 Utility Scripts:
 ===========
 * Item Swapper
