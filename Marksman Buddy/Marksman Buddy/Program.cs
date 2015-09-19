@@ -5,12 +5,9 @@ using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
-using EloBuddy.SDK.Menu.Values;
 using Marksman_Buddy.Internal;
 using Marksman_Buddy.Plugins;
 using Champion = Marksman_Buddy.Internal.Champion;
-using System;
-
 
 namespace Marksman_Buddy
 {
@@ -31,15 +28,14 @@ namespace Marksman_Buddy
         {
             Bootstrap.Init(null);
             Variables.Config = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
-			Variables.Settings = MainMenu.AddMenu("Marksman Buddy Settings", "MarksmanBuddy Settings");
-			Variables.Settings.AddGroupLabel("Marksman Buddy");
-			Variables.Settings.AddLabel("Version: " + "1.0.0.0");
-			Variables.Settings.AddSeparator();
-			Variables.Settings.AddLabel("Creators: " + "Roach, newchild");
-			Variables.Settings.AddSeparator();
-			Variables.Settings.AddGroupLabel("Prediction");
-			Variables.Settings.Add("GlobalPrediction", new Slider("Prediction accuracy", Convert.ToInt32(Variables.Hitchance), 0, 8));
-			Chat.Print("Marksman Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
+            Variables.Config.AddGroupLabel("Marksman Buddy");
+            Variables.Config.AddLabel("Version: " + "1.0.0.0");
+            Variables.Config.AddSeparator();
+            Variables.Config.AddLabel("Creators: " + "Roach, newchild");
+
+
+            Chat.Print("Marksman Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
+
             var championName = ObjectManager.Player.ChampionName.ToLower(CultureInfo.InvariantCulture);
             switch (championName)
             {
