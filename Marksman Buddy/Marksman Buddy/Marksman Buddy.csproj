@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Internal\Champion.cs" />
     <Compile Include="Internal\PluginBase.cs" />
+    <Compile Include="Plugins\Ashe.cs" />
     <Compile Include="Plugins\Corki.cs" />
     <Compile Include="Plugins\Twitch.cs" />
     <Compile Include="Internal\Variables.cs" />
