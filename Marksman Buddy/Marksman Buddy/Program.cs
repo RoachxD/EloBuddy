@@ -11,7 +11,7 @@ namespace Marksman_Buddy
 {
     internal class Program
     {
-        public static Internal.Champion ChampionPlugin;
+        public static Internal.PluginBase ChampionPlugin;
         private static void Main(string[] args)
         {
             Loading.OnLoadingComplete += delegate
@@ -88,7 +88,7 @@ namespace Marksman_Buddy
                     ChampionPlugin = new Internal.Champion();
                     break;
                 case "twitch":
-                    ChampionPlugin = new Internal.Champion();
+					ChampionPlugin = new Plugin.Twitch();
                     break;
                 case "urgot":
                     ChampionPlugin = new Internal.Champion();
