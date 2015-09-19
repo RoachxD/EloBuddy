@@ -16,6 +16,8 @@ namespace Marksman_Buddy.Plugins
 		private Spell.Skillshot _Q = new Spell.Skillshot(SpellSlot.Q, 825, EloBuddy.SDK.Enumerations.SkillShotType.Circular, 300, 1000, 250);
 		private Spell.Skillshot _W = new Spell.Skillshot(SpellSlot.W, 800, EloBuddy.SDK.Enumerations.SkillShotType.Linear);
 		private Spell.Skillshot _R1 = new Spell.Skillshot(SpellSlot.R, 1300, EloBuddy.SDK.Enumerations.SkillShotType.Linear, 200, 2000, 40);
+		private int[] _RDamage = new int[] { 100, 180, 260};
+		private float[] _RDamageScale = new float[] { 0.2f, 0.3f, 0.4f };
 		//private Spell.Skillshot _R2 = new Spell.Skillshot(SpellSlot.R, 1500, EloBuddy.SDK.Enumerations.SkillShotType.Linear, 200, 2000, 40);
 
 		public Corki()
@@ -47,7 +49,19 @@ namespace Marksman_Buddy.Plugins
 			{
 				_Harrass();
 			}
-			// todo _KS();
+			_KS();
+		}
+
+		private void _KS()
+		{
+			foreach(var hero in
+				HeroManager.Enemies
+					.Where(x => x.Position.Distance(ObjectManager.Player) < _R1.Range)){
+						if (_RCanKill(hero, _R1.Level) && Variables.Config["useRKS"].Cast<CheckBox>().CurrentValue)
+						{
+							_R1.Cast(hero);
+						}
+			}
 		}
 
 		private void _Harrass()
@@ -63,6 +77,15 @@ namespace Marksman_Buddy.Plugins
 			{
 				_R1.Cast(RTarget);
 			}
+		}
+
+		private bool _RCanKill(Obj_AI_Base target, int Level)
+		{
+			float EDamage =
+				_RDamage[Level] +
+				ObjectManager.Player.TotalAttackDamage * _RDamageScale[Level]
+				+ ObjectManager.Player.TotalMagicalDamage * 0.3f - 20.0f; //Damage Calc is off
+			return Damage.CalculateDamageOnUnit(ObjectManager.Player, target, DamageType.Magical, EDamage) > target.Health;
 		}
 
 		private void _Combo()
@@ -93,6 +116,8 @@ namespace Marksman_Buddy.Plugins
 			Variables.Config.Add("useRHarassStacks", new Slider("Save x Rockets", 5, 0, 7));
 			Variables.Config.AddGroupLabel("Misc");
 			Variables.Config.Add("useWAntigapcloser", new CheckBox("Use W upon Gapcloser", false));
+			Variables.Config.Add("useRKS", new CheckBox("Use R to KS (ignoring Stack limitation)"));
+
 		}
 	}
 }
