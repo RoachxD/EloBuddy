@@ -50,7 +50,7 @@ namespace Marksman_Buddy
                     ChampionPlugin = new Champion();
                     break;
                 case "corki":
-                    ChampionPlugin = new Champion();
+                    ChampionPlugin = new Corki();
                     break;
                 case "draven":
                     ChampionPlugin = new Champion();
