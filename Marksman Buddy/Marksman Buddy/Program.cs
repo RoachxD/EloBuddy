@@ -6,12 +6,15 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using Marksman_Buddy.Internal;
+using Marksman_Buddy.Plugins;
+using Champion = Marksman_Buddy.Internal.Champion;
 
 namespace Marksman_Buddy
 {
     internal class Program
     {
-        public static Internal.PluginBase ChampionPlugin;
+        public static PluginBase ChampionPlugin;
+
         private static void Main(string[] args)
         {
             Loading.OnLoadingComplete += delegate
@@ -37,67 +40,67 @@ namespace Marksman_Buddy
             switch (championName)
             {
                 case "ashe":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "caitlyn":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "corki":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "draven":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "ezreal":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "graves":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "gnar":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "jinx":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "kalista":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "kindred":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "kogmaw":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "lucian":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "missfortune":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "quinn":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "sivir":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "teemo":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "tristana":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "twitch":
-					ChampionPlugin = new Plugin.Twitch();
+                    ChampionPlugin = new Twitch();
                     break;
                 case "urgot":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "vayne":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
                 case "varus":
-                    ChampionPlugin = new Internal.Champion();
+                    ChampionPlugin = new Champion();
                     break;
             }
         }
