@@ -30,7 +30,8 @@ namespace Marksman_Buddy
         private static void Loading_OnLoadingComplete()
         {
             Bootstrap.Init(null);
-			Variables.Settings = MainMenu.AddMenu("MB Settings", "MarksmanBuddySettings", "Marksman Buddy Settings");
+            Variables.Config = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
+			Variables.Settings = MainMenu.AddMenu("Marksman Buddy Settings", "MarksmanBuddy Settings");
 			Variables.Settings.AddGroupLabel("Marksman Buddy");
 			Variables.Settings.AddLabel("Version: " + "1.0.0.0");
 			Variables.Settings.AddSeparator();
@@ -38,7 +39,6 @@ namespace Marksman_Buddy
 			Variables.Settings.AddSeparator();
 			Variables.Settings.AddGroupLabel("Prediction");
 			Variables.Settings.Add("GlobalPrediction", new Slider("Prediction accuracy", Convert.ToInt32(Variables.Hitchance), 0, 8));
-            Variables.Config = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
 			Chat.Print("Marksman Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
             var championName = ObjectManager.Player.ChampionName.ToLower(CultureInfo.InvariantCulture);
             switch (championName)
