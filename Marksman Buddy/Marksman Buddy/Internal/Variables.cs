@@ -16,6 +16,12 @@ namespace Marksman_Buddy.Internal
         public static bool HarassMode = Orbwalker.ActiveModesFlags == Orbwalker.ActiveModes.Harass;
         public static bool LaneClearMode = Orbwalker.ActiveModesFlags == Orbwalker.ActiveModes.LaneClear;
         public static bool LastHitMode = Orbwalker.ActiveModesFlags == Orbwalker.ActiveModes.LastHit;
-		public static HitChance Hitchance = HitChance.High;
-    }
+		public static HitChance HitChance = HitChance.High;
+
+		internal static void OnValueChange(EloBuddy.SDK.Menu.Values.ValueBase<int> sender, EloBuddy.SDK.Menu.Values.ValueBase<int>.ValueChangeArgs args)
+		{
+			HitChance = (HitChance)sender.CurrentValue;
+			sender.DisplayName = "Hitchance: " + Variables.HitChance.ToString();
+		}
+	}
 }

@@ -37,8 +37,9 @@ namespace Marksman_Buddy
 			Variables.Settings.AddLabel("Creators: " + "Roach, newchild");
 			Variables.Settings.AddSeparator();
 			Variables.Settings.AddGroupLabel("Prediction");
-			Variables.Settings.Add("GlobalPrediction", new Slider("Prediction accuracy", Convert.ToInt32(Variables.Hitchance), 0, 8));
+			Variables.Settings.Add("GlobalPrediction", new Slider("Hitchance: " + Variables.HitChance.ToString(), Convert.ToInt32(Variables.HitChance), 0, 8));
             Variables.Config = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
+			Variables.Settings["Hitchance: " + Variables.HitChance.ToString()].Cast<Slider>().OnValueChange += Variables.OnValueChange;
 			Chat.Print("Marksman Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
             var championName = ObjectManager.Player.ChampionName.ToLower(CultureInfo.InvariantCulture);
             switch (championName)
