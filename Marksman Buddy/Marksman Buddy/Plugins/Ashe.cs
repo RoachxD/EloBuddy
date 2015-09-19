@@ -22,7 +22,7 @@ namespace Marksman_Buddy.Plugins
             _SetupMenu();
             _SetupSpells();
             Game.OnTick += Game_OnTick;
-            Drawing.OnDraw += Drawing_OnDraw;
+            //Drawing.OnDraw += Drawing_OnDraw;
             Orbwalker.OnPreAttack += Orbwalker_OnPreAttack;
             Gapcloser.OnGapCloser += Gapcloser_OnGapCloser;
             Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
