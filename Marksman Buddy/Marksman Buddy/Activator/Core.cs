@@ -126,7 +126,7 @@ namespace Marksman_Buddy.Activator
 			if (_UseBotrK && Variables.ComboMode && hasBotrK)
 			{
 				var firstOrDefault = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId)3153).SpellSlot;
-				Player.CastSpell(firstOrDefault);
+				Player.CastSpell(firstOrDefault, Orbwalker.GetTarget());
 			}
 
             var hasHealPots = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "healthPotion") !=
