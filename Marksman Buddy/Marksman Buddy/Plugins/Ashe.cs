@@ -41,7 +41,8 @@ namespace Marksman_Buddy.Plugins
             Variables.Config.Add("Ashe.CastQCombo", new CheckBox("Cast Q in Combo"));
             Variables.Config.Add("Ashe.StacksQCombo", new Slider("Cast Q at x Stacks", 5, 0, 5));
             Variables.Config.Add("Ashe.CastWCombo", new CheckBox("Cast W in Combo"));
-            Variables.Config.Add("Ashe.CastRCombo", new KeyBind("Cast R on Press", false, KeyBind.BindTypes.HoldActive, 'T'));
+            Variables.Config.Add("Ashe.CastRCombo",
+                new KeyBind("Cast R on Press", false, KeyBind.BindTypes.HoldActive, 'T'));
             Variables.Config.AddGroupLabel("Harass");
             Variables.Config.Add("Ashe.CastQHarass", new CheckBox("Cast Q in Harass", false));
             Variables.Config.Add("Ashe.StacksQHarass", new Slider("Cast Q at x Stacks", 5, 0, 5));
@@ -80,7 +81,7 @@ namespace Marksman_Buddy.Plugins
 
         private void _Combo()
         {
-            if (!Variables.Config["Ashe.CastWCombo"].Cast<CheckBox>().CurrentValue || !_W.IsReady())
+            if (!Variables.Config["Ashe.CastWCombo"].Cast<CheckBox>().CurrentValue || !_W.IsReady() || ObjectManager.Player.IsAttackingPlayer)
             {
                 return;
             }
@@ -108,7 +109,7 @@ namespace Marksman_Buddy.Plugins
 
         private void _Harass()
         {
-            if (!Variables.Config["Ashe.CastWHarass"].Cast<CheckBox>().CurrentValue || !_W.IsReady())
+            if (!Variables.Config["Ashe.CastWHarass"].Cast<CheckBox>().CurrentValue || !_W.IsReady() || ObjectManager.Player.IsAttackingPlayer)
             {
                 return;
             }
@@ -136,15 +137,17 @@ namespace Marksman_Buddy.Plugins
 
         public void _RLogic()
         {
-            if (_R.IsReady())
+            if (!_R.IsReady())
             {
-                if (Variables.Config["Ashe.CastRCombo"].Cast<KeyBind>().CurrentValue)
+                return;
+            }
+
+            if (Variables.Config["Ashe.CastRCombo"].Cast<KeyBind>().CurrentValue)
+            {
+                var target = TargetSelector.GetTarget(2000, DamageType.Physical);
+                if (target.IsValidTarget())
                 {
-                    var target = TargetSelector.GetTarget(2000, DamageType.Physical);
-                    if (target.IsValidTarget())
-                    {
-                        _R.Cast(target);
-                    }
+                    _R.Cast(target);
                 }
             }
 
