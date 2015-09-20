@@ -20,14 +20,19 @@ namespace Marksman_Buddy
 
         private static void Main(string[] args)
         {
-            Loading.OnLoadingComplete += delegate
-            {
-                var onLoadingComplete = new Thread(Loading_OnLoadingComplete);
-                onLoadingComplete.Start();
-            };
+			try
+			{
+				Loading.OnLoadingComplete += Loading_OnLoadingComplete;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+			}
+			
         }
 
-        private static void Loading_OnLoadingComplete()
+
+		private static void Loading_OnLoadingComplete(EventArgs args)
         {
             Bootstrap.Init(null);
 
