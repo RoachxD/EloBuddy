@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
@@ -7,8 +8,6 @@ using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Rendering;
 using Marksman_Buddy.Internal;
-using SharpDX;
-using Color = System.Drawing.Color;
 
 namespace Marksman_Buddy.Plugins
 {
@@ -42,7 +41,8 @@ namespace Marksman_Buddy.Plugins
             Variables.Config.Add("Ashe.CastQCombo", new CheckBox("Cast Q in Combo"));
             Variables.Config.Add("Ashe.StacksQCombo", new Slider("Cast Q at x Stacks", 5, 0, 5));
             Variables.Config.Add("Ashe.CastWCombo", new CheckBox("Cast W in Combo"));
-            Variables.Config.Add("Ashe.CastRCombo", new CheckBox("Cast R in Combo"));
+            Variables.Config.Add("Ashe.CastRCombo",
+                new KeyBind("Cast R on Press", false, KeyBind.BindTypes.HoldActive, 'T'));
             Variables.Config.AddGroupLabel("Harass");
             Variables.Config.Add("Ashe.CastQHarass", new CheckBox("Cast Q in Harass", false));
             Variables.Config.Add("Ashe.StacksQHarass", new Slider("Cast Q at x Stacks", 5, 0, 5));
@@ -75,98 +75,13 @@ namespace Marksman_Buddy.Plugins
             {
                 _Harass();
             }
+
+            _RLogic();
         }
 
         private void _Combo()
         {
-            if (Variables.Config["Ashe.CastWCombo"].Cast<CheckBox>().CurrentValue && _W.IsReady())
-            {
-                var target = TargetSelector.GetTarget(_W.Range, DamageType.Physical);
-                if (ObjectManager.Player.CountEnemiesInRange(700) > 0)
-                {
-                    target = TargetSelector.GetTarget(700, DamageType.Physical);
-                }
-
-                if (target.IsValidTarget())
-                {
-                    var pred = Prediction.Position.PredictConeSpell(target, _W.Range, 50, 250);
-                    var col = pred.CollisionObjects.Count(colObj => colObj.IsEnemy && colObj.IsMinion && !colObj.IsDead);
-                    if (target.IsDead || col > 0 || pred.HitChance < HitChance.High)
-                    {
-                        return;
-                    }
-
-                    _W.Cast(pred.CastPosition);
-                }
-            }
-
-            if (Variables.Config["Ashe.CastRCombo"].Cast<CheckBox>().CurrentValue)
-            {
-                foreach (var target in HeroManager.Enemies.Where(target => target.IsValidTarget(_R.Range)))
-                {
-                    var predictedHealth = target.Health + target.HPRegenRate*2;
-                    var RDmg = GetDamage(_R);
-                    if (target.CountEnemiesInRange(250) > 2 &&
-                        Variables.Config["Ashe.CastRAOE"].Cast<CheckBox>().CurrentValue)
-                    {
-                        _R.Cast(target);
-                    }
-
-                    if (RDmg > predictedHealth && CountAlliesInRange(600, target) == 0 &&
-                        target.Distance(ObjectManager.Player.Position) > 1000)
-                    {
-                        var cast = true;
-                        var output = Prediction.Position.PredictLinearMissile(target, _R.Range, _R.Width, _R.CastDelay,
-                            _R.Speed, 3000);
-                        var direction = output.CastPosition.To2D() - ObjectManager.Player.Position.To2D();
-                        direction.Normalize();
-                        var enemies = HeroManager.Enemies.Where(x => x.IsValidTarget()).ToList();
-                        foreach (var enemy in enemies)
-                        {
-                            if (enemy.ChampionName == target.ChampionName || !cast)
-                            {
-                                continue;
-                            }
-
-                            var prediction = Prediction.Position.PredictLinearMissile(enemy, _R.Range, _R.Width,
-                                _R.CastDelay, _R.Speed, 0);
-                            var predictedPosition = prediction.CastPosition;
-                            var v = output.CastPosition - ObjectManager.Player.ServerPosition;
-                            var w = predictedPosition - ObjectManager.Player.ServerPosition;
-                            double c1 = Vector3.Dot(w, v);
-                            double c2 = Vector3.Dot(v, v);
-                            var b = c1/c2;
-                            var pb = ObjectManager.Player.ServerPosition + ((float) b*v);
-                            var length = Vector3.Distance(predictedPosition, pb);
-                            if (length < (_R.Width + 150 + enemy.BoundingRadius/2) &&
-                                ObjectManager.Player.Distance(predictedPosition) <
-                                ObjectManager.Player.Distance(target.ServerPosition))
-                            {
-                                cast = false;
-                            }
-                        }
-
-                        if (cast)
-                        {
-                            _R.Cast(target);
-                        }
-                    }
-                }
-            }
-
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(_R.Range)))
-            {
-                if (ObjectManager.Player.Health < ObjectManager.Player.MaxHealth*0.4 && enemy.IsValidTarget(270) &&
-                    enemy.IsMelee && Variables.Config["Ashe.CastRGapCloser"].Cast<CheckBox>().CurrentValue)
-                {
-                    _R.Cast(enemy);
-                }
-            }
-        }
-
-        private void _Harass()
-        {
-            if (!Variables.Config["Ashe.CastWHarass"].Cast<CheckBox>().CurrentValue || !_W.IsReady())
+            if (!Variables.Config["Ashe.CastWCombo"].Cast<CheckBox>().CurrentValue || !_W.IsReady() || ObjectManager.Player.IsAttackingPlayer)
             {
                 return;
             }
@@ -190,6 +105,67 @@ namespace Marksman_Buddy.Plugins
             }
 
             _W.Cast(pred.CastPosition);
+        }
+
+        private void _Harass()
+        {
+            if (!Variables.Config["Ashe.CastWHarass"].Cast<CheckBox>().CurrentValue || !_W.IsReady() || ObjectManager.Player.IsAttackingPlayer)
+            {
+                return;
+            }
+
+            var target = TargetSelector.GetTarget(_W.Range, DamageType.Physical);
+            if (ObjectManager.Player.CountEnemiesInRange(700) > 0)
+            {
+                target = TargetSelector.GetTarget(700, DamageType.Physical);
+            }
+
+            if (!target.IsValidTarget())
+            {
+                return;
+            }
+
+            var pred = Prediction.Position.PredictConeSpell(target, _W.Range, 50, 250);
+            var col = pred.CollisionObjects.Count(colObj => colObj.IsEnemy && colObj.IsMinion && !colObj.IsDead);
+            if (target.IsDead || col > 0 || pred.HitChance < HitChance.High)
+            {
+                return;
+            }
+
+            _W.Cast(pred.CastPosition);
+        }
+
+        public void _RLogic()
+        {
+            if (!_R.IsReady())
+            {
+                return;
+            }
+
+            if (Variables.Config["Ashe.CastRCombo"].Cast<KeyBind>().CurrentValue)
+            {
+                var target = TargetSelector.GetTarget(2000, DamageType.Physical);
+                if (target.IsValidTarget())
+                {
+                    _R.Cast(target);
+                }
+            }
+
+
+            foreach (var enemy in HeroManager.Enemies.Where(target => target.IsValidTarget(_R.Range)))
+            {
+                if (enemy.CountEnemiesInRange(250) > 2 &&
+                    Variables.Config["Ashe.CastRAOE"].Cast<CheckBox>().CurrentValue)
+                {
+                    _R.Cast(enemy);
+                }
+
+                if (ObjectManager.Player.Health < ObjectManager.Player.MaxHealth*0.4 && enemy.IsValidTarget(270) &&
+                    enemy.IsMelee && Variables.Config["Ashe.CastRGapCloser"].Cast<CheckBox>().CurrentValue)
+                {
+                    _R.Cast(enemy);
+                }
+            }
         }
 
         private void Orbwalker_OnPreAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
@@ -270,22 +246,6 @@ namespace Marksman_Buddy.Plugins
                     case "AsheQ":
                         return buff.Count;
                 }
-            }
-
-            return 0;
-        }
-
-        private double GetDamage(Spell.Skillshot slot)
-        {
-            if (slot == _W)
-            {
-                return new double[] {20, 35, 50, 65, 80}[_W.Level] +
-                       1*(ObjectManager.Player.BaseAttackDamage + ObjectManager.Player.FlatPhysicalDamageMod);
-            }
-
-            if (slot == _R)
-            {
-                return new double[] {250, 425, 600}[_R.Level] + 1*ObjectManager.Player.FlatMagicDamageMod;
             }
 
             return 0;
