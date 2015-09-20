@@ -31,7 +31,7 @@ namespace Marksman_Buddy.Plugins
         private void _SetupSpells()
         {
             _Q = new Spell.Active(SpellSlot.Q);
-            _W = new Spell.Skillshot(SpellSlot.W, 1240, SkillShotType.Cone, 250, 1200, 50);
+            _W = new Spell.Skillshot(SpellSlot.W, 1240, SkillShotType.Linear, 250, 1200, 50);
             //_E = new Spell.Skillshot(SpellSlot.E, 2500, SkillShotType.Linear, 250, 1400, 299);
             _R = new Spell.Skillshot(SpellSlot.R, 3000, SkillShotType.Linear, 250, 1600, 130);
         }
