@@ -1,95 +1,55 @@
-﻿
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using Marksman_Buddy.Internal;
-using System.Threading.Tasks;
 using EloBuddy;
-using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
+using Marksman_Buddy.Internal;
 
 namespace Marksman_Buddy.Activator
 {
-	class Core
-	{
+    internal class Core
+    {
+        //private int _UseManaPotsPercent => Variables.Activator["MBActivator.UseMPPotPercent"].Cast<Slider>().CurrentValue;
 
-		private bool _UseHeal
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseHeal"].Cast<CheckBox>().CurrentValue;
-			}
-		}
+        public Core()
+        {
+            Game.OnTick += _Game_OnTick;
+        }
 
-		private int _UseHealPercent
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseHealPercent"].Cast<Slider>().CurrentValue;
-			}
-		}
+        private static bool _UseHeal => Variables.Activator["MBActivator.UseHeal"].Cast<CheckBox>().CurrentValue;
 
-		private bool _UseHealPots
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseHPPot"].Cast<CheckBox>().CurrentValue;
-			}
-		}
+        private static int _UseHealPercent
+            => Variables.Activator["MBActivator.UseHealPercent"].Cast<Slider>().CurrentValue;
 
-		private int _UseHealPotsPercent
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseHPPotPercent"].Cast<Slider>().CurrentValue;
-			}
-		}
+        private static bool _UseHealPots => Variables.Activator["MBActivator.UseHPPot"].Cast<CheckBox>().CurrentValue;
+        //private int _UseHealPotsPercent => Variables.Activator["MBActivator.UseHPPotPercent"].Cast<Slider>().CurrentValue;
 
-		private bool _UseManaPots
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseMPPot"].Cast<CheckBox>().CurrentValue;
-			}
-		}
+        private static bool _UseManaPots => Variables.Activator["MBActivator.UseMPPot"].Cast<CheckBox>().CurrentValue;
 
-		private int _UseManaPotsPercent
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseMPPotPercent"].Cast<Slider>().CurrentValue;
-			}
-		}
+        private static void _Game_OnTick(EventArgs args)
+        {
+            if (_UseHeal && Player.Instance.HealthPercent <= _UseHealPercent)
+            {
+                var healSlot = Player.Spells.FirstOrDefault(spell => spell.Name.ToLower().Contains("summonerheal"));
+                if (healSlot != null)
+                {
+                    Player.CastSpell(healSlot.Slot);
+                }
+            }
 
-		public Core()
-		{
-			Game.OnTick += _Game_OnTick;
-		}
+            var hasHealPots = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "healthPotion") !=
+                               null);
+            if (_UseHealPots && hasHealPots && !Player.HasBuff("RegenerationPotion"))
+            {
+                var firstOrDefault = Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "healthPotion");
+                firstOrDefault?.Cast();
+            }
 
-		private void _Game_OnTick(EventArgs args)
-		{
-			if (_UseHeal && Player.Instance.HealthPercent <= _UseHealPercent)
-			{
-				var HealSlot = Player.Spells.Where(spell => spell.Name.ToLower().Contains("summonerheal")).FirstOrDefault();
-				if (HealSlot != null)
-				{
-					Player.CastSpell(HealSlot.Slot);
-				}
-			}
-
-			var HasHealPots = (Player.Instance.InventoryItems.Where(item => item.Name == "healthPotion").FirstOrDefault() != null);
-
-			if (_UseHealPots && HasHealPots && !Player.HasBuff("RegenerationPotion"))
-			{
-				Player.Instance.InventoryItems.Where(item => item.Name == "healthPotion").FirstOrDefault().Cast();
-			}
-
-			var HasManaPots = (Player.Instance.InventoryItems.Where(item => item.Name == "manaPotion").FirstOrDefault() != null);
-
-			if (_UseManaPots && HasManaPots && !Player.HasBuff("FlaskOfCrystalWater"))
-			{
-				Player.Instance.InventoryItems.Where(item => item.Name == "manaPotion").FirstOrDefault().Cast();
-			}
-		}
-	}
+            var hasManaPots = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "manaPotion") != null);
+            if (_UseManaPots && hasManaPots && !Player.HasBuff("FlaskOfCrystalWater"))
+            {
+                var firstOrDefault = Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "manaPotion");
+                firstOrDefault?.Cast();
+            }
+        }
+    }
 }
