@@ -22,7 +22,7 @@ namespace Marksman_Buddy.Plugins
             _SetupMenu();
             _SetupSpells();
             Game.OnTick += Game_OnTick;
-            //Drawing.OnDraw += Drawing_OnDraw;
+            Drawing.OnDraw += Drawing_OnDraw;
             Orbwalker.OnPreAttack += Orbwalker_OnPreAttack;
             Gapcloser.OnGapCloser += Gapcloser_OnGapCloser;
             Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
@@ -79,7 +79,7 @@ namespace Marksman_Buddy.Plugins
 
         private static void _Combo()
         {
-            if (Variables.Config["Ashe.CastWCombo"].Cast<CheckBox>().CurrentValue && !_W.IsOnCooldown)
+            if (Variables.Config["Ashe.CastWCombo"].Cast<CheckBox>().CurrentValue && _W.IsReady())
             {
                 var target = TargetSelector.GetTarget(_W.Range, DamageType.Physical);
                 if (ObjectManager.Player.CountEnemiesInRange(700) > 0)
@@ -89,15 +89,14 @@ namespace Marksman_Buddy.Plugins
 
                 if (target.IsValidTarget())
                 {
-                    var poutput = _W.GetPrediction(target);
-                    var col =
-                        poutput.CollisionObjects.Count(colObj => colObj.IsEnemy && colObj.IsMinion && !colObj.IsDead);
-                    if (target.IsDead || col > 0 || target.Path.Count() > 1 || (int) poutput.HitChance < 5)
+                    var pred = Prediction.Position.PredictConeSpell(target, _W.Range, 50, 250);
+                    var col = pred.CollisionObjects.Count(colObj => colObj.IsEnemy && colObj.IsMinion && !colObj.IsDead);
+                    if (target.IsDead || col > 0 || target.Path.Count() > 1 || pred.HitChance < HitChance.High)
                     {
                         return;
                     }
 
-                    _W.Cast(poutput.CastPosition);
+                    _W.Cast(pred.CastPosition);
                 }
             }
 
@@ -117,7 +116,7 @@ namespace Marksman_Buddy.Plugins
                         target.Distance(ObjectManager.Player.Position) > 1000)
                     {
                         var cast = true;
-                        var output = _R.GetPrediction(target);
+                        var output = Prediction.Position.PredictLinearMissile(target, _R.Range, _R.Width, _R.CastDelay, _R.Speed, 0);
                         var direction = output.CastPosition.To2D() - ObjectManager.Player.Position.To2D();
                         direction.Normalize();
                         var enemies = HeroManager.Enemies.Where(x => x.IsValidTarget()).ToList();
@@ -128,7 +127,7 @@ namespace Marksman_Buddy.Plugins
                                 continue;
                             }
 
-                            var prediction = _R.GetPrediction(enemy);
+                            var prediction = Prediction.Position.PredictLinearMissile(enemy, _R.Range, _R.Width, _R.CastDelay, _R.Speed, 0);
                             var predictedPosition = prediction.CastPosition;
                             var v = output.CastPosition - ObjectManager.Player.ServerPosition;
                             var w = predictedPosition - ObjectManager.Player.ServerPosition;
@@ -165,7 +164,7 @@ namespace Marksman_Buddy.Plugins
 
         private static void _Harass()
         {
-            if (!Variables.Config["Ashe.CastWHarass"].Cast<CheckBox>().CurrentValue || _W.IsOnCooldown)
+            if (!Variables.Config["Ashe.CastWHarass"].Cast<CheckBox>().CurrentValue || !_W.IsReady())
             {
                 return;
             }
@@ -188,24 +187,28 @@ namespace Marksman_Buddy.Plugins
                 return;
             }
 
-            _W.Cast(poutput.CastPosition);
+            Chat.Print("Doesn't reach here, you need to fix the if statement!");
+
+            _W.Cast(target);
         }
 
         private static void Orbwalker_OnPreAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
         {
-            if (Orbwalker.GetTarget() == null)
+            if (target == null)
             {
                 return;
             }
 
-            var orbwalkerTarget = (Obj_AI_Base) Orbwalker.GetTarget();
-            if (GetQStacks() <
-                (Variables.ComboMode
-                    ? Variables.Config["Ashe.StacksQCombo"].Cast<Slider>().CurrentValue
-                    : Variables.Config["Ashe.StacksQHarass"].Cast<Slider>().CurrentValue) || !orbwalkerTarget.IsValid ||
-                !(orbwalkerTarget is AIHeroClient)) return;
-            if ((Variables.ComboMode && Variables.Config["Ashe.CastQCombo"].Cast<CheckBox>().CurrentValue) ||
-                (Variables.HarassMode && Variables.Config["Ashe.CastQHarass"].Cast<CheckBox>().CurrentValue))
+            var heroTarget = (Obj_AI_Base) target;
+            var requiredStacks = Variables.ComboMode
+                ? Variables.Config["Ashe.StacksQCombo"].Cast<Slider>().CurrentValue
+                : Variables.Config["Ashe.StacksQHarass"].Cast<Slider>().CurrentValue;
+            if (GetQStacks() < requiredStacks || !heroTarget.IsValid || !(heroTarget is AIHeroClient))
+            {
+                return;
+            }
+            
+            if ((Variables.ComboMode && Variables.Config["Ashe.CastQCombo"].Cast<CheckBox>().CurrentValue))
             {
                 _Q.Cast();
             }
@@ -251,7 +254,7 @@ namespace Marksman_Buddy.Plugins
             if ((Variables.Config["Ashe.DrawAvailableSpells"].Cast<CheckBox>().CurrentValue && _W.IsReady()) ||
                 !Variables.Config["Ashe.DrawAvailableSpells"].Cast<CheckBox>().CurrentValue)
             {
-                new Circle {Color = Color.Orange, Radius = _W.Range}.Draw(ObjectManager.Player.Position);
+                new Circle() {Color = Color.Orange, Radius = _W.Range}.Draw(ObjectManager.Player.Position);
             }
         }
 
