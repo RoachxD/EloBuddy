@@ -150,13 +150,8 @@ namespace Marksman_Buddy.Plugins
 
         private static bool _ECanKill(Obj_AI_Base hero, Spell.Active _E)
         {
-            var EDamage = Convert.ToSingle(hero.GetBuffCount("twitchdeadlyvenom")*
-                                           (_EDamage[_E.Level] +
-                                            ObjectManager.Player.TotalAttackDamage*0.25
-                                            + ObjectManager.Player.TotalMagicalDamage*0.2)) - 20.0f;
-                //Damage Calc is off
-
-            return ObjectManager.Player.CalculateDamageOnUnit(hero, DamageType.Physical, EDamage) > hero.Health;
+            var EDamage = DamageLibrary.GetSpellDamage(Player.Instance, hero, SpellSlot.E) - 20.0f;
+            return EDamage > hero.Health;
         }
     }
 }

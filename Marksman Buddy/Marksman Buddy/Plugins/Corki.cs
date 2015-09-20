@@ -20,7 +20,7 @@ namespace Marksman_Buddy.Plugins
         private readonly int[] _RDamage = {100, 180, 260};
         private readonly float[] _RDamageScale = {0.2f, 0.3f, 0.4f};
         private readonly Spell.Skillshot _W = new Spell.Skillshot(SpellSlot.W, 800, SkillShotType.Linear);
-        private Spell.Active _E = new Spell.Active(SpellSlot.E, 600);
+        private readonly Spell.Active _E = new Spell.Active(SpellSlot.E, 600);
         //private Spell.Skillshot _R2 = new Spell.Skillshot(SpellSlot.R, 1500, EloBuddy.SDK.Enumerations.SkillShotType.Linear, 200, 2000, 40);
 
         public Corki()
@@ -65,7 +65,7 @@ namespace Marksman_Buddy.Plugins
                 HeroManager.Enemies
                     .Where(x => (x.Position.Distance(ObjectManager.Player) < _R1.Range) && !x.IsDead && !x.IsZombie))
             {
-                if (_RCanKill(hero, _R1.Level) && Variables.Config["useRKS"].Cast<CheckBox>().CurrentValue)
+                if (_RCanKill(hero) && Variables.Config["useRKS"].Cast<CheckBox>().CurrentValue)
                 {
                     _R1.Cast(hero);
                 }
@@ -88,14 +88,12 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        private bool _RCanKill(Obj_AI_Base target, int Level)
-        {
-            var EDamage =
-                _RDamage[Level] +
-                ObjectManager.Player.TotalAttackDamage*_RDamageScale[Level]
-                + ObjectManager.Player.TotalMagicalDamage*0.3f - 20.0f; //Damage Calc is off
+        private bool _RCanKill(Obj_AI_Base target)
+		{
 
-            return ObjectManager.Player.CalculateDamageOnUnit(target, DamageType.Magical, EDamage) > target.Health;
+			var RDamage = DamageLibrary.GetSpellDamage(Player.Instance, target, SpellSlot.R);
+
+            return RDamage > target.Health;
         }
 
         private void _Combo()
@@ -106,7 +104,16 @@ namespace Marksman_Buddy.Plugins
             {
                 _Q.Cast(QTarget);
             }
-
+			var inERange = false;;
+			foreach (var target in HeroManager.Enemies)
+			{
+				if (target.Distance(Player.Instance) <= 550)
+					inERange = true;
+			}
+			if (inERange && Variables.Config["useECombo"].Cast<CheckBox>().CurrentValue)
+			{
+				_E.Cast();
+			}
             if (RTarget.IsValidTarget() && Variables.Config["useRCombo"].Cast<CheckBox>().CurrentValue
                 && Variables.Config["useRComboStacks"].Cast<Slider>().CurrentValue < _R1.Handle.Ammo)
             {
@@ -118,6 +125,7 @@ namespace Marksman_Buddy.Plugins
         {
             Variables.Config.AddGroupLabel("Combo");
             Variables.Config.Add("useQCombo", new CheckBox("Use Q in Combo"));
+			Variables.Config.Add("useECombo", new CheckBox("Use E in Combo"));
             Variables.Config.Add("useRCombo", new CheckBox("Use R in Combo"));
             Variables.Config.Add("useRComboStacks", new Slider("Save x Rockets", 3, 0, 7));
             Variables.Config.AddGroupLabel("Harass");
