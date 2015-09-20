@@ -38,7 +38,7 @@ namespace Marksman_Buddy
             Variables.InfoMenu.AddSeparator();
             Variables.InfoMenu.AddLabel("Creators: " + "Roach, newchild");
 
-
+			
             Variables.Activator = Variables.InfoMenu.AddSubMenu("MB Activator", "MBActivator");
             Variables.Activator.AddGroupLabel("Summoner Spells");
             Variables.Activator.Add("Activator.UseHeal", new CheckBox("Use Heal"));
@@ -54,7 +54,7 @@ namespace Marksman_Buddy
             Variables.Activator.Add("Activator.UseCutlass", new CheckBox("Use Cutlass in Combo"));
             Variables.Activator.Add("Activator.UseYoumuus", new CheckBox("Use Youmuu's in Combo"));
             Variables.Activator.Add("Activator.UseBotrK", new CheckBox("Use Blade of the Ruined King in Combo"));
-
+			
             var _Activator = new Core();
             Chat.Print("Marksman Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
             var championName = ObjectManager.Player.ChampionName.ToLower(CultureInfo.InvariantCulture);
