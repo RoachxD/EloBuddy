@@ -77,18 +77,18 @@ namespace Marksman_Buddy.Activator
 				}
 			}
 
-			var HasHealPots = (Player.Instance.InventoryItems.Where(item => item.Name == "RegenerationPotion").FirstOrDefault() != null);
+			var HasHealPots = (Player.Instance.InventoryItems.Where(item => item.Name == "healthPotion").FirstOrDefault() != null);
 
 			if (_UseHealPots && HasHealPots && !Player.HasBuff("RegenerationPotion"))
 			{
-				Player.Instance.InventoryItems.Where(item => item.Name == "RegenerationPotion").FirstOrDefault().Cast();
+				Player.Instance.InventoryItems.Where(item => item.Name == "healthPotion").FirstOrDefault().Cast();
 			}
 
-			var HasManaPots = (Player.Instance.InventoryItems.Where(item => item.Name == "FlaskOfCrystalWater").FirstOrDefault() != null);
+			var HasManaPots = (Player.Instance.InventoryItems.Where(item => item.Name == "manaPotion").FirstOrDefault() != null);
 
 			if (_UseManaPots && HasManaPots && !Player.HasBuff("FlaskOfCrystalWater"))
 			{
-				Player.Instance.InventoryItems.Where(item => item.Name == "RegenerationPotion").FirstOrDefault().Cast();
+				Player.Instance.InventoryItems.Where(item => item.Name == "manaPotion").FirstOrDefault().Cast();
 			}
 		}
 	}
