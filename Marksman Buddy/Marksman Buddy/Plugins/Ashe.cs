@@ -117,7 +117,7 @@ namespace Marksman_Buddy.Plugins
                     {
                         var cast = true;
                         var output = Prediction.Position.PredictLinearMissile(target, _R.Range, _R.Width, _R.CastDelay,
-                            _R.Speed, 0);
+                            _R.Speed, 3000);
                         var direction = output.CastPosition.To2D() - ObjectManager.Player.Position.To2D();
                         direction.Normalize();
                         var enemies = HeroManager.Enemies.Where(x => x.IsValidTarget()).ToList();
