@@ -63,7 +63,7 @@ namespace Marksman_Buddy.Plugins
         {
             foreach (var hero in
                 HeroManager.Enemies
-                    .Where(x => x.Position.Distance(ObjectManager.Player) < _R1.Range))
+                    .Where(x => (x.Position.Distance(ObjectManager.Player) < _R1.Range) && !x.IsDead && !x.IsZombie))
             {
                 if (_RCanKill(hero, _R1.Level) && Variables.Config["useRKS"].Cast<CheckBox>().CurrentValue)
                 {
