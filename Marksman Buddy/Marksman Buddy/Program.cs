@@ -51,7 +51,7 @@ namespace Marksman_Buddy
 			Variables.Activator.Add("MBActivator.UseMPPotPercent", new Slider("Use Mana Potions when under X Percent Mana", 40));
 			 
 			//Variables.Activator.AddGroupLabel("Items");
-			Variables.Config = Variables.InfoMenu.AddSubMenu("Marksman Buddy");
+			//Variables.Config = Variables.InfoMenu.AddSubMenu("Marksman Buddy");
 
 			
 
