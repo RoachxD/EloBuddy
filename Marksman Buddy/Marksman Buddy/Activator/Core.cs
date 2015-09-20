@@ -21,9 +21,12 @@ namespace Marksman_Buddy.Activator
             => Variables.Activator["MBActivator.UseHealPercent"].Cast<Slider>().CurrentValue;
 
         private static bool _UseHealPots => Variables.Activator["MBActivator.UseHPPot"].Cast<CheckBox>().CurrentValue;
-        //private int _UseHealPotsPercent => Variables.Activator["MBActivator.UseHPPotPercent"].Cast<Slider>().CurrentValue;
+
+        private int _UseHealPotsPercent => Variables.Activator["MBActivator.UseHPPotPercent"].Cast<Slider>().CurrentValue;
 
         private static bool _UseManaPots => Variables.Activator["MBActivator.UseMPPot"].Cast<CheckBox>().CurrentValue;
+
+		private int _UseHealManaPercent => Variables.Activator["MBActivator.UseMPPotPercent"].Cast<Slider>().CurrentValue;
 
         private static void _Game_OnTick(EventArgs args)
         {
@@ -38,17 +41,17 @@ namespace Marksman_Buddy.Activator
 
             var hasHealPots = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "healthPotion") !=
                                null);
-            if (_UseHealPots && hasHealPots && !Player.HasBuff("RegenerationPotion"))
+            if (_UseHealPots && hasHealPots && !Player.HasBuff("RegenerationPotion") && _UseHealPotsPercent > Player.Instance.HealthPercent)
             {
-                var firstOrDefault = Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "healthPotion");
-                firstOrDefault?.Cast();
+                var firstOrDefault = Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "healthPotion").SpellSlot;
+				Player.CastSpell(firstOrDefault);
             }
 
             var hasManaPots = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "manaPotion") != null);
-            if (_UseManaPots && hasManaPots && !Player.HasBuff("FlaskOfCrystalWater"))
+            if (_UseManaPots && hasManaPots && !Player.HasBuff("FlaskOfCrystalWater") && _UseHealManaPercent > Player.Instance.ManaPercent)
             {
-                var firstOrDefault = Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "manaPotion");
-                firstOrDefault?.Cast();
+                var firstOrDefault = Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "manaPotion").SpellSlot;
+                Player.CastSpell(firstOrDefault);
             }
         }
     }
