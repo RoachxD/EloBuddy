@@ -12,9 +12,10 @@ namespace Marksman_Buddy.Plugins
 {
     internal class Twitch : PluginBase
     {
-        private static Spell.Skillshot _W;
-        private static Spell.Active _Q, _E;
-        private static readonly string[] _Minions = {"SRU_Dragon", "SRU_Baron", "Sru_Crab", "Siege"};
+        private Spell.Skillshot _W;
+		private int[] _EDamage = new int[] { 15, 20, 25, 30, 35 };
+        private Spell.Active _Q, _E;
+        private readonly string[] _Minions = {"SRU_Dragon", "SRU_Baron", "Sru_Crab", "Siege"};
 
         public Twitch()
         {
@@ -24,14 +25,14 @@ namespace Marksman_Buddy.Plugins
             Drawing.OnDraw += Drawing_OnDraw;
         }
 
-        private static void _SetupSpells()
+        private void _SetupSpells()
         {
             _Q = new Spell.Active(SpellSlot.Q);
             _W = new Spell.Skillshot(SpellSlot.W, 900, SkillShotType.Circular, 250, 1400, 275);
             _E = new Spell.Active(SpellSlot.E, 1200);
         }
 
-        private static void _SetupMenu()
+        private void _SetupMenu()
         {
             Variables.Config.AddGroupLabel("Combo");
             Variables.Config.Add("Twitch.UseECombo", new CheckBox("Use E in Combo"));
@@ -51,7 +52,7 @@ namespace Marksman_Buddy.Plugins
             Variables.Config.Add("Twitch.DrawE", new CheckBox("Draw E"));
         }
 
-        private static void Game_OnTick(EventArgs args)
+        private void Game_OnTick(EventArgs args)
         {
             if (Variables.ComboMode)
             {
@@ -68,7 +69,7 @@ namespace Marksman_Buddy.Plugins
             _Execute();
         }
 
-        private static void _Execute()
+        private void _Execute()
         {
             foreach (var minion in 
                 ObjectManager.Get<Obj_AI_Minion>()
@@ -87,12 +88,12 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        private static bool _ContainsSimiliar(string[] array, string simily) //Who needs comparators Kappa
+        private bool _ContainsSimiliar(string[] array, string simily) //Who needs comparators Kappa
         {
             return array.Any(element => element.ToLower().Contains(simily.ToLower()));
         }
 
-        private static void _Harrass()
+        private void _Harrass()
         {
             var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
             if (Variables.Config["Twitch.UseWHarass"].Cast<CheckBox>().CurrentValue
@@ -118,7 +119,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        private static void _KillSteal()
+        private void _KillSteal()
         {
             foreach (var hero in
                 ObjectManager.Get<AIHeroClient>()
@@ -131,7 +132,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        private static void _Combo()
+        private void _Combo()
         {
             var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
             if (Variables.Config["Twitch.UseWCombo"].Cast<CheckBox>().CurrentValue
@@ -157,7 +158,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        private static void _QCount()
+        private void _QCount()
         {
             if (
                 HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(3000))
@@ -185,10 +186,16 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        private static bool _ECanKill(Obj_AI_Base hero, Spell.Active _E)
+        private bool _ECanKill(Obj_AI_Base hero, Spell.Active _E)
         {
-            var EDamage = Player.Instance.GetSpellDamage(hero, SpellSlot.E) - 20.0f;
-            return EDamage > hero.Health;
+            var EDamage = Convert.ToSingle(hero.GetBuffCount("twitchdeadlyvenom") *     
+                                         (_EDamage[_E.Level] + 
+                                         ObjectManager.Player.TotalAttackDamage*0.25    
+                                          + ObjectManager.Player.TotalMagicalDamage*0.2));
+			return ObjectManager.Player.CalculateDamageOnUnit(hero, DamageType.Physical, EDamage) > hero.Health;  
+
         }
-    }
+
+		
+	}
 }

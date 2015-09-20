@@ -29,7 +29,7 @@ namespace Marksman_Buddy.Plugins
             Game.OnTick += Game_OnTick;
             Gapcloser.OnGapCloser += Gapcloser_OnGapCloser;
         }
-
+		
         private void Gapcloser_OnGapCloser(AIHeroClient sender, Gapcloser.GapCloserEventArgs e)
         {
             if (!Variables.Config["useWAntigapcloser"].Cast<CheckBox>().CurrentValue)
@@ -91,10 +91,12 @@ namespace Marksman_Buddy.Plugins
 
         private bool _RCanKill(Obj_AI_Base target)
 		{
-			
-			var RDamage = DamageLibrary.GetSpellDamage(Player.Instance, target, SpellSlot.R);
-			Console.WriteLine(RDamage.ToString());
-            return RDamage > target.Health;
+			var RDamage = (_RDamage[_R1.Level] +
+               ObjectManager.Player.TotalAttackDamage * _RDamageScale[_R1.Level]    
+              + ObjectManager.Player.TotalMagicalDamage * 0.3f) - 20.0f; //Damage Calc is off    
+  
+            return ObjectManager.Player.CalculateDamageOnUnit(target, DamageType.Magical, RDamage) > target.Health;  
+
         }
 
         private void _Combo()
