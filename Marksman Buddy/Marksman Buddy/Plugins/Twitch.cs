@@ -13,7 +13,7 @@ namespace Marksman_Buddy.Plugins
     internal class Twitch : PluginBase
     {
         private Spell.Skillshot _W;
-		private int[] _EDamage = new int[] { 15, 20, 25, 30, 35 };
+		private readonly int[] _EDamage = { 15, 20, 25, 30, 35 };
         private Spell.Active _Q, _E;
         private readonly string[] _Minions = {"SRU_Dragon", "SRU_Baron", "Sru_Crab", "Siege"};
 
@@ -21,18 +21,17 @@ namespace Marksman_Buddy.Plugins
         {
             _SetupMenu();
             _SetupSpells();
-            Game.OnTick += Game_OnTick;
             Drawing.OnDraw += Drawing_OnDraw;
         }
 
-        private void _SetupSpells()
+        public override sealed void _SetupSpells()
         {
             _Q = new Spell.Active(SpellSlot.Q);
             _W = new Spell.Skillshot(SpellSlot.W, 900, SkillShotType.Circular, 250, 1400, 275);
             _E = new Spell.Active(SpellSlot.E, 1200);
         }
 
-        private void _SetupMenu()
+        public override sealed void _SetupMenu()
         {
             Variables.Config.AddGroupLabel("Combo");
             Variables.Config.Add("Twitch.UseECombo", new CheckBox("Use E in Combo"));
@@ -52,7 +51,7 @@ namespace Marksman_Buddy.Plugins
             Variables.Config.Add("Twitch.DrawE", new CheckBox("Draw E"));
         }
 
-        private void Game_OnTick(EventArgs args)
+        public override void Game_OnTick(EventArgs args)
         {
             if (Variables.ComboMode)
             {
@@ -61,7 +60,7 @@ namespace Marksman_Buddy.Plugins
 
             if (Variables.HarassMode)
             {
-                _Harrass();
+                _Harass();
             }
 
             _QCount();
@@ -93,7 +92,7 @@ namespace Marksman_Buddy.Plugins
             return array.Any(element => element.ToLower().Contains(simily.ToLower()));
         }
 
-        private void _Harrass()
+        public override void _Harass()
         {
             var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
             if (Variables.Config["Twitch.UseWHarass"].Cast<CheckBox>().CurrentValue
@@ -132,7 +131,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        private void _Combo()
+        public override void _Combo()
         {
             var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
             if (Variables.Config["Twitch.UseWCombo"].Cast<CheckBox>().CurrentValue
