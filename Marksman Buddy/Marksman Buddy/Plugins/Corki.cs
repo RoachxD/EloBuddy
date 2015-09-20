@@ -11,11 +11,9 @@ namespace Marksman_Buddy.Plugins
 {
     internal class Corki : PluginBase
     {
-        private readonly Spell.Skillshot _Q = new Spell.Skillshot(SpellSlot.Q, 825, SkillShotType.Circular, 300, 1000,
-            250);
+		private readonly Spell.Skillshot _Q;
 
-        private readonly Spell.Skillshot _R1 = new Spell.Skillshot(SpellSlot.R, 1300, SkillShotType.Linear, 200, 2000,
-            40);
+		private readonly Spell.Skillshot _R1;
 
         private readonly int[] _RDamage = {100, 180, 260};
         private readonly float[] _RDamageScale = {0.2f, 0.3f, 0.4f};
@@ -26,9 +24,18 @@ namespace Marksman_Buddy.Plugins
         public Corki()
         {
             _SetupMenu();
+			_SetupSpells();
             Game.OnTick += Game_OnTick;
             Gapcloser.OnGapCloser += Gapcloser_OnGapCloser;
         }
+
+		private void _SetupSpells()
+		{
+			_Q =  new Spell.Skillshot(SpellSlot.Q, 825, SkillShotType.Circular, 300, 1000,
+            250);
+			_R1 = new Spell.Skillshot(SpellSlot.R, 1300, SkillShotType.Linear, 200, 2000,
+			40);
+		}
 		
         private void Gapcloser_OnGapCloser(AIHeroClient sender, Gapcloser.GapCloserEventArgs e)
         {
@@ -110,7 +117,7 @@ namespace Marksman_Buddy.Plugins
 			var inERange = false;;
 			foreach (var target in HeroManager.Enemies)
 			{
-				if (target.Distance(Player.Instance) <= 550)
+				if (target.Distance(Player.Instance) <= 550 && !target.IsDead && !target.IsZombie)
 					inERange = true;
 			}
 			if (inERange && Variables.Config["useECombo"].Cast<CheckBox>().CurrentValue)
