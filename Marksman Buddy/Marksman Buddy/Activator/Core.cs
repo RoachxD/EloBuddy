@@ -16,47 +16,47 @@ namespace Marksman_Buddy.Activator
 
         private bool _UseHeal
         {
-            get { return Variables.Activator["Activator..UseHeal"].Cast<CheckBox>().CurrentValue; }
+            get { return Variables.Activator["Activator.UseHeal"].Cast<CheckBox>().CurrentValue; }
         }
 
         private bool _UseBotrK
         {
-            get { return Variables.Activator["Activator..UseBotrK"].Cast<CheckBox>().CurrentValue; }
+            get { return Variables.Activator["Activator.UseBotrK"].Cast<CheckBox>().CurrentValue; }
         }
 
         private bool _UseYoumuus
         {
-            get { return Variables.Activator["Activator..UseYoumuus"].Cast<CheckBox>().CurrentValue; }
+            get { return Variables.Activator["Activator.UseYoumuus"].Cast<CheckBox>().CurrentValue; }
         }
 
         private bool _UseCutlass
         {
-            get { return Variables.Activator["Activator..UseCutlass"].Cast<CheckBox>().CurrentValue; }
+            get { return Variables.Activator["Activator.UseCutlass"].Cast<CheckBox>().CurrentValue; }
         }
 
         private int _UseHealPercent
         {
-            get { return Variables.Activator["Activator..UseHealPercent"].Cast<Slider>().CurrentValue; }
+            get { return Variables.Activator["Activator.UseHealPercent"].Cast<Slider>().CurrentValue; }
         }
 
         private bool _UseHealPots
         {
-            get { return Variables.Activator["Activator..UseHPPot"].Cast<CheckBox>().CurrentValue; }
+            get { return Variables.Activator["Activator.UseHPPot"].Cast<CheckBox>().CurrentValue; }
         }
 
         private int _UseHealPotsPercent
         {
-            get { return Variables.Activator["Activator..UseHPPotPercent"].Cast<Slider>().CurrentValue; }
+            get { return Variables.Activator["Activator.UseHPPotPercent"].Cast<Slider>().CurrentValue; }
         }
 
         private bool _UseManaPots
         {
-            get { return Variables.Activator["Activator..UseMPPot"].Cast<CheckBox>().CurrentValue; }
+            get { return Variables.Activator["Activator.UseMPPot"].Cast<CheckBox>().CurrentValue; }
         }
 
         private int _UseHealManaPercent
         {
-            get { return Variables.Activator["Activator..UseMPPotPercent"].Cast<Slider>().CurrentValue; }
+            get { return Variables.Activator["Activator.UseMPPotPercent"].Cast<Slider>().CurrentValue; }
         }
 
         private void _Game_OnTick(EventArgs args)
