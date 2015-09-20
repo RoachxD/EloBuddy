@@ -29,6 +29,38 @@ namespace Marksman_Buddy.Activator
 			}
 		}
 
+		private bool _UseHealPots
+		{
+			get
+			{
+				return Variables.Activator["MBActivator.UseHPPot"].Cast<CheckBox>().CurrentValue;
+			}
+		}
+
+		private int _UseHealPotsPercent
+		{
+			get
+			{
+				return Variables.Activator["MBActivator.UseHPPotPercent"].Cast<Slider>().CurrentValue;
+			}
+		}
+
+		private bool _UseManaPots
+		{
+			get
+			{
+				return Variables.Activator["MBActivator.UseMPPot"].Cast<CheckBox>().CurrentValue;
+			}
+		}
+
+		private int _UseManaPotsPercent
+		{
+			get
+			{
+				return Variables.Activator["MBActivator.UseMPPotPercent"].Cast<Slider>().CurrentValue;
+			}
+		}
+
 		public Core()
 		{
 			Game.OnTick += _Game_OnTick;
@@ -36,7 +68,21 @@ namespace Marksman_Buddy.Activator
 
 		private void _Game_OnTick(EventArgs args)
 		{
-			
+			if (_UseHeal && Player.Instance.HealthPercent <= _UseHealPercent)
+			{
+				var HealSlot = Player.Spells.Where(spell => spell.Name.ToLower().Contains("summonerheal")).FirstOrDefault();
+				if (HealSlot != null)
+				{
+					Player.CastSpell(HealSlot.Slot);
+				}
+			}
+
+			var HasHealPots = (Player.Instance.InventoryItems.Where(item => item.Name == "RegenerationPotion") != null);
+
+			if (_UseHealPots && HasHealPots)
+			{
+
+			}
 		}
 	}
 }

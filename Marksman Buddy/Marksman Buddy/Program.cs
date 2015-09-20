@@ -41,7 +41,7 @@ namespace Marksman_Buddy
 			Variables.Activator.Add("MBActivator.UseHPPotPercent", new Slider("Use Healing Potions when under X Percent Health"));
 			Variables.Activator.Add("MBActivator.UseMPPot", new CheckBox("Use Mana Potions"));
 			Variables.Activator.Add("MBActivator.UseMPPotPercent", new Slider("Use Mana Potions when under X Percent Mana"));
-			Variables.Activator.AddGroupLabel("Items");
+			//Variables.Activator.AddGroupLabel("Items");
             Variables.Config = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
             Variables.Config.AddGroupLabel("Marksman Buddy");
             Variables.Config.AddLabel("Version: " + "1.0.0.0");
