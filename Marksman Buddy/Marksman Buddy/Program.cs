@@ -6,10 +6,11 @@ using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
+using EloBuddy.SDK.Menu.Values;
 using Marksman_Buddy.Internal;
 using Marksman_Buddy.Plugins;
 using Champion = Marksman_Buddy.Internal.Champion;
-using EloBuddy.SDK.Menu.Values;
+using Core = Marksman_Buddy.Activator.Core;
 
 namespace Marksman_Buddy
 {
@@ -28,47 +29,46 @@ namespace Marksman_Buddy
 
         private static void Loading_OnLoadingComplete()
         {
-
-			Bootstrap.Init(null);
-
-			
-
-			Variables.InfoMenu = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
-			Variables.InfoMenu.AddGroupLabel("Marksman Buddy");
-			Variables.InfoMenu.AddLabel("Version: " + "1.0.0.0");
-			Variables.InfoMenu.AddSeparator();
-			Variables.InfoMenu.AddLabel("Creators: " + "Roach, newchild");
+            Bootstrap.Init(null);
 
 
-			Variables.Activator = Variables.InfoMenu.AddSubMenu("MB Activator");
-			Variables.Activator.AddGroupLabel("Summoner Spells");
-			Variables.Activator.Add("MBActivator.UseHeal", new CheckBox("Use Heal"));
-			Variables.Activator.Add("MBActivator.UseHealPercent", new Slider("Use Heal when under X Percent Health", 35));
-			Variables.Activator.AddGroupLabel("Potions");
-			Variables.Activator.Add("MBActivator.UseHPPot", new CheckBox("Use Healing Potions"));
-			Variables.Activator.Add("MBActivator.UseHPPotPercent", new Slider("Use Healing Potions when under X Percent Health", 60));
-			Variables.Activator.Add("MBActivator.UseMPPot", new CheckBox("Use Mana Potions"));
-			Variables.Activator.Add("MBActivator.UseMPPotPercent", new Slider("Use Mana Potions when under X Percent Mana", 40));
-			 
-			//Variables.Activator.AddGroupLabel("Items");
-			//Variables.Config = Variables.InfoMenu.AddSubMenu("Marksman Buddy");
+            Variables.InfoMenu = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
+            Variables.InfoMenu.AddGroupLabel("Marksman Buddy");
+            Variables.InfoMenu.AddLabel("Version: " + "1.0.0.0");
+            Variables.InfoMenu.AddSeparator();
+            Variables.InfoMenu.AddLabel("Creators: " + "Roach, newchild");
 
-			
 
-			Activator.Core _Activator = new Activator.Core();
+            Variables.Activator = Variables.InfoMenu.AddSubMenu("MB Activator", "MBActivator");
+            Variables.Activator.AddGroupLabel("Summoner Spells");
+            Variables.Activator.Add("MBActivator.UseHeal", new CheckBox("Use Heal"));
+            Variables.Activator.Add("MBActivator.UseHealPercent", new Slider("Use Heal when under X Percent Health", 35));
+            Variables.Activator.AddGroupLabel("Potions");
+            Variables.Activator.Add("MBActivator.UseHPPot", new CheckBox("Use Healing Potions"));
+            Variables.Activator.Add("MBActivator.UseHPPotPercent",
+                new Slider("Use Healing Potions when under X Percent Health", 60));
+            Variables.Activator.Add("MBActivator.UseMPPot", new CheckBox("Use Mana Potions"));
+            Variables.Activator.Add("MBActivator.UseMPPotPercent",
+                new Slider("Use Mana Potions when under X Percent Mana", 40));
+
+            //Variables.Activator.AddGroupLabel("Items");
+            Variables.Config = Variables.InfoMenu.AddSubMenu("Ashe", "Ashe");
+
+
+            var _Activator = new Core();
             Chat.Print("Marksman Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
-			
+
             var championName = ObjectManager.Player.ChampionName.ToLower(CultureInfo.InvariantCulture);
             switch (championName)
             {
                 case "ashe":
-					ChampionPlugin = new Ashe();
+                    ChampionPlugin = new Ashe();
                     break;
                 case "caitlyn":
                     ChampionPlugin = new Champion();
                     break;
                 case "corki":
-					ChampionPlugin = new Corki();
+                    ChampionPlugin = new Corki();
                     break;
                 case "draven":
                     ChampionPlugin = new Champion();
@@ -113,7 +113,7 @@ namespace Marksman_Buddy
                     ChampionPlugin = new Champion();
                     break;
                 case "twitch":
-					ChampionPlugin = new Twitch();
+                    ChampionPlugin = new Twitch();
                     break;
                 case "urgot":
                     ChampionPlugin = new Champion();
@@ -125,8 +125,8 @@ namespace Marksman_Buddy
                     ChampionPlugin = new Champion();
                     break;
             }
-            
-        	Game.OnTick += Game_OnTick;
+
+            Game.OnTick += Game_OnTick;
         }
 
         private static void Game_OnTick(EventArgs args)
