@@ -52,13 +52,17 @@ namespace Marksman_Buddy
                 new Slider("Use Mana Potions when under X Percent Mana", 40));
 
             //Variables.Activator.AddGroupLabel("Items");
-			Variables.Config = Variables.InfoMenu.AddSubMenu(Player.Instance.ChampionName, Player.Instance.ChampionName);
+			
 
 
             var _Activator = new Core();
             Chat.Print("Marksman Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
-
-            var championName = ObjectManager.Player.ChampionName.ToLower(CultureInfo.InvariantCulture);
+			var championName = ObjectManager.Player.ChampionName.ToLower(CultureInfo.InvariantCulture);
+			if (championName == "")
+			{
+				championName = "Core Error";
+			}
+			Variables.Config = Variables.InfoMenu.AddSubMenu(Player.Instance.ChampionName, Player.Instance.ChampionName);
             switch (championName)
             {
                 case "ashe":
