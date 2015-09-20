@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+using System;
+using System.Drawing;
 using System.Globalization;
 using System.Threading;
 using EloBuddy;
@@ -8,7 +9,6 @@ using EloBuddy.SDK.Menu;
 using Marksman_Buddy.Internal;
 using Marksman_Buddy.Plugins;
 using Champion = Marksman_Buddy.Internal.Champion;
-using EloBuddy.SDK.Menu.Values;
 
 namespace Marksman_Buddy
 {
@@ -118,6 +118,16 @@ namespace Marksman_Buddy
                     ChampionPlugin = new Champion();
                     break;
             }
+            
+        	Game.OnTick += Game_OnTick;
+        }
+
+        private static void Game_OnTick(EventArgs args)
+        {
+            Variables.ComboMode = Orbwalker.ActiveModesFlags == Orbwalker.ActiveModes.Combo;
+            Variables.HarassMode = Orbwalker.ActiveModesFlags == Orbwalker.ActiveModes.Harass;
+            Variables.LaneClearMode = Orbwalker.ActiveModesFlags == Orbwalker.ActiveModes.LaneClear;
+            Variables.LastHitMode = Orbwalker.ActiveModesFlags == Orbwalker.ActiveModes.LastHit;
         }
     }
 }
