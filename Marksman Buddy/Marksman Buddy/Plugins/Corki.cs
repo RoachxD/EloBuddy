@@ -11,9 +11,9 @@ namespace Marksman_Buddy.Plugins
 {
     internal class Corki : PluginBase
     {
-		private readonly Spell.Skillshot _Q;
+		private Spell.Skillshot _Q;
 
-		private readonly Spell.Skillshot _R1;
+		private Spell.Skillshot _R1;
 
         private readonly int[] _RDamage = {100, 180, 260};
         private readonly float[] _RDamageScale = {0.2f, 0.3f, 0.4f};
