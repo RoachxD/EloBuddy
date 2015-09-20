@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Globalization;
 using System.Threading;
@@ -41,19 +41,19 @@ namespace Marksman_Buddy
 
             Variables.Activator = Variables.InfoMenu.AddSubMenu("MB Activator", "MBActivator");
             Variables.Activator.AddGroupLabel("Summoner Spells");
-            Variables.Activator.Add("MBActivator.UseHeal", new CheckBox("Use Heal"));
-            Variables.Activator.Add("MBActivator.UseHealPercent", new Slider("Use Heal when under X Percent Health", 35));
+            Variables.Activator.Add("Activator.UseHeal", new CheckBox("Use Heal"));
+            Variables.Activator.Add("Activator.UseHealPercent", new Slider("Use Heal when under X Percent Health", 35));
             Variables.Activator.AddGroupLabel("Potions");
-            Variables.Activator.Add("MBActivator.UseHPPot", new CheckBox("Use Healing Potions"));
-            Variables.Activator.Add("MBActivator.UseHPPotPercent",
+            Variables.Activator.Add("Activator.UseHPPot", new CheckBox("Use Healing Potions"));
+            Variables.Activator.Add("Activator.UseHPPotPercent",
                 new Slider("Use Healing Potions when under X Percent Health", 60));
-            Variables.Activator.Add("MBActivator.UseMPPot", new CheckBox("Use Mana Potions"));
-            Variables.Activator.Add("MBActivator.UseMPPotPercent",
+            Variables.Activator.Add("Activator.UseMPPot", new CheckBox("Use Mana Potions"));
+            Variables.Activator.Add("Activator.UseMPPotPercent",
                 new Slider("Use Mana Potions when under X Percent Mana", 40));
             Variables.Activator.AddGroupLabel("Items");
-            Variables.Activator.Add("MBActivator.UseCutlass", new CheckBox("Use Cutlass in Combo"));
-            Variables.Activator.Add("MBActivator.UseYoumuus", new CheckBox("Use Youmuu's in Combo"));
-            Variables.Activator.Add("MBActivator.UseBotrK", new CheckBox("Use Blade of the Ruined King in Combo"));
+            Variables.Activator.Add("Activator.UseCutlass", new CheckBox("Use Cutlass in Combo"));
+            Variables.Activator.Add("Activator.UseYoumuus", new CheckBox("Use Youmuu's in Combo"));
+            Variables.Activator.Add("Activator.UseBotrK", new CheckBox("Use Blade of the Ruined King in Combo"));
 
             var _Activator = new Core();
             Chat.Print("Marksman Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
