@@ -21,7 +21,7 @@ namespace Marksman_Buddy.Plugins
 
         private readonly int[] _RDamage = {100, 180, 260};
         private readonly float[] _RDamageScale = {0.2f, 0.3f, 0.4f};
-        private readonly Spell.Skillshot _W = new Spell.Skillshot(SpellSlot.W, 800, SkillShotType.Linear);
+        private Spell.Skillshot _W;
         //private Spell.Skillshot _R2 = new Spell.Skillshot(SpellSlot.R, 1500, EloBuddy.SDK.Enumerations.SkillShotType.Linear, 200, 2000, 40);
 
         public Corki()
@@ -39,6 +39,7 @@ namespace Marksman_Buddy.Plugins
 			250);
 			_R1 = new Spell.Skillshot(SpellSlot.R, 1300, SkillShotType.Linear, 200, 2000,
 			40);
+			_W = new Spell.Skillshot(SpellSlot.W, 800, SkillShotType.Linear);
 		}
 
         private void Gapcloser_OnGapCloser(AIHeroClient sender, Gapcloser.GapCloserEventArgs e)
