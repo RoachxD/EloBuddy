@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using System.Globalization;
 using System.Threading;
@@ -9,6 +9,7 @@ using EloBuddy.SDK.Menu;
 using Marksman_Buddy.Internal;
 using Marksman_Buddy.Plugins;
 using Champion = Marksman_Buddy.Internal.Champion;
+using EloBuddy.SDK.Menu.Values;
 
 namespace Marksman_Buddy
 {
@@ -18,6 +19,7 @@ namespace Marksman_Buddy
 
         private static void Main(string[] args)
         {
+			Console.WriteLine("Marksman Activating");
             Loading.OnLoadingComplete += delegate
             {
                 var onLoadingComplete = new Thread(Loading_OnLoadingComplete);
@@ -27,20 +29,21 @@ namespace Marksman_Buddy
 
         private static void Loading_OnLoadingComplete()
         {
-			Chat.Print("Don't try to sneak peak Kappa");
-			return;
-			
+			Console.WriteLine("Boostraping");
+
 			Bootstrap.Init(null);
+
+			Console.WriteLine("Setting up Menu");
 
 			Variables.Activator = MainMenu.AddMenu("MB Activator", "MarksmanBuddy");
 			Variables.Activator.AddGroupLabel("Summoner Spells");
 			Variables.Activator.Add("MBActivator.UseHeal", new CheckBox("Use Heal"));
-			Variables.Activator.Add("MBActivator.UseHealPercent", new Slider("Use Heal when under X Percent Health"));
+			Variables.Activator.Add("MBActivator.UseHealPercent", new Slider("Use Heal when under X Percent Health", 35));
 			Variables.Activator.AddGroupLabel("Potions");
 			Variables.Activator.Add("MBActivator.UseHPPot", new CheckBox("Use Healing Potions"));
-			Variables.Activator.Add("MBActivator.UseHPPotPercent", new Slider("Use Healing Potions when under X Percent Health"));
+			Variables.Activator.Add("MBActivator.UseHPPotPercent", new Slider("Use Healing Potions when under X Percent Health", 60));
 			Variables.Activator.Add("MBActivator.UseMPPot", new CheckBox("Use Mana Potions"));
-			Variables.Activator.Add("MBActivator.UseMPPotPercent", new Slider("Use Mana Potions when under X Percent Mana"));
+			Variables.Activator.Add("MBActivator.UseMPPotPercent", new Slider("Use Mana Potions when under X Percent Mana", 40));
 			//Variables.Activator.AddGroupLabel("Items");
             Variables.Config = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
             Variables.Config.AddGroupLabel("Marksman Buddy");
@@ -48,10 +51,14 @@ namespace Marksman_Buddy
             Variables.Config.AddSeparator();
             Variables.Config.AddLabel("Creators: " + "Roach, newchild");
 
+			Console.WriteLine("Set up Menu");
 
+			Activator.Core _Activator = new Activator.Core();
+			Console.WriteLine("Activated Activator (Kappa)");
             Chat.Print("Marksman Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
 
             var championName = ObjectManager.Player.ChampionName.ToLower(CultureInfo.InvariantCulture);
+			Console.WriteLine("Switching to Plugins");
             switch (championName)
             {
                 case "ashe":
