@@ -21,6 +21,7 @@ namespace Marksman_Buddy.Plugins
         {
             _SetupMenu();
             _SetupSpells();
+			Game.OnTick+=Game_OnTick;
             Drawing.OnDraw += Drawing_OnDraw;
         }
 

@@ -21,6 +21,7 @@ namespace Marksman_Buddy.Internal
         }
         public virtual void Game_OnTick(EventArgs args)
 	    {
+
 	    }
 
 	    public virtual void _Combo()

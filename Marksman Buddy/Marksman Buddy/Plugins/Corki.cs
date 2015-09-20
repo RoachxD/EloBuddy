@@ -30,6 +30,7 @@ namespace Marksman_Buddy.Plugins
 			_SetupSpells();
             Drawing.OnDraw += Drawing_OnDraw;
             Gapcloser.OnGapCloser += Gapcloser_OnGapCloser;
+			Game.OnTick +=Game_OnTick;
         }
 
 		public override void _SetupSpells()

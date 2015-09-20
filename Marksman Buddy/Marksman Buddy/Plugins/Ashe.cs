@@ -23,6 +23,7 @@ namespace Marksman_Buddy.Plugins
             Drawing.OnDraw += Drawing_OnDraw;
             Orbwalker.OnPreAttack += Orbwalker_OnPreAttack;
             Gapcloser.OnGapCloser += Gapcloser_OnGapCloser;
+			Game.OnTick += Game_OnTick;
             Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
         }
 
