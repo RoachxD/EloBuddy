@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Marksman_Buddy.Internal;
@@ -16,7 +17,7 @@ namespace Marksman_Buddy.Activator
 		{
 			get
 			{
-				Variables.Activator["MBActivator.UseHeal"].Cast<CheckBox>().CurrentValue;
+				return Variables.Activator["MBActivator.UseHeal"].Cast<CheckBox>().CurrentValue;
 			}
 		}
 
@@ -24,7 +25,7 @@ namespace Marksman_Buddy.Activator
 		{
 			get
 			{
-				Variables.Activator["MBActivator.UseHealPercent"].Cast<Slider>().CurrentValue;
+				return Variables.Activator["MBActivator.UseHealPercent"].Cast<Slider>().CurrentValue;
 			}
 		}
 

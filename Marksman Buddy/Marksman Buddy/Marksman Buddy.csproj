@@ -77,6 +77,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activator\Core.cs" />
     <Compile Include="Internal\Champion.cs" />
     <Compile Include="Internal\PluginBase.cs" />
     <Compile Include="Plugins\Ashe.cs" />

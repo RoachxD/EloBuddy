@@ -8,7 +8,7 @@ namespace Marksman_Buddy.Internal
 {
     class Champion: PluginBase
     {
-		Champion()
+		public Champion()
 		{
 			Chat.Print("{0} is not supported", ObjectManager.Player.ChampionName);
 		}
