@@ -50,10 +50,10 @@ namespace Marksman_Buddy
             Variables.Activator.Add("MBActivator.UseMPPot", new CheckBox("Use Mana Potions"));
             Variables.Activator.Add("MBActivator.UseMPPotPercent",
                 new Slider("Use Mana Potions when under X Percent Mana", 40));
-
-            //Variables.Activator.AddGroupLabel("Items");
-			
-
+            Variables.Activator.AddGroupLabel("Items");
+			Variables.Activator.Add("MBActivator.UseCutlass", new CheckBox("Use Cutlass in Combo"));
+			Variables.Activator.Add("MBActivator.UseYoumuus", new CheckBox("Use Youmuu's in Combo"));
+			Variables.Activator.Add("MBActivator.UseBotrK", new CheckBox("Use Blade of the ruined King in Combo"));
 
             var _Activator = new Core();
             Chat.Print("Marksman Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
@@ -135,10 +135,10 @@ namespace Marksman_Buddy
 
         private static void Game_OnTick(EventArgs args)
         {
-            Variables.ComboMode = Orbwalker.ActiveModesFlags == Orbwalker.ActiveModes.Combo;
-            Variables.HarassMode = Orbwalker.ActiveModesFlags == Orbwalker.ActiveModes.Harass;
-            Variables.LaneClearMode = Orbwalker.ActiveModesFlags == Orbwalker.ActiveModes.LaneClear;
-            Variables.LastHitMode = Orbwalker.ActiveModesFlags == Orbwalker.ActiveModes.LastHit;
+            Variables.ComboMode = Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
+			Variables.HarassMode = Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass);
+			Variables.LaneClearMode = Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear);
+			Variables.LastHitMode = Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit);
         }
     }
 }
