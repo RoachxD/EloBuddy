@@ -52,7 +52,7 @@ namespace Marksman_Buddy
                 new Slider("Use Mana Potions when under X Percent Mana", 40));
 
             //Variables.Activator.AddGroupLabel("Items");
-            Variables.Config = Variables.InfoMenu.AddSubMenu("Ashe", "Ashe");
+			Variables.Config = Variables.InfoMenu.AddSubMenu(Player.Instance.ChampionName, Player.Instance.ChampionName);
 
 
             var _Activator = new Core();
