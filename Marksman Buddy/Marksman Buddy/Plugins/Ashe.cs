@@ -47,11 +47,6 @@ namespace Marksman_Buddy.Plugins
             Variables.Config.Add("Ashe.CastQHarass", new CheckBox("Cast Q in Harass", false));
             Variables.Config.Add("Ashe.StacksQHarass", new Slider("Cast Q at x Stacks", 5, 0, 5));
             Variables.Config.Add("Ashe.CastWHarass", new CheckBox("Cast W in Harass"));
-            Variables.Config.AddGroupLabel("Farm");
-            Variables.Config.Add("Ashe.CastQLane", new CheckBox("Cast Q in Lane Clear"));
-            Variables.Config.Add("Ashe.CastWLane", new CheckBox("Cast W in Lane Clear"));
-            Variables.Config.Add("Ashe.CastQJungle", new CheckBox("Cast Q in Jungle Clear"));
-            Variables.Config.Add("Ashe.CastWJungle", new CheckBox("Cast W in Jungle Clear"));
             Variables.Config.AddGroupLabel("Misc");
             //Variables.Config.Add("Ashe.AutoE", new CheckBox("Auto E"));
             Variables.Config.Add("Ashe.CastRAOE", new CheckBox("Cast R on AOE"));
