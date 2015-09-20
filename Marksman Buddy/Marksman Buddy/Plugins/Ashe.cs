@@ -28,7 +28,7 @@ namespace Marksman_Buddy.Plugins
             Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
         }
 
-        private static void _SetupSpells()
+        private void _SetupSpells()
         {
             _Q = new Spell.Active(SpellSlot.Q);
             _W = new Spell.Skillshot(SpellSlot.W, 1240, SkillShotType.Cone, 250, 1200, 50);
@@ -36,7 +36,7 @@ namespace Marksman_Buddy.Plugins
             _R = new Spell.Skillshot(SpellSlot.R, 3000, SkillShotType.Linear, 250, 1600, 130);
         }
 
-        private static void _SetupMenu()
+        private void _SetupMenu()
         {
             Variables.Config.AddGroupLabel("Combo");
             Variables.Config.Add("Ashe.CastQCombo", new CheckBox("Cast Q in Combo"));
@@ -62,7 +62,7 @@ namespace Marksman_Buddy.Plugins
             Variables.Config.Add("Ashe.DrawW", new CheckBox("Draw W"));
         }
 
-        private static void Game_OnTick(EventArgs args)
+        private void Game_OnTick(EventArgs args)
         {
             GetQStacks();
 
@@ -77,7 +77,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        private static void _Combo()
+        private void _Combo()
         {
             if (Variables.Config["Ashe.CastWCombo"].Cast<CheckBox>().CurrentValue && _W.IsReady())
             {
@@ -164,7 +164,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        private static void _Harass()
+        private void _Harass()
         {
             if (!Variables.Config["Ashe.CastWHarass"].Cast<CheckBox>().CurrentValue || !_W.IsReady())
             {
@@ -192,7 +192,7 @@ namespace Marksman_Buddy.Plugins
             _W.Cast(pred.CastPosition);
         }
 
-        private static void Orbwalker_OnPreAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
+        private void Orbwalker_OnPreAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
         {
             if (target == null)
             {
@@ -215,7 +215,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        private static void Gapcloser_OnGapCloser(AIHeroClient sender, Gapcloser.GapCloserEventArgs e)
+        private void Gapcloser_OnGapCloser(AIHeroClient sender, Gapcloser.GapCloserEventArgs e)
         {
             if (!Variables.Config["Ashe.CastRGapCloser"].Cast<CheckBox>().CurrentValue)
             {
@@ -236,7 +236,7 @@ namespace Marksman_Buddy.Plugins
             _R.Cast(target.ServerPosition);
         }
 
-        private static void Interrupter_OnInterruptableSpell(Obj_AI_Base sender, InterruptableSpellEventArgs e)
+        private void Interrupter_OnInterruptableSpell(Obj_AI_Base sender, InterruptableSpellEventArgs e)
         {
             if (Variables.Config["Ashe.CastRInterrupt"].Cast<CheckBox>().CurrentValue && _R.IsReady() &&
                 sender.IsValidTarget(_R.Range))
@@ -245,7 +245,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        private static void Drawing_OnDraw(EventArgs args)
+        private void Drawing_OnDraw(EventArgs args)
         {
             if (!Variables.Config["Ashe.DrawW"].Cast<CheckBox>().CurrentValue)
             {
@@ -259,7 +259,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        private static int GetQStacks()
+        private int GetQStacks()
         {
             foreach (var buff in ObjectManager.Player.Buffs)
             {
@@ -275,7 +275,7 @@ namespace Marksman_Buddy.Plugins
             return 0;
         }
 
-        private static double GetDamage(Spell.Skillshot slot)
+        private double GetDamage(Spell.Skillshot slot)
         {
             if (slot == _W)
             {
@@ -291,7 +291,7 @@ namespace Marksman_Buddy.Plugins
             return 0;
         }
 
-        public static int CountAlliesInRange(float range, Obj_AI_Base originalunit = null)
+        public int CountAlliesInRange(float range, Obj_AI_Base originalunit = null)
         {
             if (originalunit != null)
             {

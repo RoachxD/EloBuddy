@@ -8,27 +8,64 @@ namespace Marksman_Buddy.Activator
 {
     internal class Core
     {
-        //private int _UseManaPotsPercent => Variables.Activator["MBActivator.UseMPPotPercent"].Cast<Slider>().CurrentValue;
+        
 
         public Core()
         {
             Game.OnTick += _Game_OnTick;
         }
 
-        private static bool _UseHeal => Variables.Activator["MBActivator.UseHeal"].Cast<CheckBox>().CurrentValue;
+        private bool _UseHeal{
+			get
+			{
+				return Variables.Activator["MBActivator.UseHeal"].Cast<CheckBox>().CurrentValue;
+			}
+		}
+			
 
-        private static int _UseHealPercent
-            => Variables.Activator["MBActivator.UseHealPercent"].Cast<Slider>().CurrentValue;
+        private int _UseHealPercent
+		{
+			get
+			{
+				return Variables.Activator["MBActivator.UseHealPercent"].Cast<Slider>().CurrentValue;
+			}
+		}
 
-        private static bool _UseHealPots => Variables.Activator["MBActivator.UseHPPot"].Cast<CheckBox>().CurrentValue;
+        private bool _UseHealPots{
+			get
+			{
+				return Variables.Activator["MBActivator.UseHPPot"].Cast<CheckBox>().CurrentValue;
+			}
+		}
 
-        private int _UseHealPotsPercent => Variables.Activator["MBActivator.UseHPPotPercent"].Cast<Slider>().CurrentValue;
+			
 
-        private static bool _UseManaPots => Variables.Activator["MBActivator.UseMPPot"].Cast<CheckBox>().CurrentValue;
+        private int _UseHealPotsPercent
+		{
+			get
+			{
+				return Variables.Activator["MBActivator.UseHPPotPercent"].Cast<Slider>().CurrentValue;
+			}
+		} 
 
-		private int _UseHealManaPercent => Variables.Activator["MBActivator.UseMPPotPercent"].Cast<Slider>().CurrentValue;
+        private bool _UseManaPots
+		{
+			get
+			{
+				return Variables.Activator["MBActivator.UseMPPot"].Cast<CheckBox>().CurrentValue;
+			}
+		}
+			
 
-        private static void _Game_OnTick(EventArgs args)
+		private int _UseHealManaPercent
+		{
+			get
+			{
+				return Variables.Activator["MBActivator.UseMPPotPercent"].Cast<Slider>().CurrentValue;
+			}
+		}
+
+        private void _Game_OnTick(EventArgs args)
         {
             if (_UseHeal && Player.Instance.HealthPercent <= _UseHealPercent)
             {
