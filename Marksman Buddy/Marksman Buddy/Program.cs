@@ -31,6 +31,7 @@ namespace Marksman_Buddy
         {
             Bootstrap.Init(null);
 
+			Console.WriteLine(Player.Instance.ChampionName);
 
             Variables.InfoMenu = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
             Variables.InfoMenu.AddGroupLabel("Marksman Buddy");
