@@ -30,7 +30,6 @@ namespace Marksman_Buddy.Plugins
 
         private static void _SetupMenu()
         {
-            Variables.Config.AddGroupLabel("Twitch");
             Variables.Config.AddGroupLabel("Combo");
             Variables.Config.Add("Twitch.UseECombo", new CheckBox("Use E in Combo"));
             Variables.Config.Add("Twitch.UseEComboStacks", new Slider("Cast E at x Stacks", 5, 1, 5));

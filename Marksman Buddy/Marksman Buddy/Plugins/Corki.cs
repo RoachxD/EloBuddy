@@ -116,7 +116,6 @@ namespace Marksman_Buddy.Plugins
 
         private void _SetupMenu()
         {
-            Variables.Config.AddGroupLabel("Corki");
             Variables.Config.AddGroupLabel("Combo");
             Variables.Config.Add("useQCombo", new CheckBox("Use Q in Combo"));
             Variables.Config.Add("useRCombo", new CheckBox("Use R in Combo"));

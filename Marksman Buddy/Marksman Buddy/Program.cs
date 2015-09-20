@@ -19,7 +19,6 @@ namespace Marksman_Buddy
 
         private static void Main(string[] args)
         {
-			Console.WriteLine("Marksman Activating");
             Loading.OnLoadingComplete += delegate
             {
                 var onLoadingComplete = new Thread(Loading_OnLoadingComplete);
@@ -29,13 +28,19 @@ namespace Marksman_Buddy
 
         private static void Loading_OnLoadingComplete()
         {
-			Console.WriteLine("Boostraping");
 
 			Bootstrap.Init(null);
 
-			Console.WriteLine("Setting up Menu");
+			
 
-			Variables.Activator = MainMenu.AddMenu("MB Activator", "MarksmanBuddy");
+			Variables.InfoMenu = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
+			Variables.InfoMenu.AddGroupLabel("Marksman Buddy");
+			Variables.InfoMenu.AddLabel("Version: " + "1.0.0.0");
+			Variables.InfoMenu.AddSeparator();
+			Variables.InfoMenu.AddLabel("Creators: " + "Roach, newchild");
+
+
+			Variables.Activator = Variables.InfoMenu.AddSubMenu("MB Activator");
 			Variables.Activator.AddGroupLabel("Summoner Spells");
 			Variables.Activator.Add("MBActivator.UseHeal", new CheckBox("Use Heal"));
 			Variables.Activator.Add("MBActivator.UseHealPercent", new Slider("Use Heal when under X Percent Health", 35));
@@ -44,31 +49,26 @@ namespace Marksman_Buddy
 			Variables.Activator.Add("MBActivator.UseHPPotPercent", new Slider("Use Healing Potions when under X Percent Health", 60));
 			Variables.Activator.Add("MBActivator.UseMPPot", new CheckBox("Use Mana Potions"));
 			Variables.Activator.Add("MBActivator.UseMPPotPercent", new Slider("Use Mana Potions when under X Percent Mana", 40));
+			 
 			//Variables.Activator.AddGroupLabel("Items");
-            Variables.Config = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
-            Variables.Config.AddGroupLabel("Marksman Buddy");
-            Variables.Config.AddLabel("Version: " + "1.0.0.0");
-            Variables.Config.AddSeparator();
-            Variables.Config.AddLabel("Creators: " + "Roach, newchild");
+			Variables.Config = Variables.InfoMenu.AddSubMenu("Marksman Buddy");
 
-			Console.WriteLine("Set up Menu");
+			
 
 			Activator.Core _Activator = new Activator.Core();
-			Console.WriteLine("Activated Activator (Kappa)");
             Chat.Print("Marksman Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
-
+			
             var championName = ObjectManager.Player.ChampionName.ToLower(CultureInfo.InvariantCulture);
-			Console.WriteLine("Switching to Plugins");
             switch (championName)
             {
                 case "ashe":
-                    ChampionPlugin = new Ashe();
+					ChampionPlugin = new Ashe();
                     break;
                 case "caitlyn":
                     ChampionPlugin = new Champion();
                     break;
                 case "corki":
-                    ChampionPlugin = new Corki();
+					ChampionPlugin = new Corki();
                     break;
                 case "draven":
                     ChampionPlugin = new Champion();
@@ -113,7 +113,7 @@ namespace Marksman_Buddy
                     ChampionPlugin = new Champion();
                     break;
                 case "twitch":
-                    ChampionPlugin = new Twitch();
+					ChampionPlugin = new Twitch();
                     break;
                 case "urgot":
                     ChampionPlugin = new Champion();

@@ -9,6 +9,7 @@ namespace Marksman_Buddy.Internal
 {
     class Variables
     {
+		public static Menu InfoMenu;
         public static Menu Config;
 		public static Menu Activator;
         public static bool ComboMode = Orbwalker.ActiveModesFlags == Orbwalker.ActiveModes.Combo;
