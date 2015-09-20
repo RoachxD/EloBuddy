@@ -70,6 +70,7 @@ namespace Marksman_Buddy.Activator
                 }
             }
 
+			
             var hasCutlass = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId) 3144) !=
                               null);
 
@@ -112,12 +113,15 @@ namespace Marksman_Buddy.Activator
                 }
             }
 
-            var hasHealPots = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "healthPotion") !=
+
+			Console.WriteLine("Checking for health Potion");
+            var hasHealPots = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Health_Potion) !=
                                null);
+			Console.WriteLine("hasHealPots: {0}", hasHealPots.ToString());
             if (_UseHealPots && hasHealPots && !Player.HasBuff("RegenerationPotion") &&
                 _UseHealPotsPercent > Player.Instance.HealthPercent)
             {
-                var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "healthPotion");
+				var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Health_Potion);
                 if (inventorySlot != null)
                 {
                     var firstOrDefault =
