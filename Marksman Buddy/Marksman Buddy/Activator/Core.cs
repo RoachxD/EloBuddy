@@ -1,95 +1,63 @@
 using System;
 using System.Linq;
 using EloBuddy;
+using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
 using Marksman_Buddy.Internal;
-using EloBuddy.SDK;
 
 namespace Marksman_Buddy.Activator
 {
     internal class Core
     {
-        
-
         public Core()
         {
             Game.OnTick += _Game_OnTick;
         }
 
         private bool _UseHeal
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseHeal"].Cast<CheckBox>().CurrentValue;
-			}
-		}
+        {
+            get { return Variables.Activator["Activator..UseHeal"].Cast<CheckBox>().CurrentValue; }
+        }
 
-		private bool _UseBotrK
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseBotrK"].Cast<CheckBox>().CurrentValue;
-			}
-		}
+        private bool _UseBotrK
+        {
+            get { return Variables.Activator["Activator..UseBotrK"].Cast<CheckBox>().CurrentValue; }
+        }
 
-		private bool _UseYoumuus
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseYoumuus"].Cast<CheckBox>().CurrentValue;
-			}
-		}
+        private bool _UseYoumuus
+        {
+            get { return Variables.Activator["Activator..UseYoumuus"].Cast<CheckBox>().CurrentValue; }
+        }
 
-		private bool _UseCutlass
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseCutlass"].Cast<CheckBox>().CurrentValue;
-			}
-		}
-			
+        private bool _UseCutlass
+        {
+            get { return Variables.Activator["Activator..UseCutlass"].Cast<CheckBox>().CurrentValue; }
+        }
 
         private int _UseHealPercent
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseHealPercent"].Cast<Slider>().CurrentValue;
-			}
-		}
+        {
+            get { return Variables.Activator["Activator..UseHealPercent"].Cast<Slider>().CurrentValue; }
+        }
 
-        private bool _UseHealPots{
-			get
-			{
-				return Variables.Activator["MBActivator.UseHPPot"].Cast<CheckBox>().CurrentValue;
-			}
-		}
-
-			
+        private bool _UseHealPots
+        {
+            get { return Variables.Activator["Activator..UseHPPot"].Cast<CheckBox>().CurrentValue; }
+        }
 
         private int _UseHealPotsPercent
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseHPPotPercent"].Cast<Slider>().CurrentValue;
-			}
-		} 
+        {
+            get { return Variables.Activator["Activator..UseHPPotPercent"].Cast<Slider>().CurrentValue; }
+        }
 
         private bool _UseManaPots
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseMPPot"].Cast<CheckBox>().CurrentValue;
-			}
-		}
-			
+        {
+            get { return Variables.Activator["Activator..UseMPPot"].Cast<CheckBox>().CurrentValue; }
+        }
 
-		private int _UseHealManaPercent
-		{
-			get
-			{
-				return Variables.Activator["MBActivator.UseMPPotPercent"].Cast<Slider>().CurrentValue;
-			}
-		}
+        private int _UseHealManaPercent
+        {
+            get { return Variables.Activator["Activator..UseMPPotPercent"].Cast<Slider>().CurrentValue; }
+        }
 
         private void _Game_OnTick(EventArgs args)
         {
@@ -102,46 +70,73 @@ namespace Marksman_Buddy.Activator
                 }
             }
 
-			var hasCutlass = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId)3144) !=
-                               null);
+            var hasCutlass = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId) 3144) !=
+                              null);
 
-			if (_UseCutlass && Variables.ComboMode && hasCutlass)
-			{
-				var firstOrDefault = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId)3142).SpellSlot;
-				Player.CastSpell(firstOrDefault, Orbwalker.GetTarget());
-			}
+            if (_UseCutlass && Variables.ComboMode && hasCutlass)
+            {
+                var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId) 3142);
+                if (inventorySlot != null)
+                {
+                    var firstOrDefault =
+                        inventorySlot.SpellSlot;
+                    Player.CastSpell(firstOrDefault, Orbwalker.GetTarget());
+                }
+            }
 
-			var hasYoumuus = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId)3142) !=
-                               null);
+            var hasYoumuus = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId) 3142) !=
+                              null);
 
-			if (_UseYoumuus && Variables.ComboMode && hasYoumuus)
-			{
-				var firstOrDefault = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId)3142).SpellSlot;
-				Player.CastSpell(firstOrDefault);
-			}
+            if (_UseYoumuus && Variables.ComboMode && hasYoumuus)
+            {
+                var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId) 3142);
+                if (inventorySlot != null)
+                {
+                    var firstOrDefault =
+                        inventorySlot.SpellSlot;
+                    Player.CastSpell(firstOrDefault);
+                }
+            }
 
-			var hasBotrK = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId)3153) !=
-							   null);
+            var hasBotrK = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId) 3153) !=
+                            null);
 
-			if (_UseBotrK && Variables.ComboMode && hasBotrK)
-			{
-				var firstOrDefault = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId)3153).SpellSlot;
-				Player.CastSpell(firstOrDefault, Orbwalker.GetTarget());
-			}
+            if (_UseBotrK && Variables.ComboMode && hasBotrK)
+            {
+                var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId) 3153);
+                if (inventorySlot != null)
+                {
+                    var firstOrDefault =
+                        inventorySlot.SpellSlot;
+                    Player.CastSpell(firstOrDefault, Orbwalker.GetTarget());
+                }
+            }
 
             var hasHealPots = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "healthPotion") !=
                                null);
-            if (_UseHealPots && hasHealPots && !Player.HasBuff("RegenerationPotion") && _UseHealPotsPercent > Player.Instance.HealthPercent)
+            if (_UseHealPots && hasHealPots && !Player.HasBuff("RegenerationPotion") &&
+                _UseHealPotsPercent > Player.Instance.HealthPercent)
             {
-                var firstOrDefault = Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "healthPotion").SpellSlot;
-				Player.CastSpell(firstOrDefault);
+                var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "healthPotion");
+                if (inventorySlot != null)
+                {
+                    var firstOrDefault =
+                        inventorySlot.SpellSlot;
+                    Player.CastSpell(firstOrDefault);
+                }
             }
 
             var hasManaPots = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "manaPotion") != null);
-            if (_UseManaPots && hasManaPots && !Player.HasBuff("FlaskOfCrystalWater") && _UseHealManaPercent > Player.Instance.ManaPercent)
+            if (_UseManaPots && hasManaPots && !Player.HasBuff("FlaskOfCrystalWater") &&
+                _UseHealManaPercent > Player.Instance.ManaPercent)
             {
-                var firstOrDefault = Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "manaPotion").SpellSlot;
-                Player.CastSpell(firstOrDefault);
+                var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Name == "manaPotion");
+                if (inventorySlot != null)
+                {
+                    var firstOrDefault =
+                        inventorySlot.SpellSlot;
+                    Player.CastSpell(firstOrDefault);
+                }
             }
         }
     }
