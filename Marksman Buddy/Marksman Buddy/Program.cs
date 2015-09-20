@@ -8,6 +8,7 @@ using EloBuddy.SDK.Menu;
 using Marksman_Buddy.Internal;
 using Marksman_Buddy.Plugins;
 using Champion = Marksman_Buddy.Internal.Champion;
+using EloBuddy.SDK.Menu.Values;
 
 namespace Marksman_Buddy
 {
@@ -26,7 +27,21 @@ namespace Marksman_Buddy
 
         private static void Loading_OnLoadingComplete()
         {
-            Bootstrap.Init(null);
+			Chat.Print("Don't try to sneak peak Kappa");
+			return;
+			
+			Bootstrap.Init(null);
+
+			Variables.Activator = MainMenu.AddMenu("MB Activator", "MarksmanBuddy");
+			Variables.Activator.AddGroupLabel("Summoner Spells");
+			Variables.Activator.Add("MBActivator.UseHeal", new CheckBox("Use Heal"));
+			Variables.Activator.Add("MBActivator.UseHealPercent", new Slider("Use Heal when under X Percent Health"));
+			Variables.Activator.AddGroupLabel("Potions");
+			Variables.Activator.Add("MBActivator.UseHPPot", new CheckBox("Use Healing Potions"));
+			Variables.Activator.Add("MBActivator.UseHPPotPercent", new Slider("Use Healing Potions when under X Percent Health"));
+			Variables.Activator.Add("MBActivator.UseMPPot", new CheckBox("Use Mana Potions"));
+			Variables.Activator.Add("MBActivator.UseMPPotPercent", new Slider("Use Mana Potions when under X Percent Mana"));
+			Variables.Activator.AddGroupLabel("Items");
             Variables.Config = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
             Variables.Config.AddGroupLabel("Marksman Buddy");
             Variables.Config.AddLabel("Version: " + "1.0.0.0");
