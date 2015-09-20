@@ -63,9 +63,10 @@ namespace Marksman_Buddy.Plugins
         {
             foreach (var hero in
                 HeroManager.Enemies
-                    .Where(x => (x.Position.Distance(ObjectManager.Player) < _R1.Range) && !x.IsDead && !x.IsZombie))
+                    .Where(x => x.Position.Distance(ObjectManager.Player) < _R1.Range ))
             {
-                if (_RCanKill(hero) && Variables.Config["useRKS"].Cast<CheckBox>().CurrentValue)
+				Console.WriteLine(hero.ChampionName);
+                if(!hero.IsDead && !hero.IsZombie && _RCanKill(hero) && Variables.Config["useRKS"].Cast<CheckBox>().CurrentValue)
                 {
                     _R1.Cast(hero);
                 }
@@ -90,9 +91,9 @@ namespace Marksman_Buddy.Plugins
 
         private bool _RCanKill(Obj_AI_Base target)
 		{
-
+			
 			var RDamage = DamageLibrary.GetSpellDamage(Player.Instance, target, SpellSlot.R);
-
+			Console.WriteLine(RDamage.ToString());
             return RDamage > target.Health;
         }
 
