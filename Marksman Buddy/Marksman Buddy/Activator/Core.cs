@@ -117,7 +117,8 @@ namespace Marksman_Buddy.Activator
             if (_UseHealPots && hasHealPots && !Player.HasBuff("RegenerationPotion") &&
                 _UseHealPotsPercent > Player.Instance.HealthPercent)
             {
-				var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Health_Potion);
+                var inventorySlot =
+                    Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Health_Potion);
                 if (inventorySlot != null)
                 {
                     var firstOrDefault =
@@ -126,11 +127,12 @@ namespace Marksman_Buddy.Activator
                 }
             }
 
-			var hasManaPots = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Mana_Potion) != null);
+            var hasManaPots = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Mana_Potion) !=
+                               null);
             if (_UseManaPots && hasManaPots && !Player.HasBuff("FlaskOfCrystalWater") &&
                 _UseHealManaPercent > Player.Instance.ManaPercent)
             {
-				var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Mana_Potion);
+                var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Mana_Potion);
                 if (inventorySlot != null)
                 {
                     var firstOrDefault =

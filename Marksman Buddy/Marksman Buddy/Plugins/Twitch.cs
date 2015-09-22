@@ -12,16 +12,16 @@ namespace Marksman_Buddy.Plugins
 {
     internal class Twitch : PluginBase
     {
-        private Spell.Skillshot _W;
-		private readonly int[] _EDamage = { 15, 20, 25, 30, 35 };
-        private Spell.Active _Q, _E;
+        private readonly int[] _EDamage = {15, 20, 25, 30, 35};
         private readonly string[] _Minions = {"SRU_Dragon", "SRU_Baron", "Sru_Crab", "Siege"};
+        private Spell.Active _Q, _E;
+        private Spell.Skillshot _W;
 
         public Twitch()
         {
             _SetupMenu();
             _SetupSpells();
-			Game.OnTick+=Game_OnTick;
+            Game.OnTick += Game_OnTick;
             Drawing.OnDraw += Drawing_OnDraw;
         }
 
@@ -188,14 +188,11 @@ namespace Marksman_Buddy.Plugins
 
         private bool _ECanKill(Obj_AI_Base hero, Spell.Active _E)
         {
-            var EDamage = Convert.ToSingle(hero.GetBuffCount("twitchdeadlyvenom") *     
-                                         (_EDamage[_E.Level] + 
-                                         ObjectManager.Player.TotalAttackDamage*0.25    
-                                          + ObjectManager.Player.TotalMagicalDamage*0.2));
-			return ObjectManager.Player.CalculateDamageOnUnit(hero, DamageType.Physical, EDamage) > hero.Health;  
-
+            var EDamage = Convert.ToSingle(hero.GetBuffCount("twitchdeadlyvenom")*
+                                           (_EDamage[_E.Level] +
+                                            ObjectManager.Player.TotalAttackDamage*0.25
+                                            + ObjectManager.Player.TotalMagicalDamage*0.2));
+            return ObjectManager.Player.CalculateDamageOnUnit(hero, DamageType.Physical, EDamage) > hero.Health;
         }
-
-		
-	}
+    }
 }
