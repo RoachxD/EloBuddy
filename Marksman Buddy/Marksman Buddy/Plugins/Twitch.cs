@@ -191,7 +191,7 @@ namespace Marksman_Buddy.Plugins
             var EDamage = Convert.ToSingle(hero.GetBuffCount("twitchdeadlyvenom") *     
                                          (_EDamage[_E.Level] + 
                                          ObjectManager.Player.TotalAttackDamage*0.25    
-                                          + ObjectManager.Player.TotalMagicalDamage*0.2));
+                                          + ObjectManager.Player.TotalMagicalDamage*0.2)); //not including base damage because sometimes the damage calc is a little off
 			return ObjectManager.Player.CalculateDamageOnUnit(hero, DamageType.Physical, EDamage) > hero.Health;  
 
         }
