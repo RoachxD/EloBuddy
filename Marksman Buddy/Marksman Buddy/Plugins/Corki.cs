@@ -91,7 +91,17 @@ namespace Marksman_Buddy.Plugins
 
         private void _KS()
         {
-            
+            foreach (var hero in
+                HeroManager.Enemies
+                    .Where(x => x.Position.Distance(ObjectManager.Player) < _R1.Range))
+            {
+                Console.WriteLine(hero.ChampionName);
+                if (!hero.IsDead && !hero.IsZombie && _RCanKill(hero) &&
+                    Variables.Config["useRKS"].Cast<CheckBox>().CurrentValue)
+                {
+                    _R1.Cast(hero);
+                }
+            }
         }
 
         public override void _Harass()
