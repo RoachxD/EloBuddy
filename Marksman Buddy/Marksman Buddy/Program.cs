@@ -32,11 +32,8 @@ namespace Marksman_Buddy
         }
 
 
-		private static void Loading_OnLoadingComplete(EventArgs args)
+	private static void Loading_OnLoadingComplete(EventArgs args)
         {
-            Bootstrap.Init(null);
-
-
             Variables.InfoMenu = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
             Variables.InfoMenu.AddGroupLabel("Marksman Buddy");
             Variables.InfoMenu.AddLabel("Version: " + "1.0.0.0");
@@ -63,10 +60,6 @@ namespace Marksman_Buddy
             var _Activator = new Core();
             Chat.Print("Marksman Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
             var championName = ObjectManager.Player.ChampionName.ToLower(CultureInfo.InvariantCulture);
-            if (championName == "")
-            {
-                championName = "Core Error";
-            }
 
             Variables.Config = Variables.InfoMenu.AddSubMenu(Player.Instance.ChampionName, Player.Instance.ChampionName);
             switch (championName)

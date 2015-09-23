@@ -13,37 +13,34 @@ namespace Marksman_Buddy.Plugins
 {
     internal class Corki : PluginBase
     {
-		private Spell.Active _E;
-
-        private Spell.Skillshot _Q; 
-
-        private Spell.Skillshot _R1;
-
         private readonly int[] _RDamage = {100, 180, 260};
         private readonly float[] _RDamageScale = {0.2f, 0.3f, 0.4f};
+        private Spell.Active _E;
+        private Spell.Skillshot _Q;
+        private Spell.Skillshot _R1;
         private Spell.Skillshot _W;
         //private Spell.Skillshot _R2 = new Spell.Skillshot(SpellSlot.R, 1500, EloBuddy.SDK.Enumerations.SkillShotType.Linear, 200, 2000, 40);
 
         public Corki()
         {
             _SetupMenu();
-			_SetupSpells();
+            _SetupSpells();
             Drawing.OnDraw += Drawing_OnDraw;
-            Gapcloser.OnGapCloser += Gapcloser_OnGapCloser;
-			Game.OnTick +=Game_OnTick;
+            Gapcloser.OnGapcloser += Gapcloser_OnGapCloser;
+            Game.OnTick += Game_OnTick;
         }
 
-		public override void _SetupSpells()
-		{
-			_E = new Spell.Active(SpellSlot.E, 600);
-			_Q = new Spell.Skillshot(SpellSlot.Q, 825, SkillShotType.Circular, 300, 1000,
-			250);
-			_R1 = new Spell.Skillshot(SpellSlot.R, 1300, SkillShotType.Linear, 200, 2000,
-			40);
-			_W = new Spell.Skillshot(SpellSlot.W, 800, SkillShotType.Linear);
-		}
+        public override sealed void _SetupSpells()
+        {
+            _E = new Spell.Active(SpellSlot.E, 600);
+            _Q = new Spell.Skillshot(SpellSlot.Q, 825, SkillShotType.Circular, 300, 1000,
+                250);
+            _R1 = new Spell.Skillshot(SpellSlot.R, 1300, SkillShotType.Linear, 200, 2000,
+                40);
+            _W = new Spell.Skillshot(SpellSlot.W, 800, SkillShotType.Linear);
+        }
 
-        private void Gapcloser_OnGapCloser(AIHeroClient sender, Gapcloser.GapCloserEventArgs e)
+        private void Gapcloser_OnGapCloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
         {
             if (!Variables.Config["useWAntigapcloser"].Cast<CheckBox>().CurrentValue)
             {

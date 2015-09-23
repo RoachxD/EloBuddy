@@ -22,8 +22,8 @@ namespace Marksman_Buddy.Plugins
             _SetupSpells();
             Drawing.OnDraw += Drawing_OnDraw;
             Orbwalker.OnPreAttack += Orbwalker_OnPreAttack;
-            Gapcloser.OnGapCloser += Gapcloser_OnGapCloser;
-			Game.OnTick += Game_OnTick;
+            Gapcloser.OnGapcloser += Gapcloser_OnGapCloser;
+            Game.OnTick += Game_OnTick;
             Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
         }
 
@@ -76,7 +76,8 @@ namespace Marksman_Buddy.Plugins
 
         public override void _Combo()
         {
-            if (!Variables.Config["Ashe.CastWCombo"].Cast<CheckBox>().CurrentValue || !_W.IsReady() || ObjectManager.Player.IsAttackingPlayer)
+            if (!Variables.Config["Ashe.CastWCombo"].Cast<CheckBox>().CurrentValue || !_W.IsReady() ||
+                ObjectManager.Player.IsAttackingPlayer)
             {
                 return;
             }
@@ -104,7 +105,8 @@ namespace Marksman_Buddy.Plugins
 
         public override void _Harass()
         {
-            if (!Variables.Config["Ashe.CastWHarass"].Cast<CheckBox>().CurrentValue || !_W.IsReady() || ObjectManager.Player.IsAttackingPlayer)
+            if (!Variables.Config["Ashe.CastWHarass"].Cast<CheckBox>().CurrentValue || !_W.IsReady() ||
+                ObjectManager.Player.IsAttackingPlayer)
             {
                 return;
             }
@@ -186,7 +188,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        private void Gapcloser_OnGapCloser(AIHeroClient sender, Gapcloser.GapCloserEventArgs e)
+        private void Gapcloser_OnGapCloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
         {
             if (!Variables.Config["Ashe.CastRGapCloser"].Cast<CheckBox>().CurrentValue)
             {
@@ -207,7 +209,7 @@ namespace Marksman_Buddy.Plugins
             _R.Cast(target.ServerPosition);
         }
 
-        private void Interrupter_OnInterruptableSpell(Obj_AI_Base sender, InterruptableSpellEventArgs e)
+        private void Interrupter_OnInterruptableSpell(Obj_AI_Base sender, Interrupter.InterruptableSpellEventArgs e)
         {
             if (Variables.Config["Ashe.CastRInterrupt"].Cast<CheckBox>().CurrentValue && _R.IsReady() &&
                 sender.IsValidTarget(_R.Range))
