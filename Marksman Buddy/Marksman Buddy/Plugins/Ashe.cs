@@ -93,7 +93,7 @@ namespace Marksman_Buddy.Plugins
                 return;
             }
 
-            var pred = Prediction.Position.PredictConeSpell(target, _W.Range, 50, 250);
+            var pred = Prediction.Position.PredictConeSpell(target, _W.Range, 50, 250, 1500);
             var col = pred.CollisionObjects.Count(colObj => colObj.IsEnemy && colObj.IsMinion && !colObj.IsDead);
             if (target.IsDead || col > 0 || pred.HitChance < HitChance.High)
             {
@@ -122,7 +122,7 @@ namespace Marksman_Buddy.Plugins
                 return;
             }
 
-            var pred = Prediction.Position.PredictConeSpell(target, _W.Range, 50, 250);
+            var pred = Prediction.Position.PredictConeSpell(target, _W.Range, 50, 250, 1500);
             var col = pred.CollisionObjects.Count(colObj => colObj.IsEnemy && colObj.IsMinion && !colObj.IsDead);
             if (target.IsDead || col > 0 || pred.HitChance < HitChance.High)
             {
