@@ -61,7 +61,7 @@ namespace Marksman_Buddy.Activator
 
         private void _Game_OnTick(EventArgs args)
         {
-            if (_UseHeal && Player.Instance.HealthPercent <= _UseHealPercent)
+            if (_UseHeal && Player.Instance.HealthPercent <= _UseHealPercent && !Player.Instance.IsInShopRange())
             {
                 var healSlot = Player.Spells.FirstOrDefault(spell => spell.Name.ToLower().Contains("summonerheal"));
                 if (healSlot != null)
@@ -70,12 +70,12 @@ namespace Marksman_Buddy.Activator
                 }
             }
 
-            var hasCutlass = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId) 3144) !=
+            var hasCutlass = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Bilgewater_Cutlass) !=
                               null);
 
             if (_UseCutlass && Variables.ComboMode && hasCutlass)
             {
-                var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId) 3142);
+                var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Bilgewater_Cutlass);
                 if (inventorySlot != null)
                 {
                     var firstOrDefault =
@@ -84,12 +84,12 @@ namespace Marksman_Buddy.Activator
                 }
             }
 
-            var hasYoumuus = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId) 3142) !=
+            var hasYoumuus = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id ==  ItemId.Youmuus_Ghostblade) !=
                               null);
 
             if (_UseYoumuus && Variables.ComboMode && hasYoumuus)
             {
-                var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId) 3142);
+                var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Youmuus_Ghostblade);
                 if (inventorySlot != null)
                 {
                     var firstOrDefault =
@@ -98,12 +98,12 @@ namespace Marksman_Buddy.Activator
                 }
             }
 
-            var hasBotrK = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId) 3153) !=
+            var hasBotrK = (Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Blade_of_the_Ruined_King) !=
                             null);
 
             if (_UseBotrK && Variables.ComboMode && hasBotrK)
             {
-                var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == (ItemId) 3153);
+                var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Blade_of_the_Ruined_King);
                 if (inventorySlot != null)
                 {
                     var firstOrDefault =
