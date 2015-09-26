@@ -36,11 +36,11 @@ namespace Marksman_Buddy.Plugins
         {
             Variables.Config.AddGroupLabel("Combo");
             Variables.Config.Add("Twitch.UseECombo", new CheckBox("Use E in Combo"));
-            Variables.Config.Add("Twitch.UseEComboStacks", new Slider("Cast E at X Stacks", 5, 1, 5));
+            Variables.Config.Add("Twitch.UseEComboStacks", new Slider("Cast E at X Stacks", 5, 1, 6));
             Variables.Config.Add("Twitch.UseWCombo", new CheckBox("Use W in Combo"));
             Variables.Config.AddGroupLabel("Harrass");
             Variables.Config.Add("Twitch.UseEHarass", new CheckBox("Use E in Harass"));
-            Variables.Config.Add("Twitch.UseEHarassStacks", new Slider("Cast E at X Stacks", 3, 1, 5));
+            Variables.Config.Add("Twitch.UseEHarassStacks", new Slider("Cast E at X Stacks", 3, 1, 6));
             Variables.Config.Add("Twitch.UseWHarass", new CheckBox("Use W in Harass", false));
             Variables.Config.AddGroupLabel("Misc");
             Variables.Config.Add("Twitch.CastQEnemies", new Slider("Cast Q if X Enemies Around", 4, 3, 5));
@@ -122,7 +122,7 @@ namespace Marksman_Buddy.Plugins
         private void _KillSteal()
         {
             foreach (var hero in
-                ObjectManager.Get<AIHeroClient>()
+                HeroManager.Enemies
                     .Where(x => x.Position.Distance(ObjectManager.Player.Position) < 1200))
             {
                 if (_ECanKill(hero, _E) && Variables.Config["Twitch.KS"].Cast<CheckBox>().CurrentValue)
