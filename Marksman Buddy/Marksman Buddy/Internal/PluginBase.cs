@@ -4,24 +4,17 @@ namespace Marksman_Buddy.Internal
 {
     internal abstract class PluginBase
     {
-        public virtual void _SetupSpells()
-        {
-        }
+		protected abstract void _SetupSpells();
 
-        public virtual void _SetupMenu()
-        {
-        }
+		protected abstract void _SetupMenu();
+        
 
-        public virtual void Game_OnTick(EventArgs args)
-        {
-        }
+		protected abstract void Game_OnTick(EventArgs args);
+        
 
-        public virtual void _Combo()
-        {
-        }
+		protected abstract void _Combo();
+        
 
-        public virtual void _Harass()
-        {
-        }
+		protected abstract void _Harass();
     }
 }

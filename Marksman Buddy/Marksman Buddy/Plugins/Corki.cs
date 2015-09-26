@@ -30,7 +30,7 @@ namespace Marksman_Buddy.Plugins
             Game.OnTick += Game_OnTick;
         }
 
-        public override sealed void _SetupSpells()
+		protected override sealed void _SetupSpells()
         {
             _E = new Spell.Active(SpellSlot.E, 600);
             _Q = new Spell.Skillshot(SpellSlot.Q, 825, SkillShotType.Circular, 300, 1000,
@@ -54,7 +54,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        public override void Game_OnTick(EventArgs args)
+		protected override void Game_OnTick(EventArgs args)
         {
             if (Variables.ComboMode)
             {
@@ -101,7 +101,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        public override void _Harass()
+		protected override void _Harass()
         {
             var QTarget = TargetSelector.GetTarget(_Q.Range, DamageType.Magical);
             var RTarget = TargetSelector.GetTarget(_R1.Range, DamageType.Magical);
@@ -126,7 +126,7 @@ namespace Marksman_Buddy.Plugins
             return ObjectManager.Player.CalculateDamageOnUnit(target, DamageType.Magical, RDamage) > target.Health;
         }
 
-        public override void _Combo()
+		protected override void _Combo()
         {
             var QTarget = TargetSelector.GetTarget(_Q.Range, DamageType.Magical);
             var RTarget = TargetSelector.GetTarget(_R1.Range, DamageType.Magical);
@@ -152,7 +152,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        public override sealed void _SetupMenu()
+		protected override sealed void _SetupMenu()
         {
             Variables.Config.AddGroupLabel("Combo");
             Variables.Config.Add("useQCombo", new CheckBox("Use Q in Combo"));

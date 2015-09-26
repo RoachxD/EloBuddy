@@ -27,7 +27,7 @@ namespace Marksman_Buddy.Plugins
             Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
         }
 
-        public override sealed void _SetupSpells()
+        protected override sealed void _SetupSpells()
         {
             _Q = new Spell.Active(SpellSlot.Q);
             _W = new Spell.Skillshot(SpellSlot.W, 1240, SkillShotType.Linear, 250, 1200, 50);
@@ -35,7 +35,7 @@ namespace Marksman_Buddy.Plugins
             _R = new Spell.Skillshot(SpellSlot.R, 3000, SkillShotType.Linear, 250, 1600, 130);
         }
 
-        public override sealed void _SetupMenu()
+		protected override sealed void _SetupMenu()
         {
             Variables.Config.AddGroupLabel("Combo");
             Variables.Config.Add("Ashe.CastQCombo", new CheckBox("Cast Q in Combo"));
@@ -57,7 +57,7 @@ namespace Marksman_Buddy.Plugins
             Variables.Config.Add("Ashe.DrawW", new CheckBox("Draw W"));
         }
 
-        public override void Game_OnTick(EventArgs args)
+        protected override void Game_OnTick(EventArgs args)
         {
             GetQStacks();
 
@@ -74,7 +74,7 @@ namespace Marksman_Buddy.Plugins
             _RLogic();
         }
 
-        public override void _Combo()
+		protected override void _Combo()
         {
             if (!Variables.Config["Ashe.CastWCombo"].Cast<CheckBox>().CurrentValue || !_W.IsReady() ||
                 ObjectManager.Player.IsAttackingPlayer)
@@ -103,7 +103,7 @@ namespace Marksman_Buddy.Plugins
             _W.Cast(pred.CastPosition);
         }
 
-        public override void _Harass()
+		protected override void _Harass()
         {
             if (!Variables.Config["Ashe.CastWHarass"].Cast<CheckBox>().CurrentValue || !_W.IsReady() ||
                 ObjectManager.Player.IsAttackingPlayer)

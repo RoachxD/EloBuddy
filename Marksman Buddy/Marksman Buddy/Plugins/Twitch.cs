@@ -25,14 +25,14 @@ namespace Marksman_Buddy.Plugins
             Drawing.OnDraw += Drawing_OnDraw;
         }
 
-        public override sealed void _SetupSpells()
+        protected override sealed void _SetupSpells()
         {
             _Q = new Spell.Active(SpellSlot.Q);
             _W = new Spell.Skillshot(SpellSlot.W, 900, SkillShotType.Circular, 250, 1400, 275);
             _E = new Spell.Active(SpellSlot.E, 1200);
         }
 
-        public override sealed void _SetupMenu()
+		protected override sealed void _SetupMenu()
         {
             Variables.Config.AddGroupLabel("Combo");
             Variables.Config.Add("Twitch.UseECombo", new CheckBox("Use E in Combo"));
@@ -52,7 +52,7 @@ namespace Marksman_Buddy.Plugins
             Variables.Config.Add("Twitch.DrawE", new CheckBox("Draw E"));
         }
 
-        public override void Game_OnTick(EventArgs args)
+		protected override void Game_OnTick(EventArgs args)
         {
             if (Variables.ComboMode)
             {
@@ -93,7 +93,7 @@ namespace Marksman_Buddy.Plugins
             return array.Any(element => element.ToLower().Contains(simily.ToLower()));
         }
 
-        public override void _Harass()
+		protected override void _Harass()
         {
             var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
             if (Variables.Config["Twitch.UseWHarass"].Cast<CheckBox>().CurrentValue
@@ -132,7 +132,7 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-        public override void _Combo()
+		protected override void _Combo()
         {
             var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
             if (Variables.Config["Twitch.UseWCombo"].Cast<CheckBox>().CurrentValue

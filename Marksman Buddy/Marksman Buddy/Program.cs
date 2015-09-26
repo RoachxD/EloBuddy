@@ -95,7 +95,7 @@ namespace Marksman_Buddy
                     ChampionPlugin = new Champion();
                     break;
                 case "kogmaw":
-                    ChampionPlugin = new Champion();
+                    ChampionPlugin = new KogMaw();
                     break;
                 case "lucian":
                     ChampionPlugin = new Champion();
