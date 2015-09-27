@@ -5,6 +5,7 @@ Utility Addons:
     * Enable Anti AFK (F1).
     * Enable Extended Zoom (F2).
     * Enable Movement Hack (F3).
+    * Enable InGame Chat (F7).
     * Draw Watermark (F4).
 
  * Item Swapper Buddy
