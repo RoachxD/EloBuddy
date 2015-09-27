@@ -37,6 +37,8 @@ namespace In_Game_Settings_Buddy
                 new KeyBind("Enable Extended Zoom", Hacks.ZoomHack, KeyBind.BindTypes.PressToggle, 113));
             _config.Add("MovementHack",
                 new KeyBind("Enable Movement Hack", Hacks.MovementHack, KeyBind.BindTypes.PressToggle, 114));
+            _config.Add("InGameChat",
+                new KeyBind("Enable InGame Chat", Hacks.IngameChat, KeyBind.BindTypes.PressToggle, 118));
             _config.Add("Watermark",
                 new KeyBind("Draw Watermark", Hacks.RenderWatermark, KeyBind.BindTypes.PressToggle, 115));
 
@@ -50,6 +52,7 @@ namespace In_Game_Settings_Buddy
             Hacks.AntiAFK = _config["AntiAFK"].Cast<KeyBind>().CurrentValue;
             Hacks.ZoomHack = _config["ExtendedZoom"].Cast<KeyBind>().CurrentValue;
             Hacks.MovementHack = _config["MovementHack"].Cast<KeyBind>().CurrentValue;
+            Hacks.IngameChat = _config["InGameChat"].Cast<KeyBind>().CurrentValue;
             Hacks.RenderWatermark = _config["Watermark"].Cast<KeyBind>().CurrentValue;
         }
     }
