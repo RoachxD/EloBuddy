@@ -3,7 +3,8 @@ Utility Addons:
  * In-Game Settings Buddy
   * It Enables/Disables "Game Settings" from the Loader
     * Enable Anti AFK (F1).
-    * Enable Extended Zoom (F2).
+    * Enable Extended Zoom (F2
+    * Slider to set the Zoom Value.
     * Enable Movement Hack (F3).
     * Enable InGame Chat (F7).
     * Draw Watermark (F4).
