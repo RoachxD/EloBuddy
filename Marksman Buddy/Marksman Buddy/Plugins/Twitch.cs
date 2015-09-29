@@ -97,7 +97,7 @@ namespace Marksman_Buddy.Plugins
         {
             var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
             if (Variables.Config["Twitch.UseWHarass"].Cast<CheckBox>().CurrentValue
-                && !_W.IsOnCooldown)
+				&& !_W.IsOnCooldown && WTarget.IsValidTarget())
             {
                 _W.Cast(WTarget);
             }
@@ -136,7 +136,7 @@ namespace Marksman_Buddy.Plugins
         {
             var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
             if (Variables.Config["Twitch.UseWCombo"].Cast<CheckBox>().CurrentValue
-                && !_W.IsOnCooldown)
+				&& !_W.IsOnCooldown && WTarget.IsValidTarget())
             {
                 _W.Cast(WTarget);
             }

@@ -39,13 +39,13 @@ namespace Marksman_Buddy.Plugins
 		protected override void _Harass()
 		{
 			var _ETarget = TargetSelector.GetTarget(_E.Range, DamageType.Magical);
-			if (Variables.Config["UseEInHarass"].Cast<CheckBox>().CurrentValue && _ETarget != null && _ETarget.IsZombie)
+			if (Variables.Config["UseEInHarass"].Cast<CheckBox>().CurrentValue && _ETarget.IsValidTarget() && _ETarget.IsZombie)
 			{
 				_E.Cast(_ETarget);
 			}
 			var _RTarget = TargetSelector.GetTarget(_R.Range, DamageType.Magical);
 			if (Variables.Config["UseRInHarass"].Cast<CheckBox>().CurrentValue &&
-				Variables.Config["UseRInHarassStacks"].Cast<Slider>().CurrentValue < _R.Handle.Ammo && _ETarget != null &&
+				Variables.Config["UseRInHarassStacks"].Cast<Slider>().CurrentValue < _R.Handle.Ammo && _ETarget.IsValidTarget() &&
 				_ETarget.IsZombie)
 			{
 				_R.Cast(_ETarget);
@@ -74,13 +74,13 @@ namespace Marksman_Buddy.Plugins
                 _W.Cast();
             }
             var _ETarget = TargetSelector.GetTarget(_E.Range, DamageType.Magical);
-            if (Variables.Config["UseEInCombo"].Cast<CheckBox>().CurrentValue && _ETarget != null && _ETarget.IsZombie)
+			if (Variables.Config["UseEInCombo"].Cast<CheckBox>().CurrentValue && _ETarget.IsValidTarget() && _ETarget.IsZombie)
             {
                 _E.Cast(_ETarget);
             }
             var _RTarget = TargetSelector.GetTarget(_R.Range, DamageType.Magical);
             if (Variables.Config["UseRInCombo"].Cast<CheckBox>().CurrentValue &&
-                Variables.Config["UseRInComboStacks"].Cast<Slider>().CurrentValue < _R.Handle.Ammo && _ETarget != null &&
+				Variables.Config["UseRInComboStacks"].Cast<Slider>().CurrentValue < _R.Handle.Ammo && _ETarget.IsValidTarget() &&
                 _ETarget.IsZombie)
             {
                 _R.Cast(_ETarget);
