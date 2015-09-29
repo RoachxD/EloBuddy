@@ -135,7 +135,7 @@ namespace Marksman_Buddy.Plugins
                 _Q.Cast(QTarget);
             }
             var inERange = false;
-            ;
+            
             foreach (var target in HeroManager.Enemies)
             {
                 if (target.Distance(Player.Instance) <= 550)
