@@ -201,7 +201,7 @@ namespace Marksman_Buddy.Plugins
             }
 
             var target = sender ?? e.Sender;
-            if (!target.IsValidTarget(800) || target.Team == Player.Instance.Team)
+            if (!target.IsValidTarget(800) || !target.IsEnemy)
             {
                 return;
             }
@@ -212,7 +212,7 @@ namespace Marksman_Buddy.Plugins
         private void Interrupter_OnInterruptableSpell(Obj_AI_Base sender, Interrupter.InterruptableSpellEventArgs e)
         {
             if (Variables.Config["Ashe.CastRInterrupt"].Cast<CheckBox>().CurrentValue && _R.IsReady() &&
-                sender.IsValidTarget(_R.Range))
+                sender.IsValidTarget(_R.Range) && sender.IsEnemy)
             {
                 _R.Cast(sender);
             }
