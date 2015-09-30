@@ -201,7 +201,7 @@ namespace Marksman_Buddy.Plugins
             }
 
             var target = sender ?? e.Sender;
-            if (!target.IsValidTarget(800))
+            if (!target.IsValidTarget(800) || target.Team == Player.Instance.Team)
             {
                 return;
             }
