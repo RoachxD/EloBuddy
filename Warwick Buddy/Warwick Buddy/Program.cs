@@ -105,6 +105,8 @@ namespace Warwick_Buddy
             Menu.DrawMenu.Add("Draw.Q", new CheckBox("Q Range"));
             Menu.DrawMenu.Add("Draw.R", new CheckBox("R Range"));
 
+            Chat.Print("Warwick Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
+
             Game.OnTick += Game_OnTick;
             Drawing.OnDraw += OnDraw;
             Orbwalker.OnAttack += Orbwalker_OnAttack;
@@ -118,25 +120,23 @@ namespace Warwick_Buddy
                 return;
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            switch (Orbwalker.ActiveModesFlags)
             {
-                Combo();
-            }
-
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
-            {
-                Harass();
-            }
-
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
-            {
-                Clear();
-            }
-
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
-            {
-                LastHit();
+                case Orbwalker.ActiveModes.Combo:
+                    Combo();
+                    break;
+                case Orbwalker.ActiveModes.Harass:
+                    Harass();
+                    break;
+                case Orbwalker.ActiveModes.JungleClear:
+                    Clear();
+                    break;
+                case Orbwalker.ActiveModes.LaneClear:
+                    Clear();
+                    break;
+                case Orbwalker.ActiveModes.LastHit:
+                    LastHit();
+                    break;
             }
 
             Functions.SmiteMob();
@@ -189,7 +189,7 @@ namespace Warwick_Buddy
             Interrupter.InterruptableSpellEventArgs e)
         {
             if (Menu.MiscMenu["Misc.InterruptR"].Cast<CheckBox>().CurrentValue && Spells.R.IsReady() &&
-                sender.IsValidTarget(Spells.R.Range))
+                sender.IsValidTarget(Spells.R.Range) && sender.IsEnemy)
             {
                 Spells.R.Cast(sender);
             }
@@ -274,31 +274,38 @@ namespace Warwick_Buddy
 
         private static void Clear()
         {
+            if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) &&
+                !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            {
+                return;
+            }
+
             var clearQ = Menu.ClearMenu["Clear.Q"].Cast<CheckBox>().CurrentValue;
             if (!clearQ || !Spells.Q.IsReady())
             {
                 return;
             }
 
-            Chat.Print("Test 1");
-
-            var minionObj = EntityManager.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.Position.To2D(),
-                Spells.Q.Range);
-            var obj =
-                minionObj.FirstOrDefault(minion => minion.Health < Player.Instance.GetSpellDamage(minion, SpellSlot.Q)) ??
-                minionObj.MinOrDefault(minion => minion.Health);
+            var minionObj =
+                ObjectManager.Get<Obj_AI_Minion>()
+                    .Where(minion => !minion.IsAlly && minion.Distance(Player.Instance) < Spells.Q.Range);
+            var obj = minionObj.FirstOrDefault(minion => minion.Health < SpellSlot.Q.GetDamage(minion)) ??
+                      minionObj.MinOrDefault(minion => minion.Health);
             if (obj == null)
             {
                 return;
             }
-
-            Chat.Print("Test 2");
 
             Spells.Q.Cast(obj);
         }
 
         private static void LastHit()
         {
+            if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
+            {
+                return;
+            }
+
             var lastHitQ = Menu.LastHitMenu["LastHit.Q"].Cast<CheckBox>().CurrentValue;
             if (!lastHitQ || !Spells.Q.IsReady())
             {
@@ -307,8 +314,7 @@ namespace Warwick_Buddy
 
             var obj =
                 EntityManager.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.Position.To2D(),
-                    Spells.Q.Range)
-                    .FirstOrDefault(minion => minion.Health < Player.Instance.GetSpellDamage(minion, SpellSlot.Q));
+                    Spells.Q.Range).FirstOrDefault(minion => minion.Health < SpellSlot.Q.GetDamage(minion));
             if (obj == null)
             {
                 return;
@@ -363,7 +369,7 @@ namespace Warwick_Buddy
             if (killStealQ && Spells.Q.IsReady())
             {
                 var target = TargetSelector.GetTarget(Spells.Q.Range, DamageType.Magical, Player.Instance.Position);
-                if (target != null && target.Health < Player.Instance.GetSpellDamage(target, SpellSlot.Q))
+                if (target != null && target.Health < SpellSlot.Q.GetDamage(target))
                 {
                     Spells.Q.Cast(target);
                 }
@@ -373,7 +379,7 @@ namespace Warwick_Buddy
             if (killStealR && Spells.R.IsReady())
             {
                 var target = TargetSelector.GetTarget(Spells.R.Range, DamageType.Magical, Player.Instance.Position);
-                if (target != null && target.Health < Player.Instance.GetSpellDamage(target, SpellSlot.R))
+                if (target != null && target.Health < SpellSlot.R.GetDamage(target))
                 {
                     Spells.R.Cast(target);
                 }
