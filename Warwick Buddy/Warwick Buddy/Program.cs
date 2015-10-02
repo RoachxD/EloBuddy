@@ -27,90 +27,97 @@ namespace Warwick_Buddy
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine("Main:" + Environment.NewLine + e);
             }
         }
 
         private static void Loading_OnLoadingComplete()
         {
-            if (!Player.Instance.ChampionName.Equals("Warwick"))
+            try
             {
-                return;
+                if (!Player.Instance.ChampionName.Equals("Warwick"))
+                {
+                    return;
+                }
+
+                Spells.Q = new Spell.Targeted(SpellSlot.Q, 400);
+                Spells.W = new Spell.Active(SpellSlot.W, 1250);
+                Spells.R = new Spell.Targeted(SpellSlot.R, 700);
+
+                Functions.SetSummonerSlots();
+
+                Menu.InfoMenu = MainMenu.AddMenu("Warwick Buddy", "WarwickBuddy");
+                Menu.InfoMenu.AddGroupLabel("Warwick Buddy");
+                Menu.InfoMenu.AddLabel("Version: " + "1.0.0.0");
+                Menu.InfoMenu.AddSeparator();
+                Menu.InfoMenu.AddLabel("Creators: " + "Roach");
+
+                Menu.ComboMenu = Menu.InfoMenu.AddSubMenu("Combo", "Combo");
+                Menu.ComboMenu.AddGroupLabel("Combo Options");
+                Menu.ComboMenu.Add("Combo.Q", new CheckBox("Use Q"));
+                Menu.ComboMenu.Add("Combo.W", new CheckBox("Use W"));
+                Menu.ComboMenu.Add("Combo.R", new CheckBox("Use R"));
+                Menu.ComboMenu.Add("Combo.Smite", new CheckBox("Use Smite"));
+                Menu.ComboMenu.AddGroupLabel("R Targets");
+                foreach (var hero in HeroManager.Enemies)
+                {
+                    Menu.ComboMenu.Add("R." + hero.ChampionName, new CheckBox(hero.ChampionName));
+                }
+
+                Menu.HarassMenu = Menu.InfoMenu.AddSubMenu("Harass", "Harass");
+                Menu.HarassMenu.AddGroupLabel("Auto Harass");
+                Menu.HarassMenu.Add("Harass.AutoQ", new KeyBind("Auto Q", true, KeyBind.BindTypes.PressToggle, 'T'));
+                Menu.HarassMenu.Add("Harass.AutoQMana", new Slider("If Mana Percent >=", 50));
+                Menu.HarassMenu.AddGroupLabel("Harass");
+                Menu.HarassMenu.Add("Harass.Q", new CheckBox("Use Q"));
+                Menu.HarassMenu.Add("Harass.W", new CheckBox("Use W"));
+
+                Menu.ClearMenu = Menu.InfoMenu.AddSubMenu("Clear", "Clear");
+                Menu.ClearMenu.AddGroupLabel("Clear Options");
+                Menu.ClearMenu.Add("Clear.Q", new CheckBox("Use Q"));
+                Menu.ClearMenu.Add("Clear.W", new CheckBox("Use W"));
+                Menu.ClearMenu.AddGroupLabel("Smite Mobs");
+                Menu.ClearMenu.Add("Smite.Enable", new CheckBox("Use Smite"));
+                Menu.ClearMenu.AddSeparator();
+                Menu.ClearMenu.Add("Smite.Baron", new CheckBox("Baron Nashor"));
+                Menu.ClearMenu.Add("Smite.Dragon", new CheckBox("Dragon"));
+                Menu.ClearMenu.Add("Smite.Red", new CheckBox("Red Brambleback"));
+                Menu.ClearMenu.Add("Smite.Blue", new CheckBox("Blue Sentinel"));
+                Menu.ClearMenu.Add("Smite.Krug", new CheckBox("Ancient Krug"));
+                Menu.ClearMenu.Add("Smite.Gromp", new CheckBox("Gromp"));
+                Menu.ClearMenu.Add("Smite.Raptor", new CheckBox("Crimson Raptor"));
+                Menu.ClearMenu.Add("Smite.Wolf", new CheckBox("Greater Murk Wolf"));
+
+                Menu.LastHitMenu = Menu.InfoMenu.AddSubMenu("Last Hit", "LastHit");
+                Menu.LastHitMenu.AddGroupLabel("Last Hit Options");
+                Menu.LastHitMenu.Add("LastHit.Q", new CheckBox("Use Q"));
+
+                Menu.MiscMenu = Menu.InfoMenu.AddSubMenu("Misc", "Misc");
+                Menu.MiscMenu.AddGroupLabel("Misc Options");
+                Menu.MiscMenu.Add("Misc.InterruptR", new CheckBox("Auto R to Interrupt Spells"));
+                Menu.MiscMenu.Add("Misc.TowerR", new CheckBox("Auto R if Enemy under Tower"));
+                Menu.MiscMenu.AddGroupLabel("Kill Steal");
+                Menu.MiscMenu.Add("KillSteal.Q", new CheckBox("Use Q"));
+                Menu.MiscMenu.Add("KillSteal.R", new CheckBox("Use R"));
+                Menu.MiscMenu.Add("KillSteal.Ignite", new CheckBox("Use Ignite"));
+                Menu.MiscMenu.Add("KillSteal.Smite", new CheckBox("Use Smite"));
+
+                Menu.DrawMenu = Menu.InfoMenu.AddSubMenu("Draw", "Draw");
+                Menu.DrawMenu.AddGroupLabel("Draw Options");
+                Menu.DrawMenu.Add("Draw.Q", new CheckBox("Q Range"));
+                Menu.DrawMenu.Add("Draw.R", new CheckBox("R Range"));
+
+                Chat.Print("Warwick Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
+
+                Game.OnTick += Game_OnTick;
+                Drawing.OnDraw += Drawing_OnDraw;
+                Orbwalker.OnAttack += Orbwalker_OnAttack;
+                Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
             }
-
-            Spells.Q = new Spell.Targeted(SpellSlot.Q, 400);
-            Spells.W = new Spell.Active(SpellSlot.W, 1250);
-            Spells.R = new Spell.Targeted(SpellSlot.R, 700);
-
-            Functions.SetSummonerSlots();
-
-            Menu.InfoMenu = MainMenu.AddMenu("Warwick Buddy", "WarwickBuddy");
-            Menu.InfoMenu.AddGroupLabel("Warwick Buddy");
-            Menu.InfoMenu.AddLabel("Version: " + "1.0.0.0");
-            Menu.InfoMenu.AddSeparator();
-            Menu.InfoMenu.AddLabel("Creators: " + "Roach");
-
-            Menu.ComboMenu = Menu.InfoMenu.AddSubMenu("Combo", "Combo");
-            Menu.ComboMenu.AddGroupLabel("Combo Options");
-            Menu.ComboMenu.Add("Combo.Q", new CheckBox("Use Q"));
-            Menu.ComboMenu.Add("Combo.W", new CheckBox("Use W"));
-            Menu.ComboMenu.Add("Combo.R", new CheckBox("Use R"));
-            Menu.ComboMenu.Add("Combo.Smite", new CheckBox("Use Smite"));
-            Menu.ComboMenu.AddGroupLabel("R Targets");
-            foreach (var hero in HeroManager.Enemies)
+            catch (Exception e)
             {
-                Menu.ComboMenu.Add("R." + hero.ChampionName, new CheckBox(hero.ChampionName));
+                Console.WriteLine("Loading_OnLoadingComplete:" + Environment.NewLine + e);
             }
-
-            Menu.HarassMenu = Menu.InfoMenu.AddSubMenu("Harass", "Harass");
-            Menu.HarassMenu.AddGroupLabel("Auto Harass");
-            Menu.HarassMenu.Add("Harass.AutoQ", new KeyBind("Auto Q", true, KeyBind.BindTypes.PressToggle, 'T'));
-            Menu.HarassMenu.Add("Harass.AutoQMana", new Slider("If Mana Percent >=", 50));
-            Menu.HarassMenu.AddGroupLabel("Harass");
-            Menu.HarassMenu.Add("Harass.Q", new CheckBox("Use Q"));
-            Menu.HarassMenu.Add("Harass.W", new CheckBox("Use W"));
-
-            Menu.ClearMenu = Menu.InfoMenu.AddSubMenu("Clear", "Clear");
-            Menu.ClearMenu.AddGroupLabel("Clear Options");
-            Menu.ClearMenu.Add("Clear.Q", new CheckBox("Use Q"));
-            Menu.ClearMenu.Add("Clear.W", new CheckBox("Use W"));
-            Menu.ClearMenu.AddGroupLabel("Smite Mobs");
-            Menu.ClearMenu.Add("Smite.Enable", new CheckBox("Use Smite"));
-            Menu.ClearMenu.AddSeparator();
-            Menu.ClearMenu.Add("Smite.Baron", new CheckBox("Baron Nashor"));
-            Menu.ClearMenu.Add("Smite.Dragon", new CheckBox("Dragon"));
-            Menu.ClearMenu.Add("Smite.Red", new CheckBox("Red Brambleback"));
-            Menu.ClearMenu.Add("Smite.Blue", new CheckBox("Blue Sentinel"));
-            Menu.ClearMenu.Add("Smite.Krug", new CheckBox("Ancient Krug"));
-            Menu.ClearMenu.Add("Smite.Gromp", new CheckBox("Gromp"));
-            Menu.ClearMenu.Add("Smite.Raptor", new CheckBox("Crimson Raptor"));
-            Menu.ClearMenu.Add("Smite.Wolf", new CheckBox("Greater Murk Wolf"));
-
-            Menu.LastHitMenu = Menu.InfoMenu.AddSubMenu("Last Hit", "LastHit");
-            Menu.LastHitMenu.AddGroupLabel("Last Hit Options");
-            Menu.LastHitMenu.Add("LastHit.Q", new CheckBox("Use Q"));
-
-            Menu.MiscMenu = Menu.InfoMenu.AddSubMenu("Misc", "Misc");
-            Menu.MiscMenu.AddGroupLabel("Misc Options");
-            Menu.MiscMenu.Add("Misc.InterruptR", new CheckBox("Auto R to Interrupt Spells"));
-            Menu.MiscMenu.Add("Misc.TowerR", new CheckBox("Auto R if Enemy under Tower"));
-            Menu.MiscMenu.AddGroupLabel("Kill Steal");
-            Menu.MiscMenu.Add("KillSteal.Q", new CheckBox("Use Q"));
-            Menu.MiscMenu.Add("KillSteal.R", new CheckBox("Use R"));
-            Menu.MiscMenu.Add("KillSteal.Ignite", new CheckBox("Use Ignite"));
-            Menu.MiscMenu.Add("KillSteal.Smite", new CheckBox("Use Smite"));
-
-            Menu.DrawMenu = Menu.InfoMenu.AddSubMenu("Draw", "Draw");
-            Menu.DrawMenu.AddGroupLabel("Draw Options");
-            Menu.DrawMenu.Add("Draw.Q", new CheckBox("Q Range"));
-            Menu.DrawMenu.Add("Draw.R", new CheckBox("R Range"));
-
-            Chat.Print("Warwick Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
-
-            Game.OnTick += Game_OnTick;
-            Drawing.OnDraw += OnDraw;
-            Orbwalker.OnAttack += Orbwalker_OnAttack;
-            Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
         }
 
         private static void Game_OnTick(EventArgs args)
@@ -145,23 +152,30 @@ namespace Warwick_Buddy
             AutoRUnderTower();
         }
 
-        private static void OnDraw(EventArgs args)
+        private static void Drawing_OnDraw(EventArgs args)
         {
-            if (Player.Instance.IsDead)
+            try
             {
-                return;
-            }
+                if (Player.Instance.IsDead)
+                {
+                    return;
+                }
 
-            var drawQ = Menu.DrawMenu["Draw.Q"].Cast<CheckBox>().CurrentValue;
-            if (drawQ && Spells.Q.IsReady())
-            {
-                new Circle {Color = Color.SkyBlue, Radius = Spells.Q.Range}.Draw(Player.Instance.Position);
-            }
+                var drawQ = Menu.DrawMenu["Draw.Q"].Cast<CheckBox>().CurrentValue;
+                if (drawQ && Spells.Q.IsReady())
+                {
+                    new Circle {Color = Color.SkyBlue, Radius = Spells.Q.Range}.Draw(Player.Instance.Position);
+                }
 
-            var drawR = Menu.DrawMenu["Draw.R"].Cast<CheckBox>().CurrentValue;
-            if (drawR && Spells.R.IsReady())
+                var drawR = Menu.DrawMenu["Draw.R"].Cast<CheckBox>().CurrentValue;
+                if (drawR && Spells.R.IsReady())
+                {
+                    new Circle {Color = Color.YellowGreen, Radius = Spells.R.Range}.Draw(Player.Instance.Position);
+                }
+            }
+            catch (Exception e)
             {
-                new Circle {Color = Color.Red, Radius = Spells.R.Range}.Draw(Player.Instance.Position);
+                Console.WriteLine("Drawing_OnDraw:" + Environment.NewLine + e);
             }
         }
 
@@ -266,7 +280,7 @@ namespace Warwick_Buddy
             var harassW = Menu.ComboMenu["Harass.W"].Cast<CheckBox>().CurrentValue;
             if (harassW && Spells.W.IsReady() &&
                 HeroManager.Allies.Any(
-                    ally => !ally.IsMe && ally.IsValidTarget(Spells.W.Range) && ally.IsAttackingPlayer))
+                    ally => ally != null && !ally.IsMe && ally.IsValidTarget(Spells.W.Range) && ally.IsAttackingPlayer))
             {
                 Spells.W.Cast();
             }
@@ -343,7 +357,7 @@ namespace Warwick_Buddy
         {
             var killStealIgnite = Menu.MiscMenu["KillSteal.Ignite"].Cast<CheckBox>().CurrentValue;
             var igniteSpell = Player.Instance.Spellbook.GetSpell(Spells.Ignite);
-            if (killStealIgnite && igniteSpell.IsReady)
+            if (killStealIgnite && igniteSpell != null && igniteSpell.IsReady)
             {
                 var target = TargetSelector.GetTarget(600, DamageType.True);
                 if (target != null &&
@@ -355,7 +369,7 @@ namespace Warwick_Buddy
 
             var killStealSmite = Menu.MiscMenu["KillSteal.Smite"].Cast<CheckBox>().CurrentValue;
             var smiteSpell = Player.Instance.Spellbook.GetSpell(Spells.Smite);
-            if (killStealSmite && smiteSpell.IsReady)
+            if (killStealSmite && smiteSpell != null && smiteSpell.IsReady)
             {
                 var target = TargetSelector.GetTarget(760, DamageType.True);
                 if (target != null &&
