@@ -8,21 +8,21 @@ namespace Warwick_Buddy.Internal
     {
         public static float GetDamage(this SpellSlot spell, Obj_AI_Base target)
         {
-            var damage = 0d;
+            var damage = 0f;
             switch (spell)
             {
                 case SpellSlot.Q:
                     damage =
-                        Math.Max(new double[] {75, 125, 175, 225, 275}[Spells.Q.Level - 1],
-                            new double[] {8, 10, 12, 14, 16}[Spells.Q.Level - 1]/100*target.MaxHealth) +
+                        Math.Max(new float[] {75, 125, 175, 225, 275}[Spells.Q.Level - 1],
+                            new float[] {8, 10, 12, 14, 16}[Spells.Q.Level - 1]/100*target.MaxHealth) +
                         1*Player.Instance.FlatMagicDamageMod;
                     break;
                 case SpellSlot.R:
-                    damage = new double[] {150, 250, 350}[Spells.R.Level - 1] + 2*Player.Instance.FlatPhysicalDamageMod;
+                    damage = new float[] {150, 250, 350}[Spells.R.Level - 1] + 2*Player.Instance.FlatPhysicalDamageMod;
                     break;
             }
 
-            return Player.Instance.CalculateDamageOnUnit(target, DamageType.Magical, (float) damage);
+            return Player.Instance.CalculateDamageOnUnit(target, DamageType.Magical, damage);
         }
     }
 }

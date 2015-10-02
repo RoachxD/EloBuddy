@@ -18,11 +18,11 @@ namespace Warwick_Buddy.Internal
         {
             var smite = Menu.ClearMenu["Smite.Enable"].Cast<CheckBox>().CurrentValue;
             var smiteSpell = Player.Instance.Spellbook.GetSpell(Spells.Smite);
-            if (!smite || !smiteSpell.IsReady)
+            if (!smite || smiteSpell == null || !smiteSpell.IsReady)
             {
                 return;
             }
-            
+
             var obj =
                 EntityManager.GetJungleMonsters(Player.Instance.Position.To2D(), 760)
                     .FirstOrDefault(mob => CanSmiteMob(mob.Name));
