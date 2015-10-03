@@ -29,6 +29,10 @@ Champion Addons:
     * Twitch
     * KogMaw
 
-
-
-newchild > Roach Kappa
+ * Warwick Buddy
+  * A highly customisable Warwick Addon, that will grant you the best experience of playing him.
+  * It does include a lot of features that I will let you discover in my thread or in the game.
+ 
+ * XinZhao Buddy
+  * A highly customisable XinZhao Addon, that will grant you the best experience of playing him.
+  * It does include a lot of features that I will let you discover in my thread or in the game.
