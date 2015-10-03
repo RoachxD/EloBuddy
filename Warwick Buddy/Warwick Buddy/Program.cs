@@ -48,7 +48,7 @@ namespace Warwick_Buddy
 
                 Menu.InfoMenu = MainMenu.AddMenu("Warwick Buddy", "WarwickBuddy");
                 Menu.InfoMenu.AddGroupLabel("Warwick Buddy");
-                Menu.InfoMenu.AddLabel("Version: " + "1.0.0.0");
+                Menu.InfoMenu.AddLabel("Version: " + "1.0.0.1");
                 Menu.InfoMenu.AddSeparator();
                 Menu.InfoMenu.AddLabel("Creators: " + "Roach");
 
@@ -65,10 +65,10 @@ namespace Warwick_Buddy
                 }
 
                 Menu.HarassMenu = Menu.InfoMenu.AddSubMenu("Harass", "Harass");
-                Menu.HarassMenu.AddGroupLabel("Auto Harass");
+                Menu.HarassMenu.AddGroupLabel("Auto Harass Options");
                 Menu.HarassMenu.Add("Harass.AutoQ", new KeyBind("Auto Q", true, KeyBind.BindTypes.PressToggle, 'T'));
                 Menu.HarassMenu.Add("Harass.AutoQMana", new Slider("If Mana Percent >=", 50));
-                Menu.HarassMenu.AddGroupLabel("Harass");
+                Menu.HarassMenu.AddGroupLabel("Harass Options");
                 Menu.HarassMenu.Add("Harass.Q", new CheckBox("Use Q"));
                 Menu.HarassMenu.Add("Harass.W", new CheckBox("Use W"));
 
