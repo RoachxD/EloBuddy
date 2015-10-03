@@ -23,7 +23,13 @@ namespace Marksman_Buddy.Plugins
             _SetupSpells();
             Game.OnTick += Game_OnTick;
             Drawing.OnDraw += Drawing_OnDraw;
+			Orbwalker.OnPreAttack += Orbwalker_OnPreAttack;
         }
+
+		void Orbwalker_OnPreAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
+		{
+			throw new NotImplementedException();
+		}
 
         protected override sealed void _SetupSpells()
         {
