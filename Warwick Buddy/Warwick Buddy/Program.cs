@@ -106,6 +106,7 @@ namespace Warwick_Buddy
                 Menu.DrawMenu.AddGroupLabel("Draw Options");
                 Menu.DrawMenu.Add("Draw.Q", new CheckBox("Q Range"));
                 Menu.DrawMenu.Add("Draw.R", new CheckBox("R Range"));
+                Menu.DrawMenu.Add("Draw.Smite", new CheckBox("Draw Smite Status"));
 
                 Chat.Print("Warwick Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
 
@@ -127,23 +128,25 @@ namespace Warwick_Buddy
                 return;
             }
 
-            switch (Orbwalker.ActiveModesFlags)
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
-                case Orbwalker.ActiveModes.Combo:
-                    Combo();
-                    break;
-                case Orbwalker.ActiveModes.Harass:
-                    Harass();
-                    break;
-                case Orbwalker.ActiveModes.JungleClear:
-                    Clear();
-                    break;
-                case Orbwalker.ActiveModes.LaneClear:
-                    Clear();
-                    break;
-                case Orbwalker.ActiveModes.LastHit:
-                    LastHit();
-                    break;
+                Combo();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+            {
+                Harass();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) ||
+                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            {
+                Clear();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
+            {
+                LastHit();
             }
 
             Functions.SmiteMob();
@@ -171,6 +174,16 @@ namespace Warwick_Buddy
                 if (drawR && Spells.R.IsReady())
                 {
                     new Circle {Color = Color.YellowGreen, Radius = Spells.R.Range}.Draw(Player.Instance.Position);
+                }
+
+                var drawSmite = Menu.DrawMenu["Draw.Smite"].Cast<CheckBox>().CurrentValue;
+                var smiteSpell = Player.Instance.Spellbook.GetSpell(Spells.Smite);
+                if (drawSmite && smiteSpell != null)
+                {
+                    var barPos = Player.Instance.HPBarPosition;
+                    var smiteStatus = Menu.ClearMenu["Smite.Enable"].Cast<CheckBox>().CurrentValue;
+                    Drawing.DrawText(barPos.X - 10, barPos.Y - 8, Color.White,
+                        "Smite: " + (smiteStatus ? "Enabled" : "Disabled"));
                 }
             }
             catch (Exception e)
