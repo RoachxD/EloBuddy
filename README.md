@@ -27,3 +27,8 @@ Champion Addons:
     * Ashe
     * Corki
     * Twitch
+    * KogMaw
+
+
+
+newchild > Roach Kappa
