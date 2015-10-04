@@ -20,7 +20,6 @@ namespace Marksman_Buddy.Plugins
             _SetupMenu();
 			_SetupSpells();
             Game.OnTick += Game_OnTick;
-			
         }
 
         protected override void Game_OnTick(EventArgs args)
@@ -46,10 +45,10 @@ namespace Marksman_Buddy.Plugins
 			}
 			var _RTarget = TargetSelector.GetTarget(_R.Range, DamageType.Magical);
 			if (Variables.Config["UseRInHarass"].Cast<CheckBox>().CurrentValue &&
-				Variables.Config["UseRInHarassStacks"].Cast<Slider>().CurrentValue < _R.Handle.Ammo && _RTarget.IsValidTarget() &&
-				!_RTarget.IsZombie)
+				Variables.Config["UseRInHarassStacks"].Cast<Slider>().CurrentValue < _R.Handle.Ammo && _ETarget.IsValidTarget() &&
+				!_ETarget.IsZombie)
 			{
-				_R.Cast(_RTarget);
+				_R.Cast(_ETarget);
 			}
 		}
 
@@ -81,10 +80,10 @@ namespace Marksman_Buddy.Plugins
             }
             var _RTarget = TargetSelector.GetTarget(_R.Range, DamageType.Magical);
             if (Variables.Config["UseRInCombo"].Cast<CheckBox>().CurrentValue &&
-				Variables.Config["UseRInComboStacks"].Cast<Slider>().CurrentValue < _R.Handle.Ammo && _RTarget.IsValidTarget() &&
-                !_RTarget.IsZombie)
+				Variables.Config["UseRInComboStacks"].Cast<Slider>().CurrentValue < _R.Handle.Ammo && _ETarget.IsValidTarget() &&
+                _ETarget.IsZombie)
             {
-                _R.Cast(_RTarget);
+                _R.Cast(_ETarget);
             }
         }
 
@@ -93,7 +92,7 @@ namespace Marksman_Buddy.Plugins
             _Q = new Spell.Skillshot(SpellSlot.Q, 1200, SkillShotType.Linear, 250, 1650, 70);
             _W = new Spell.Active(SpellSlot.W);
             _E = new Spell.Skillshot(SpellSlot.E, 1360, SkillShotType.Linear, 250, 1400, 120);
-            _R = new Spell.Skillshot(SpellSlot.R, 1200, SkillShotType.Circular, 1200, int.MaxValue, 150);
+            _R = new Spell.Skillshot(SpellSlot.R, 1800, SkillShotType.Circular, 1200, int.MaxValue, 150);
         }
 
 		protected override void _SetupMenu()
