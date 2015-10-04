@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
@@ -10,7 +10,8 @@ namespace Marksman_Buddy.Plugins
 {
     internal class KogMaw : PluginBase
     {
-        private readonly int[] RDamage = {160, 240, 320};
+		private readonly int[] _RDamage = { 160, 240, 320 };
+		private readonly int[] _RRange = { 1200, 1500, 1800 };
         private Spell.Skillshot _E;
         private Spell.Skillshot _Q;
         private Spell.Skillshot _R;
@@ -47,7 +48,7 @@ namespace Marksman_Buddy.Plugins
                 _E.Cast(_ETarget);
             }
 
-            var _RTarget = TargetSelector.GetTarget(_R.Range, DamageType.Magical);
+			var _RTarget = TargetSelector.GetTarget(_RRange[_R.Level - 1], DamageType.Magical);
             if (Variables.Config["UseRInHarass"].Cast<CheckBox>().CurrentValue &&
                 Variables.Config["UseRInHarassStacks"].Cast<Slider>().CurrentValue < _R.Handle.Ammo &&
                 _RTarget.IsValidTarget() &&
@@ -64,7 +65,7 @@ namespace Marksman_Buddy.Plugins
                     HeroManager.Enemies.Where(
                         enemy =>
                             enemy != null && !enemy.IsDead && !enemy.IsZombie &&
-                            enemy.Distance(Player.Instance) < _R.Range && _RDamage(enemy) > enemy.Health))
+							enemy.Distance(Player.Instance) < _RRange[_R.Level - 1] && _RSpellDamage(enemy) > enemy.Health))
             {
                 _R.Cast(enemy);
             }
@@ -88,7 +89,7 @@ namespace Marksman_Buddy.Plugins
             {
                 _E.Cast(_ETarget);
             }
-            var _RTarget = TargetSelector.GetTarget(_R.Range, DamageType.Magical);
+			var _RTarget = TargetSelector.GetTarget(_RRange[_R.Level - 1], DamageType.Magical);
             if (Variables.Config["UseRInCombo"].Cast<CheckBox>().CurrentValue &&
                 Variables.Config["UseRInComboStacks"].Cast<Slider>().CurrentValue < _R.Handle.Ammo &&
                 _RTarget.IsValidTarget() &&
@@ -120,10 +121,10 @@ namespace Marksman_Buddy.Plugins
             Variables.Config.Add("UseRInHarassStacks", new Slider("Limit Ultimate Stacks", 3, 0, 6));
         }
 
-        protected float _RDamage(Obj_AI_Base target)
+        protected float _RSpellDamage(Obj_AI_Base target)
         {
             return Player.Instance.CalculateDamageOnUnit(target, DamageType.Magical,
-                (RDamage[_R.Level] + 0.5f*Player.Instance.TotalAttackDamage + 0.3f*Player.Instance.TotalMagicalDamage));
+                (_RDamage[_R.Level] + 0.5f*Player.Instance.TotalAttackDamage + 0.3f*Player.Instance.TotalMagicalDamage));
         }
     }
 }
