@@ -57,6 +57,7 @@ namespace XinZhao_Buddy
                 Menu.ComboMenu.AddGroupLabel("Combo Options");
                 Menu.ComboMenu.Add("Combo.Q", new CheckBox("Use Q"));
                 Menu.ComboMenu.Add("Combo.W", new CheckBox("Use W"));
+                Menu.ComboMenu.Add("Combo.E", new CheckBox("Use E"));
                 Menu.ComboMenu.Add("Combo.R", new CheckBox("Use R"));
                 Menu.ComboMenu.Add("Combo.Hydra", new CheckBox("Use Tiamat/Hydra"));
                 Menu.ComboMenu.AddGroupLabel("R Options");
