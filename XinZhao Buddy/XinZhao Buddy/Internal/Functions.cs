@@ -24,7 +24,7 @@ namespace XinZhao_Buddy.Internal
             }
 
             var obj =
-                EntityManager.GetJungleMonsters(Player.Instance.Position.To2D(), 760)
+                EntityManager.MinionsAndMonsters.GetJungleMonsters(Player.Instance.Position, 760)
                     .FirstOrDefault(mob => CanSmiteMob(mob.Name));
             if (obj == null)
             {

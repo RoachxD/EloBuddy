@@ -68,7 +68,7 @@ namespace XinZhao_Buddy
                 Menu.HarassMenu.AddGroupLabel("Harass Options");
                 Menu.HarassMenu.Add("Harass.Q", new CheckBox("Use Q"));
                 Menu.HarassMenu.Add("Harass.W", new CheckBox("Use W"));
-                Menu.HarassMenu.Add("Harass.W", new CheckBox("Use E"));
+                Menu.HarassMenu.Add("Harass.E", new CheckBox("Use E"));
                 Menu.HarassMenu.Add("Harass.Hydra", new CheckBox("Use Tiamat/Hydra", false));
 
                 Menu.ClearMenu = Menu.InfoMenu.AddSubMenu("Clear", "Clear");
@@ -262,12 +262,13 @@ namespace XinZhao_Buddy
             if (comboR && Spells.R.IsReady() && !Player.Instance.IsDashing())
             {
                 var targets =
-                    HeroManager.Enemies.Where(
-                        enemy => enemy != null && enemy.IsValidTarget(Spells.R.Range)).ToList();
+                    EntityManager.Heroes.Enemies.Where(enemy => enemy != null && enemy.IsValidTarget(Spells.R.Range))
+                        .ToList();
                 var rHp = Menu.ComboMenu["Combo.R.Menu"].Cast<Slider>().CurrentValue;
                 var rCount = Menu.ComboMenu["Combo.R.Count"].Cast<Slider>().CurrentValue;
-                if ((targets.Count > 1 && targets.Any(target => target.Health < SpellSlot.R.GetDamage(target))) ||
-                    targets.Any(target => target.HealthPercent < rHp) || targets.Count >= rCount)
+                if ((targets.Count > 1 &&
+                     targets.Any(target => target != null && target.Health < SpellSlot.R.GetDamage(target))) ||
+                    targets.Any(target => target != null && target.HealthPercent < rHp) || targets.Count >= rCount)
                 {
                     Spells.R.Cast();
                 }
