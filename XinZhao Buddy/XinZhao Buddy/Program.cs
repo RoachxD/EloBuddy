@@ -231,7 +231,7 @@ namespace XinZhao_Buddy
             Interrupter.InterruptableSpellEventArgs e)
         {
             var interruptR = Menu.MiscMenu["Misc.InterruptR"].Cast<CheckBox>().CurrentValue;
-            if (!interruptR || !Spells.R.IsReady() || !sender.IsEnemy)
+            if (!interruptR || !Spells.R.IsReady() || !sender.IsEnemy || sender.HasBuff("xenzhaointimidate"))
             {
                 return;
             }
@@ -256,15 +256,14 @@ namespace XinZhao_Buddy
             {
                 return;
             }
-
-            var comboE = Menu.ComboMenu["Combo.E"].Cast<CheckBox>().CurrentValue;
+            
             var comboR = Menu.ComboMenu["Combo.R"].Cast<CheckBox>().CurrentValue;
             if (comboR && Spells.R.IsReady() && !Player.Instance.IsDashing())
             {
                 var targets =
                     EntityManager.Heroes.Enemies.Where(enemy => enemy != null && enemy.IsValidTarget(Spells.R.Range))
                         .ToList();
-                var rHp = Menu.ComboMenu["Combo.R.Menu"].Cast<Slider>().CurrentValue;
+                var rHp = Menu.ComboMenu["Combo.R.HP"].Cast<Slider>().CurrentValue;
                 var rCount = Menu.ComboMenu["Combo.R.Count"].Cast<Slider>().CurrentValue;
                 if ((targets.Count > 1 &&
                      targets.Any(target => target != null && target.Health < SpellSlot.R.GetDamage(target))) ||
@@ -272,26 +271,9 @@ namespace XinZhao_Buddy
                 {
                     Spells.R.Cast();
                 }
-
-                var erManaCost = Spells.E.Handle.SData.Mana + Spells.E.Handle.SData.Mana;
-                if (comboE && Spells.E.IsReady() && Player.Instance.Mana >= erManaCost)
-                {
-                    var target =
-                        targets.Where(
-                            targ =>
-                                targ.Health <
-                                (SpellSlot.R.GetDamage(targ) + SpellSlot.E.GetDamage(targ) +
-                                 Player.Instance.GetAutoAttackDamage(targ, true))).MinOrDefault(targ => targ.Health);
-                    if (target != null)
-                    {
-                        if (Spells.R.Cast())
-                        {
-                            Spells.E.Cast(target);
-                        }
-                    }
-                }
             }
 
+            var comboE = Menu.ComboMenu["Combo.E"].Cast<CheckBox>().CurrentValue;
             if (comboE && Spells.E.IsReady())
             {
                 var target = TargetSelector.GetTarget(Spells.E.Range, DamageType.Magical);
