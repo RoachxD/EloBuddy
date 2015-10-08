@@ -59,7 +59,7 @@ namespace Warwick_Buddy
                 Menu.ComboMenu.Add("Combo.R", new CheckBox("Use R"));
                 Menu.ComboMenu.Add("Combo.Smite", new CheckBox("Use Smite"));
                 Menu.ComboMenu.AddGroupLabel("R Targets");
-                foreach (var hero in HeroManager.Enemies)
+                foreach (var hero in EntityManager.Heroes.Enemies)
                 {
                     Menu.ComboMenu.Add("R." + hero.ChampionName, new CheckBox(hero.ChampionName));
                 }
@@ -167,13 +167,21 @@ namespace Warwick_Buddy
                 var drawQ = Menu.DrawMenu["Draw.Q"].Cast<CheckBox>().CurrentValue;
                 if (drawQ && Spells.Q.IsReady())
                 {
-                    new Circle {Color = Color.SkyBlue, Radius = Spells.Q.Range}.Draw(Player.Instance.Position);
+                    new Circle
+                    {
+                        Color = Color.SkyBlue,
+                        Radius = Spells.Q.Range
+                    }.Draw(Player.Instance.Position);
                 }
 
                 var drawR = Menu.DrawMenu["Draw.R"].Cast<CheckBox>().CurrentValue;
                 if (drawR && Spells.R.IsReady())
                 {
-                    new Circle {Color = Color.YellowGreen, Radius = Spells.R.Range}.Draw(Player.Instance.Position);
+                    new Circle
+                    {
+                        Color = Color.YellowGreen,
+                        Radius = Spells.R.Range
+                    }.Draw(Player.Instance.Position);
                 }
 
                 var drawSmite = Menu.DrawMenu["Draw.Smite"].Cast<CheckBox>().CurrentValue;
@@ -203,8 +211,8 @@ namespace Warwick_Buddy
                                 Menu.ComboMenu["Harass.W"].Cast<CheckBox>().CurrentValue;
             var objAiMinionW = Menu.ClearMenu["Clear.W"].Cast<CheckBox>().CurrentValue;
             if (((Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) ||
-                  Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass)) &&
-                 aiHeroClientW && target is AIHeroClient) ||
+                  Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass)) && aiHeroClientW &&
+                 target is AIHeroClient) ||
                 (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) && objAiMinionW &&
                  target is Obj_AI_Minion))
             {
@@ -242,11 +250,10 @@ namespace Warwick_Buddy
             var comboR = Menu.ComboMenu["Combo.R"].Cast<CheckBox>().CurrentValue;
             if (comboR && Spells.R.IsReady())
             {
-                var targets =
-                    HeroManager.Enemies.Where(
-                        enemy =>
-                            Menu.ComboMenu["R." + enemy.ChampionName].Cast<CheckBox>().CurrentValue &&
-                            Player.Instance.Distance(enemy) < Spells.R.Range);
+                var targets = EntityManager.Heroes.Enemies.Where(
+                    enemy =>
+                        Menu.ComboMenu["R." + enemy.ChampionName].Cast<CheckBox>().CurrentValue &&
+                        Player.Instance.Distance(enemy) < Spells.R.Range);
                 foreach (var target in targets)
                 {
                     if (!target.IsValidTarget())
@@ -265,9 +272,8 @@ namespace Warwick_Buddy
             }
 
             var comboW = Menu.ComboMenu["Combo.W"].Cast<CheckBox>().CurrentValue;
-            if (comboW && Spells.W.IsReady() &&
-                HeroManager.Allies.Any(
-                    ally => !ally.IsMe && ally.IsValidTarget(Spells.W.Range) && ally.IsAttackingPlayer))
+            if (comboW && Spells.W.IsReady() && EntityManager.Heroes.Allies.Any(
+                ally => !ally.IsMe && ally.IsValidTarget(Spells.W.Range) && ally.IsAttackingPlayer))
             {
                 Spells.W.Cast();
             }
@@ -291,9 +297,8 @@ namespace Warwick_Buddy
             }
 
             var harassW = Menu.ComboMenu["Harass.W"].Cast<CheckBox>().CurrentValue;
-            if (harassW && Spells.W.IsReady() &&
-                HeroManager.Allies.Any(
-                    ally => ally != null && !ally.IsMe && ally.IsValidTarget(Spells.W.Range) && ally.IsAttackingPlayer))
+            if (harassW && Spells.W.IsReady() && EntityManager.Heroes.Allies.Any(
+                ally => ally != null && !ally.IsMe && ally.IsValidTarget(Spells.W.Range) && ally.IsAttackingPlayer))
             {
                 Spells.W.Cast();
             }
@@ -313,9 +318,8 @@ namespace Warwick_Buddy
                 return;
             }
 
-            var minionObj =
-                ObjectManager.Get<Obj_AI_Minion>()
-                    .Where(minion => !minion.IsAlly && minion.Distance(Player.Instance) < Spells.Q.Range);
+            var minionObj = ObjectManager.Get<Obj_AI_Minion>()
+                .Where(minion => !minion.IsAlly && minion.Distance(Player.Instance) < Spells.Q.Range);
             var obj = minionObj.FirstOrDefault(minion => minion.Health < SpellSlot.Q.GetDamage(minion)) ??
                       minionObj.MinOrDefault(minion => minion.Health);
             if (obj == null)
@@ -340,7 +344,7 @@ namespace Warwick_Buddy
             }
 
             var obj =
-                EntityManager.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.Position.To2D(),
+                EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.Position,
                     Spells.Q.Range).FirstOrDefault(minion => minion.Health < SpellSlot.Q.GetDamage(minion));
             if (obj == null)
             {
@@ -421,12 +425,10 @@ namespace Warwick_Buddy
                 return;
             }
 
-            var target =
-                HeroManager.Enemies.Where(i => i.IsValidTarget(Spells.R.Range))
-                    .MinOrDefault(i => i.Distance(Player.Instance.Position));
-            var tower =
-                ObjectManager.Get<Obj_AI_Turret>()
-                    .FirstOrDefault(i => i.IsAlly && !i.IsDead && i.Distance(Player.Instance.Position) <= 850);
+            var target = EntityManager.Heroes.Enemies.Where(i => i.IsValidTarget(Spells.R.Range))
+                .MinOrDefault(i => i.Distance(Player.Instance.Position));
+            var tower = ObjectManager.Get<Obj_AI_Turret>()
+                .FirstOrDefault(i => i.IsAlly && !i.IsDead && i.Distance(Player.Instance.Position) <= 850);
 
             if (target != null && tower != null && target.Distance(tower) <= 850)
             {

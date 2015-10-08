@@ -9,10 +9,25 @@ namespace Warwick_Buddy.Internal
 {
     internal static class Functions
     {
-        private static readonly int[] SmitePurple = {3713, 3726, 3725, 3724, 3723, 3933};
-        private static readonly int[] SmiteGrey = {3711, 3722, 3721, 3720, 3719, 3932};
-        private static readonly int[] SmiteRed = {3715, 3718, 3717, 3716, 3714, 3931};
-        private static readonly int[] SmiteBlue = {3706, 3710, 3709, 3708, 3707, 3930};
+        private static readonly int[] SmitePurple =
+        {
+            3713, 3726, 3725, 3724, 3723, 3933
+        };
+
+        private static readonly int[] SmiteGrey =
+        {
+            3711, 3722, 3721, 3720, 3719, 3932
+        };
+
+        private static readonly int[] SmiteRed =
+        {
+            3715, 3718, 3717, 3716, 3714, 3931
+        };
+
+        private static readonly int[] SmiteBlue =
+        {
+            3706, 3710, 3709, 3708, 3707, 3930
+        };
 
         public static void SmiteMob()
         {
@@ -23,9 +38,8 @@ namespace Warwick_Buddy.Internal
                 return;
             }
 
-            var obj =
-                EntityManager.GetJungleMonsters(Player.Instance.Position.To2D(), 760)
-                    .FirstOrDefault(mob => CanSmiteMob(mob.Name));
+            var obj = EntityManager.MinionsAndMonsters.GetJungleMonsters(Player.Instance.Position, 760)
+                .FirstOrDefault(mob => CanSmiteMob(mob.Name));
             if (obj == null)
             {
                 return;
