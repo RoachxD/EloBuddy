@@ -9,7 +9,7 @@ namespace Marksman_Buddy.Internal
         public static void KS(Spell.SpellBase spell, float damage)
         {
             foreach (var hero in
-                HeroManager.Enemies
+                EntityManager.Heroes.Enemies
                     .Where(x => x.Position.Distance(ObjectManager.Player) < spell.Range))
             {
                 if (!hero.IsDead && !hero.IsZombie && damage > hero.Health)

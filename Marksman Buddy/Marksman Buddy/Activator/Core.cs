@@ -78,9 +78,9 @@ namespace Marksman_Buddy.Activator
                 var inventorySlot = Player.Instance.InventoryItems.FirstOrDefault(item => item.Id == ItemId.Bilgewater_Cutlass);
                 if (inventorySlot != null)
                 {
-                    var firstOrDefault =
-                        inventorySlot.SpellSlot;
-                    Player.CastSpell(firstOrDefault, Orbwalker.GetTarget());
+                    var firstOrDefault = inventorySlot.SpellSlot;
+                    var target = TargetSelector.GetTarget(550, DamageType.Magical);
+                    Player.CastSpell(firstOrDefault, target);
                 }
             }
 
@@ -108,7 +108,8 @@ namespace Marksman_Buddy.Activator
                 {
                     var firstOrDefault =
                         inventorySlot.SpellSlot;
-                    Player.CastSpell(firstOrDefault, Orbwalker.GetTarget());
+                    var target = TargetSelector.GetTarget(550, DamageType.Physical);
+                    Player.CastSpell(firstOrDefault, target);
                 }
             }
 

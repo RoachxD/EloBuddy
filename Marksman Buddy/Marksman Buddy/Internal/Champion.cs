@@ -33,7 +33,7 @@ namespace Marksman_Buddy.Internal
                 Color.FromArgb(255, 210, 68, 74), ObjectManager.Player.ChampionName);
         }
 
-        protected override void _SetupMenu()
+        protected override sealed void _SetupMenu()
         {
             Variables.Config.AddGroupLabel("Champion not Supported");
             Variables.Config.AddLabel("The champion is probably not a Marksman or not yet implemented.");

@@ -35,7 +35,7 @@ namespace Marksman_Buddy.Plugins
             _R = new Spell.Skillshot(SpellSlot.R, 3000, SkillShotType.Linear, 250, 1600, 130);
         }
 
-		protected override sealed void _SetupMenu()
+        protected override sealed void _SetupMenu()
         {
             Variables.Config.AddGroupLabel("Combo");
             Variables.Config.Add("Ashe.CastQCombo", new CheckBox("Cast Q in Combo"));
@@ -74,7 +74,7 @@ namespace Marksman_Buddy.Plugins
             _RLogic();
         }
 
-		protected override void _Combo()
+        protected override void _Combo()
         {
             if (!Variables.Config["Ashe.CastWCombo"].Cast<CheckBox>().CurrentValue || !_W.IsReady() ||
                 ObjectManager.Player.IsAttackingPlayer)
@@ -103,7 +103,7 @@ namespace Marksman_Buddy.Plugins
             _W.Cast(pred.CastPosition);
         }
 
-		protected override void _Harass()
+        protected override void _Harass()
         {
             if (!Variables.Config["Ashe.CastWHarass"].Cast<CheckBox>().CurrentValue || !_W.IsReady() ||
                 ObjectManager.Player.IsAttackingPlayer)
@@ -149,7 +149,7 @@ namespace Marksman_Buddy.Plugins
             }
 
 
-            foreach (var enemy in HeroManager.Enemies.Where(target => target.IsValidTarget(_R.Range)))
+            foreach (var enemy in EntityManager.Heroes.Enemies.Where(target => target.IsValidTarget(_R.Range)))
             {
                 if (enemy.CountEnemiesInRange(250) > 2 &&
                     Variables.Config["Ashe.CastRAOE"].Cast<CheckBox>().CurrentValue)
@@ -250,13 +250,9 @@ namespace Marksman_Buddy.Plugins
 
         public int CountAlliesInRange(float range, Obj_AI_Base originalunit = null)
         {
-            if (originalunit != null)
-            {
-                return HeroManager.Allies
-                    .Count(x => x.NetworkId != originalunit.NetworkId && x.IsValidTarget(range));
-            }
-
-            return 0;
+            return originalunit != null
+                ? EntityManager.Heroes.Allies.Count(x => x.NetworkId != originalunit.NetworkId && x.IsValidTarget(range))
+                : 0;
         }
     }
 }

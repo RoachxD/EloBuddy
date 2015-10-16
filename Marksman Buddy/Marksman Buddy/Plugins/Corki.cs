@@ -89,7 +89,7 @@ namespace Marksman_Buddy.Plugins
         private void _KS()
         {
             foreach (var hero in
-                HeroManager.Enemies
+                EntityManager.Heroes.Enemies
                     .Where(x => x.Position.Distance(ObjectManager.Player) < _R1.Range))
             {
                 Console.WriteLine(hero.ChampionName);
@@ -136,7 +136,7 @@ namespace Marksman_Buddy.Plugins
             }
             var inERange = false;
             
-            foreach (var target in HeroManager.Enemies)
+            foreach (var target in EntityManager.Heroes.Enemies)
             {
                 if (target.Distance(Player.Instance) <= 550)
                     inERange = true;

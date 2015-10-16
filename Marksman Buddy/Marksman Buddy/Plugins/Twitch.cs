@@ -23,13 +23,13 @@ namespace Marksman_Buddy.Plugins
             _SetupSpells();
             Game.OnTick += Game_OnTick;
             Drawing.OnDraw += Drawing_OnDraw;
-			Orbwalker.OnPreAttack += Orbwalker_OnPreAttack;
+            Orbwalker.OnPreAttack += Orbwalker_OnPreAttack;
         }
 
-		void Orbwalker_OnPreAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
-		{
-			throw new NotImplementedException();
-		}
+        private void Orbwalker_OnPreAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
+        {
+            throw new NotImplementedException();
+        }
 
         protected override sealed void _SetupSpells()
         {
@@ -38,7 +38,7 @@ namespace Marksman_Buddy.Plugins
             _E = new Spell.Active(SpellSlot.E, 1200);
         }
 
-		protected override sealed void _SetupMenu()
+        protected override sealed void _SetupMenu()
         {
             Variables.Config.AddGroupLabel("Combo");
             Variables.Config.Add("Twitch.UseECombo", new CheckBox("Use E in Combo"));
@@ -58,7 +58,7 @@ namespace Marksman_Buddy.Plugins
             Variables.Config.Add("Twitch.DrawE", new CheckBox("Draw E"));
         }
 
-		protected override void Game_OnTick(EventArgs args)
+        protected override void Game_OnTick(EventArgs args)
         {
             if (Variables.ComboMode)
             {
@@ -99,11 +99,11 @@ namespace Marksman_Buddy.Plugins
             return array.Any(element => element.ToLower().Contains(simily.ToLower()));
         }
 
-		protected override void _Harass()
+        protected override void _Harass()
         {
             var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
             if (Variables.Config["Twitch.UseWHarass"].Cast<CheckBox>().CurrentValue
-				&& !_W.IsOnCooldown && WTarget.IsValidTarget())
+                && !_W.IsOnCooldown && WTarget.IsValidTarget())
             {
                 _W.Cast(WTarget);
             }
@@ -128,7 +128,7 @@ namespace Marksman_Buddy.Plugins
         private void _KillSteal()
         {
             foreach (var hero in
-                HeroManager.Enemies
+                EntityManager.Heroes.Enemies
                     .Where(x => x.Position.Distance(ObjectManager.Player.Position) < 1200))
             {
                 if (_ECanKill(hero, _E) && Variables.Config["Twitch.KS"].Cast<CheckBox>().CurrentValue)
@@ -138,11 +138,11 @@ namespace Marksman_Buddy.Plugins
             }
         }
 
-		protected override void _Combo()
+        protected override void _Combo()
         {
             var WTarget = TargetSelector.GetTarget(_W.Range, DamageType.True);
             if (Variables.Config["Twitch.UseWCombo"].Cast<CheckBox>().CurrentValue
-				&& !_W.IsOnCooldown && WTarget.IsValidTarget())
+                && !_W.IsOnCooldown && WTarget.IsValidTarget())
             {
                 _W.Cast(WTarget);
             }
@@ -167,7 +167,7 @@ namespace Marksman_Buddy.Plugins
         private void _QCount()
         {
             if (
-                HeroManager.Enemies.Where(enemy => enemy.IsValidTarget(3000))
+                EntityManager.Heroes.Enemies.Where(enemy => enemy.IsValidTarget(3000))
                     .Count(enemy => ObjectManager.Player.Distance(enemy.Path.Last()) < 600) >=
                 Variables.Config["Twitch.CastQEnemies"].Cast<Slider>().CurrentValue)
             {

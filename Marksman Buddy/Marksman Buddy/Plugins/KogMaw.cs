@@ -10,8 +10,8 @@ namespace Marksman_Buddy.Plugins
 {
     internal class KogMaw : PluginBase
     {
-		private readonly int[] _RDamage = { 160, 240, 320 };
-		private readonly int[] _RRange = { 1200, 1500, 1800 };
+        private readonly int[] _RDamage = {160, 240, 320};
+        private readonly int[] _RRange = {1200, 1500, 1800};
         private Spell.Skillshot _E;
         private Spell.Skillshot _Q;
         private Spell.Skillshot _R;
@@ -48,7 +48,7 @@ namespace Marksman_Buddy.Plugins
                 _E.Cast(_ETarget);
             }
 
-			var _RTarget = TargetSelector.GetTarget(_RRange[_R.Level - 1], DamageType.Magical);
+            var _RTarget = TargetSelector.GetTarget(_RRange[_R.Level - 1], DamageType.Magical);
             if (Variables.Config["UseRInHarass"].Cast<CheckBox>().CurrentValue &&
                 Variables.Config["UseRInHarassStacks"].Cast<Slider>().CurrentValue < _R.Handle.Ammo &&
                 _RTarget.IsValidTarget() &&
@@ -62,10 +62,11 @@ namespace Marksman_Buddy.Plugins
         {
             foreach (
                 var enemy in
-                    HeroManager.Enemies.Where(
+                    EntityManager.Heroes.Enemies.Where(
                         enemy =>
                             enemy != null && !enemy.IsDead && !enemy.IsZombie &&
-							enemy.Distance(Player.Instance) < _RRange[_R.Level - 1] && _RSpellDamage(enemy) > enemy.Health))
+                            enemy.Distance(Player.Instance) < _RRange[_R.Level - 1] &&
+                            _RSpellDamage(enemy) > enemy.Health))
             {
                 _R.Cast(enemy);
             }
@@ -73,12 +74,14 @@ namespace Marksman_Buddy.Plugins
 
         protected override void _Combo()
         {
-            if (Variables.Config["UseQInCombo"].Cast<CheckBox>().CurrentValue && Orbwalker.GetTarget() != null)
+            var _QTarget = TargetSelector.GetTarget(_Q.Range, DamageType.Magical);
+            if (Variables.Config["UseQInCombo"].Cast<CheckBox>().CurrentValue && _QTarget.IsValidTarget(_Q.Range))
             {
-                _Q.Cast((Obj_AI_Base) Orbwalker.GetTarget());
+                _Q.Cast(_QTarget);
             }
 
-            if (Variables.Config["UseWInCombo"].Cast<CheckBox>().CurrentValue && Orbwalker.GetTarget() != null)
+            var _WTarget = TargetSelector.GetTarget(_W.Range, DamageType.Physical);
+            if (Variables.Config["UseWInCombo"].Cast<CheckBox>().CurrentValue && _WTarget.IsValidTarget(_W.Range))
             {
                 _W.Cast();
             }
@@ -89,7 +92,7 @@ namespace Marksman_Buddy.Plugins
             {
                 _E.Cast(_ETarget);
             }
-			var _RTarget = TargetSelector.GetTarget(_RRange[_R.Level - 1], DamageType.Magical);
+            var _RTarget = TargetSelector.GetTarget(_RRange[_R.Level - 1], DamageType.Magical);
             if (Variables.Config["UseRInCombo"].Cast<CheckBox>().CurrentValue &&
                 Variables.Config["UseRInComboStacks"].Cast<Slider>().CurrentValue < _R.Handle.Ammo &&
                 _RTarget.IsValidTarget() &&
