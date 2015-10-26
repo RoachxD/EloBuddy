@@ -1,6 +1,7 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
 using XinZhao_Buddy.Internal;
+using Utility = XinZhao_Buddy.Internal.Utility;
 
 namespace XinZhao_Buddy.Modes
 {
@@ -19,6 +20,7 @@ namespace XinZhao_Buddy.Modes
                 if (target != null &&
                     (!Player.Instance.IsInAutoAttackRange(target) || Player.Instance.Health < target.Health))
                 {
+                    Utility.Debug(string.Format("Used E on {0} (Harass Mode).", target.Name));
                     Spells.E.Cast(target);
                 }
             }
@@ -33,6 +35,7 @@ namespace XinZhao_Buddy.Modes
                      Item.HasItem((int) ItemId.Tiamat_Melee_Only, Player.Instance)) && item.IsReady() &&
                     target.Distance(Player.Instance) < item.Range - 80)
                 {
+                    Utility.Debug("Used Hydra/Tiamat (Harass Mode).");
                     item.Cast();
                 }
             }

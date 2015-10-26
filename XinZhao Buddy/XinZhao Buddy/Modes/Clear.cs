@@ -2,6 +2,7 @@
 using EloBuddy;
 using EloBuddy.SDK;
 using XinZhao_Buddy.Internal;
+using Utility = XinZhao_Buddy.Internal.Utility;
 
 namespace XinZhao_Buddy.Modes
 {
@@ -35,6 +36,7 @@ namespace XinZhao_Buddy.Modes
 
                 if (obj != null)
                 {
+                    Utility.Debug(string.Format("Used E on {0} (Lane/Jungle Clear Mode).", obj.Name));
                     Spells.E.Cast(obj);
                 }
             }
@@ -49,6 +51,7 @@ namespace XinZhao_Buddy.Modes
                     (objAiMinions.Count(i => item.IsInRange(i)) > 2 ||
                      objAiMinions.Any(i => i.MaxHealth >= 1200 && i.Distance(Player.Instance) < item.Range - 80)))
                 {
+                    Utility.Debug("Used Hydra/Tiamat (Lane/Jungle Clear Mode).");
                     item.Cast();
                 }
             }

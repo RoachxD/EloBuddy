@@ -85,12 +85,14 @@ namespace XinZhao_Buddy
 
                 if (Menu.Draw.E && Spells.E.IsReady())
                 {
-                    new Circle {Color = Color.FromArgb(255, 57, 37, 72), Radius = Spells.E.Range}.Draw(Player.Instance.Position);
+                    new Circle {Color = Color.FromArgb(255, 57, 37, 72), Radius = Spells.E.Range}.Draw(
+                        Player.Instance.Position);
                 }
 
                 if (Menu.Draw.R && Spells.R.IsReady())
                 {
-                    new Circle {Color = Color.FromArgb(255, 72, 72, 116), Radius = Spells.R.Range}.Draw(Player.Instance.Position);
+                    new Circle {Color = Color.FromArgb(255, 72, 72, 116), Radius = Spells.R.Range}.Draw(
+                        Player.Instance.Position);
                 }
 
                 var smiteSpell = Player.Instance.Spellbook.GetSpell(Spells.Smite);
@@ -122,6 +124,7 @@ namespace XinZhao_Buddy
                 (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) && Menu.Clear.W &&
                  target is Obj_AI_Minion))
             {
+                Utility.Debug("Used W on OnAttack Callback.");
                 Spells.W.Cast();
             }
         }
@@ -145,6 +148,7 @@ namespace XinZhao_Buddy
 
             if (Spells.Q.Cast())
             {
+                Utility.Debug("Used Q on OnPostAttack Callback.");
                 Orbwalker.ResetAutoAttack();
             }
         }
@@ -159,6 +163,8 @@ namespace XinZhao_Buddy
 
             if (sender.IsValidTarget(Spells.R.Range))
             {
+                Utility.Debug(string.Format("Used R on {0} (OnInterruptableSpell).",
+                    ((AIHeroClient) sender).ChampionName));
                 Spells.R.Cast(sender.Position);
             }
             else
@@ -166,6 +172,8 @@ namespace XinZhao_Buddy
                 var erManaCost = Spells.E.Handle.SData.Mana + Spells.R.Handle.SData.Mana;
                 if (Spells.E.IsReady() && sender.IsValidTarget(Spells.E.Range) && Player.Instance.Mana >= erManaCost)
                 {
+                    Utility.Debug(string.Format("Used E on {0} (OnInterruptableSpell).",
+                        ((AIHeroClient) sender).ChampionName));
                     Spells.E.Cast(sender);
                 }
             }
