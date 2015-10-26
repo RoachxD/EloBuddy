@@ -112,7 +112,7 @@ namespace Warwick_Buddy.Internal
             public static void Execute()
             {
                 var smiteSpell = Player.Instance.Spellbook.GetSpell(Spells.Smite);
-                if (!Menu.Smite.Enable || smiteSpell == null || !smiteSpell.IsReady)
+                if (Menu.Smite.Enable == null || (bool) !Menu.Smite.Enable || smiteSpell == null || !smiteSpell.IsReady)
                 {
                     return;
                 }

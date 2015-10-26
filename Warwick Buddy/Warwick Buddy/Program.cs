@@ -101,7 +101,7 @@ namespace Warwick_Buddy
                 {
                     var barPos = Player.Instance.HPBarPosition;
                     Drawing.DrawText(barPos.X - 10, barPos.Y - 8, Color.White,
-                        "Smite: " + (Menu.Smite.Enable ? "Enabled" : "Disabled"));
+                        "Smite: " + (Menu.Smite.Enable != null && (bool) Menu.Smite.Enable ? "Enabled" : "Disabled"));
                 }
             }
             catch (Exception e)

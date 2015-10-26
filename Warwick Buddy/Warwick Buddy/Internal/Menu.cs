@@ -161,47 +161,47 @@ namespace Warwick_Buddy.Internal
             private static CheckBox _raptor;
             private static CheckBox _wolf;
 
-            public static bool Enable
+            public static bool? Enable
             {
                 get { return _enable.CurrentValue; }
             }
 
-            public static bool Baron
+            public static bool? Baron
             {
                 get { return _baron.CurrentValue; }
             }
 
-            public static bool Dragon
+            public static bool? Dragon
             {
                 get { return _dragon.CurrentValue; }
             }
 
-            public static bool Red
+            public static bool? Red
             {
                 get { return _red.CurrentValue; }
             }
 
-            public static bool Blue
+            public static bool? Blue
             {
                 get { return _blue.CurrentValue; }
             }
 
-            public static bool Krug
+            public static bool? Krug
             {
                 get { return _krug.CurrentValue; }
             }
 
-            public static bool Gromp
+            public static bool? Gromp
             {
                 get { return _gromp.CurrentValue; }
             }
 
-            public static bool Raptor
+            public static bool? Raptor
             {
                 get { return _raptor.CurrentValue; }
             }
 
-            public static bool Wolf
+            public static bool? Wolf
             {
                 get { return _wolf.CurrentValue; }
             }

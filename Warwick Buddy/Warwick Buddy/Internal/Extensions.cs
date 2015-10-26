@@ -7,12 +7,14 @@ namespace Warwick_Buddy.Internal
     {
         public static bool CanSmiteMob(this string name)
         {
-            if (Menu.Smite.Baron && name.StartsWith("SRU_Baron"))
+            var baron = Menu.Smite.Baron != null && (bool)Menu.Smite.Baron;
+            if (baron && name.StartsWith("SRU_Baron"))
             {
                 return true;
             }
 
-            if (Menu.Smite.Dragon && name.StartsWith("SRU_Dragon"))
+            var dragon = Menu.Smite.Dragon != null && (bool)Menu.Smite.Dragon;
+            if (dragon && name.StartsWith("SRU_Dragon"))
             {
                 return true;
             }
@@ -22,32 +24,38 @@ namespace Warwick_Buddy.Internal
                 return false;
             }
 
-            if (Menu.Smite.Red && name.StartsWith("SRU_Red"))
+            var red = Menu.Smite.Red != null && (bool)Menu.Smite.Red;
+            if (red && name.StartsWith("SRU_Red"))
             {
                 return true;
             }
 
-            if (Menu.Smite.Blue && name.StartsWith("SRU_Blue"))
+            var blue = Menu.Smite.Blue != null && (bool)Menu.Smite.Blue;
+            if (blue && name.StartsWith("SRU_Blue"))
             {
                 return true;
             }
 
-            if (Menu.Smite.Krug && name.StartsWith("SRU_Krug"))
+            var krug = Menu.Smite.Krug != null && (bool)Menu.Smite.Krug;
+            if (krug && name.StartsWith("SRU_Krug"))
             {
                 return true;
             }
 
-            if (Menu.Smite.Gromp && name.StartsWith("SRU_Gromp"))
+            var gromp = Menu.Smite.Gromp != null && (bool)Menu.Smite.Gromp;
+            if (gromp && name.StartsWith("SRU_Gromp"))
             {
                 return true;
             }
 
-            if (Menu.Smite.Raptor && name.StartsWith("SRU_Razorbeak"))
+            var raptor = Menu.Smite.Raptor != null && (bool)Menu.Smite.Raptor;
+            if (raptor && name.StartsWith("SRU_Razorbeak"))
             {
                 return true;
             }
 
-            if (Menu.Smite.Wolf && name.StartsWith("SRU_Murkwolf"))
+            var wolf = Menu.Smite.Wolf != null && (bool)Menu.Smite.Wolf;
+            if (wolf && name.StartsWith("SRU_Murkwolf"))
             {
                 return true;
             }
