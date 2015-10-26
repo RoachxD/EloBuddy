@@ -63,10 +63,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Internal\Damage.cs" />
-    <Compile Include="Internal\Functions.cs" />
+    <Compile Include="Internal\Damages.cs" />
+    <Compile Include="Internal\DamageIndicator.cs" />
+    <Compile Include="Internal\Extensions.cs" />
     <Compile Include="Internal\Menu.cs" />
     <Compile Include="Internal\Spells.cs" />
+    <Compile Include="Internal\Utility.cs" />
+    <Compile Include="Modes\Clear.cs" />
+    <Compile Include="Modes\Combo.cs" />
+    <Compile Include="Modes\Harass.cs" />
+    <Compile Include="Modes\LastHit.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
