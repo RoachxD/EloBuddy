@@ -2,6 +2,7 @@
 using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Menu.Values;
 
 namespace Warwick_Buddy.Internal
 {
@@ -97,7 +98,9 @@ namespace Warwick_Buddy.Internal
 
                     if (Menu.KillSteal.R && Spells.R.IsReady())
                     {
-                        if (enemy.IsValidTarget(Spells.R.Range) && enemy.Health < Damages.Spell.R.GetDamage(enemy))
+                        if (enemy.IsValidTarget(Spells.R.Range) &&
+                            Menu.ComboMenu["R." + enemy.ChampionName].Cast<CheckBox>().CurrentValue &&
+                            enemy.Health < Damages.Spell.R.GetDamage(enemy))
                         {
                             Debug(string.Format("Used R on {0} (Kill Steal).", enemy.ChampionName));
                             Spells.R.Cast(enemy);
