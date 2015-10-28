@@ -31,7 +31,7 @@ namespace Garen_Buddy
 
             Spells.Initialize();
 
-            //Menu.Initialize();
+            Menu.Initialize();
 
             DamageIndicator.Initialize();
 
