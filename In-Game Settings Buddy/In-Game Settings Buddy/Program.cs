@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading;
 using EloBuddy;
+using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
+using EloBuddy.SDK.Utils;
 
 namespace In_Game_Settings_Buddy
 {
@@ -14,21 +15,15 @@ namespace In_Game_Settings_Buddy
 
         private static void Main(string[] args)
         {
-            try
-            {
-                Loading.OnLoadingComplete += delegate
+            Loading.OnLoadingComplete += Loading_OnLoadingComplete;
+            AppDomain.CurrentDomain.UnhandledException +=
+                delegate(object sender, UnhandledExceptionEventArgs args1)
                 {
-                    var onLoadingComplete = new Thread(Loading_OnLoadingComplete);
-                    onLoadingComplete.Start();
+                    Logger.Log(LogLevel.Error, args1.ExceptionObject.ToString());
                 };
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
         }
 
-        private static void Loading_OnLoadingComplete()
+        private static void Loading_OnLoadingComplete(EventArgs args)
         {
             _config = MainMenu.AddMenu("In-Game Settings Buddy", "ISB");
 
@@ -42,8 +37,6 @@ namespace In_Game_Settings_Buddy
                 new KeyBind("Enable InGame Chat", Hacks.IngameChat, KeyBind.BindTypes.PressToggle, 118));
             _config.Add("Watermark",
                 new KeyBind("Draw Watermark", Hacks.RenderWatermark, KeyBind.BindTypes.PressToggle, 115));
-
-            Chat.Print("In-Game Settings: <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
 
             Game.OnTick += Game_OnTick;
             _config["ExtendedZoom"].Cast<KeyBind>().OnValueChange += ExtendedZoom_OnValueChange;

@@ -1,36 +1,28 @@
-﻿using System.Drawing;
-using EloBuddy;
+﻿using System;
 
 namespace Marksman_Buddy.Internal
 {
     internal class Champion : PluginBase
     {
-		protected override void _SetupSpells()
-		{
-
-		}
-
-		protected override void Game_OnTick(System.EventArgs args)
-		{
-
-		}
-
-		protected override void _Combo()
-		{
-
-		}
-
-		protected override void _Harass()
-		{
-
-		}
-
         public Champion()
         {
             _SetupMenu();
+        }
 
-            Chat.Print("Marksman Buddy - <font color=\"#FFFFFF\">{0} is not supported</font>",
-                Color.FromArgb(255, 210, 68, 74), ObjectManager.Player.ChampionName);
+        protected override void _SetupSpells()
+        {
+        }
+
+        protected override void Game_OnTick(EventArgs args)
+        {
+        }
+
+        protected override void _Combo()
+        {
+        }
+
+        protected override void _Harass()
+        {
         }
 
         protected override sealed void _SetupMenu()

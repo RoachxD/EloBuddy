@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading;
 using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Rendering;
+using EloBuddy.SDK.Utils;
 using Warwick_Buddy.Internal;
 using XinZhao_Buddy.Internal;
 using XinZhao_Buddy.Modes;
@@ -14,23 +15,18 @@ namespace XinZhao_Buddy
 {
     internal class Program
     {
+        // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
-            try
-            {
-                Loading.OnLoadingComplete += delegate
+            Loading.OnLoadingComplete += Loading_OnLoadingComplete;
+            AppDomain.CurrentDomain.UnhandledException +=
+                delegate(object sender, UnhandledExceptionEventArgs args1)
                 {
-                    var onLoadingComplete = new Thread(Loading_OnLoadingComplete);
-                    onLoadingComplete.Start();
+                    Logger.Log(LogLevel.Error, args1.ExceptionObject.ToString());
                 };
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Main:" + Environment.NewLine + e);
-            }
         }
 
-        private static void Loading_OnLoadingComplete()
+        private static void Loading_OnLoadingComplete(EventArgs args)
         {
             try
             {

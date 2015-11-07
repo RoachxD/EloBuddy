@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Drawing;
-using System.Threading;
 using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Rendering;
+using EloBuddy.SDK.Utils;
 using Garen_Buddy.Internal;
 using Garen_Buddy.Modes;
 using Utility = Garen_Buddy.Internal.Utility;
@@ -13,16 +14,18 @@ namespace Garen_Buddy
 {
     internal class Program
     {
+        // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
-            Loading.OnLoadingComplete += delegate
-            {
-                var onLoadingComplete = new Thread(Loading_OnLoadingComplete);
-                onLoadingComplete.Start();
-            };
+            Loading.OnLoadingComplete += Loading_OnLoadingComplete;
+            AppDomain.CurrentDomain.UnhandledException +=
+                delegate(object sender, UnhandledExceptionEventArgs args1)
+                {
+                    Logger.Log(LogLevel.Error, args1.ExceptionObject.ToString());
+                };
         }
 
-        private static void Loading_OnLoadingComplete()
+        private static void Loading_OnLoadingComplete(EventArgs args)
         {
             if (!Player.Instance.ChampionName.Equals("Garen"))
             {

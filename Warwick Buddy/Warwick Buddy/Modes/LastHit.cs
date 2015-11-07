@@ -2,7 +2,6 @@
 using EloBuddy;
 using EloBuddy.SDK;
 using Warwick_Buddy.Internal;
-using Damages = Warwick_Buddy.Internal.Damages;
 using Utility = Warwick_Buddy.Internal.Utility;
 
 namespace Warwick_Buddy.Modes

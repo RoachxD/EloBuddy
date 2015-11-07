@@ -3,9 +3,11 @@ using System.Drawing;
 using System.Globalization;
 using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
+using EloBuddy.SDK.Utils;
 using Marksman_Buddy.Internal;
 using Marksman_Buddy.Plugins;
 using Champion = Marksman_Buddy.Internal.Champion;
@@ -17,23 +19,22 @@ namespace Marksman_Buddy
     {
         public static PluginBase ChampionPlugin;
 
+        // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
-            try
-            {
-                Loading.OnLoadingComplete += Loading_OnLoadingComplete;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            Loading.OnLoadingComplete += Loading_OnLoadingComplete;
+            AppDomain.CurrentDomain.UnhandledException +=
+                delegate(object sender, UnhandledExceptionEventArgs args1)
+                {
+                    Logger.Log(LogLevel.Error, args1.ExceptionObject.ToString());
+                };
         }
 
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
             Variables.InfoMenu = MainMenu.AddMenu("Marksman Buddy", "MarksmanBuddy");
             Variables.InfoMenu.AddGroupLabel("Marksman Buddy");
-            Variables.InfoMenu.AddLabel("Version: " + "1.0.0.0");
+            Variables.InfoMenu.AddLabel("Version: " + "1.0.0.1");
             Variables.InfoMenu.AddSeparator();
             Variables.InfoMenu.AddLabel("Creators: " + "Roach, newchild");
 

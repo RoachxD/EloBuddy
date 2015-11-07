@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
-using System.Threading;
 using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Rendering;
+using EloBuddy.SDK.Utils;
 using Warwick_Buddy.Internal;
 using Warwick_Buddy.Modes;
 using Utility = Warwick_Buddy.Internal.Utility;
@@ -14,23 +14,18 @@ namespace Warwick_Buddy
 {
     internal class Program
     {
+        // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
-            try
-            {
-                Loading.OnLoadingComplete += delegate
+            Loading.OnLoadingComplete += Loading_OnLoadingComplete;
+            AppDomain.CurrentDomain.UnhandledException +=
+                delegate(object sender, UnhandledExceptionEventArgs args1)
                 {
-                    var onLoadingComplete = new Thread(Loading_OnLoadingComplete);
-                    onLoadingComplete.Start();
+                    Logger.Log(LogLevel.Error, args1.ExceptionObject.ToString());
                 };
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Main:" + Environment.NewLine + e);
-            }
         }
 
-        private static void Loading_OnLoadingComplete()
+        private static void Loading_OnLoadingComplete(EventArgs args)
         {
             try
             {
@@ -64,7 +59,7 @@ namespace Warwick_Buddy
             }
 
             Combo.Execute();
-            
+
             Harass.Execute();
 
             Clear.Execute();
@@ -88,12 +83,14 @@ namespace Warwick_Buddy
 
                 if (Menu.Draw.Q && Spells.Q.IsReady())
                 {
-                    new Circle {Color = Color.FromArgb(255, 72, 76, 72), Radius = Spells.Q.Range}.Draw(Player.Instance.Position);
+                    new Circle {Color = Color.FromArgb(255, 72, 76, 72), Radius = Spells.Q.Range}.Draw(
+                        Player.Instance.Position);
                 }
 
                 if (Menu.Draw.R && Spells.R.IsReady())
                 {
-                    new Circle {Color = Color.FromArgb(255, 74, 68, 54), Radius = Spells.R.Range}.Draw(Player.Instance.Position);
+                    new Circle {Color = Color.FromArgb(255, 74, 68, 54), Radius = Spells.R.Range}.Draw(
+                        Player.Instance.Position);
                 }
 
                 var smiteSpell = Player.Instance.Spellbook.GetSpell(Spells.Smite);
@@ -134,7 +131,8 @@ namespace Warwick_Buddy
         {
             if (Menu.Misc.InterruptR && Spells.R.IsReady() && sender.IsValidTarget(Spells.R.Range) && sender.IsEnemy)
             {
-                Utility.Debug(string.Format("Used R on {0} (OnInterruptableSpell).", ((AIHeroClient) sender).ChampionName));
+                Utility.Debug(string.Format("Used R on {0} (OnInterruptableSpell).",
+                    ((AIHeroClient) sender).ChampionName));
                 Spells.R.Cast(sender);
             }
         }

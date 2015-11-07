@@ -17,7 +17,7 @@ namespace Garen_Buddy.Internal
         {
             MainMenu = EloBuddy.SDK.Menu.MainMenu.AddMenu("Garen Buddy", "GarenBuddy");
             MainMenu.AddGroupLabel("Garen Buddy");
-            MainMenu.AddLabel("Version: " + "1.0.0.0");
+            MainMenu.AddLabel("Version: " + "1.0.0.1");
             MainMenu.AddSeparator();
             MainMenu.AddLabel("Creators: " + "Roach");
 

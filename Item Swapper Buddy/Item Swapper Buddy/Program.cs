@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using System.Threading;
 using EloBuddy;
+using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
+using EloBuddy.SDK.Utils;
 
 namespace Item_Swapper_Buddy
 {
@@ -11,18 +12,18 @@ namespace Item_Swapper_Buddy
     {
         private static int _firstKey = 0x60;
         private static readonly int[] Keys = {0x64, 0x65, 0x66, 0x61, 0x62, 0x63};
-
         // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
-            Loading.OnLoadingComplete += delegate
-            {
-                var onLoadingComplete = new Thread(Loading_OnLoadingComplete);
-                onLoadingComplete.Start();
-            };
+            Loading.OnLoadingComplete += Loading_OnLoadingComplete;
+            AppDomain.CurrentDomain.UnhandledException +=
+                delegate(object sender, UnhandledExceptionEventArgs args1)
+                {
+                    Logger.Log(LogLevel.Error, args1.ExceptionObject.ToString());
+                };
         }
 
-        private static void Loading_OnLoadingComplete()
+        private static void Loading_OnLoadingComplete(EventArgs args)
         {
             Chat.Print("Item Swapper Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
 
@@ -51,7 +52,7 @@ namespace Item_Swapper_Buddy
             {
                 return;
             }
-			
+
             Player.SwapItem(Array.IndexOf(Keys, _firstKey), Array.IndexOf(Keys, key));
             _firstKey = 0x60;
         }

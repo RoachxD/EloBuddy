@@ -70,16 +70,16 @@ namespace Warwick_Buddy.Internal
 
                 foreach (var spell in _spells)
                 {
-                    var damagePercentage = ((enemy.Health - damage) > 0 ? (enemy.Health - damage) : 0) /
+                    var damagePercentage = ((enemy.Health - damage) > 0 ? (enemy.Health - damage) : 0)/
                                            (enemy.MaxHealth + enemy.AllShield + enemy.AttackShield + enemy.MagicShield);
-                    var healthPercentage = enemy.Health /
+                    var healthPercentage = enemy.Health/
                                            (enemy.MaxHealth + enemy.AllShield + enemy.AttackShield + enemy.MagicShield);
                     var startPoint = new Vector2(
-                        (int)(enemy.HPBarPosition.X + BarOffset.X + damagePercentage * BarWidth),
-                        (int)(enemy.HPBarPosition.Y + BarOffset.Y) - 5);
+                        (int) (enemy.HPBarPosition.X + BarOffset.X + damagePercentage*BarWidth),
+                        (int) (enemy.HPBarPosition.Y + BarOffset.Y) - 5);
                     var endPoint =
-                        new Vector2((int)(enemy.HPBarPosition.X + BarOffset.X + healthPercentage * BarWidth) + 1,
-                            (int)(enemy.HPBarPosition.Y + BarOffset.Y) - 5);
+                        new Vector2((int) (enemy.HPBarPosition.X + BarOffset.X + healthPercentage*BarWidth) + 1,
+                            (int) (enemy.HPBarPosition.Y + BarOffset.Y) - 5);
                     Drawing.DrawLine(startPoint, endPoint, LineThickness, spell.Value);
 
                     damage -= spell.Key(enemy);

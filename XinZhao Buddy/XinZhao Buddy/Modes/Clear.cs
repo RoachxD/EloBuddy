@@ -15,8 +15,7 @@ namespace XinZhao_Buddy.Modes
             {
                 return;
             }
-
-
+            
             var minionObj =
                 ObjectManager.Get<Obj_AI_Minion>()
                     .Where(minion => !minion.IsAlly && minion.Distance(Player.Instance) < Spells.E.Range);
