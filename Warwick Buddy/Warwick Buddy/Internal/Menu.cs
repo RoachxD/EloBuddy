@@ -18,7 +18,7 @@ namespace Warwick_Buddy.Internal
         {
             MainMenu = EloBuddy.SDK.Menu.MainMenu.AddMenu("Warwick Buddy", "WarwickBuddy");
             MainMenu.AddGroupLabel("Warwick Buddy");
-            MainMenu.AddLabel("Version: " + "1.0.0.3");
+            MainMenu.AddLabel("Version: " + "1.0.0.4");
             MainMenu.AddSeparator();
             MainMenu.AddLabel("Creators: " + "Roach");
 

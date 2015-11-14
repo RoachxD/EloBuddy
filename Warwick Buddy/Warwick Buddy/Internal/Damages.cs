@@ -38,7 +38,8 @@ namespace Warwick_Buddy.Internal
                     break;
                 case Spell.Ignite:
 
-                    if (Player.Instance.Spellbook.GetSpell(Spells.Ignite).IsReady)
+                    var igniteSpell = Player.Instance.Spellbook.GetSpell(Spells.Ignite);
+                    if (igniteSpell != null && igniteSpell.IsReady)
                     {
                         damage = new Damage
                         {
