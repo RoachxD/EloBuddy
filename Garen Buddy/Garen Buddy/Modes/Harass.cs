@@ -37,16 +37,17 @@ namespace Garen_Buddy.Modes
                         EntityManager.Heroes.Enemies.Where(
                             enemy =>
                                 enemy.IsValidTarget() && enemy.IsInAutoAttackRange(Player.Instance) &&
-                                enemy.IsAttackingPlayer && enemy.IsFacing(Player.Instance)))
+                                enemy.IsFacing(Player.Instance)))
                 {
                     Utility.Debug(string.Format("Used W to defend from {0} (Harass Mode).", enemy.ChampionName));
-                    Spells.E.Cast();
+                    Spells.W.Cast();
                 }
             }
 
             if (Menu.Harass.E && Spells.E.IsReady())
             {
-                if (Player.Instance.HasBuff("GarenQ") || Player.Instance.HasBuff("GarenE"))
+                if ((Menu.Harass.Q && Spells.Q.IsReady()) || Player.Instance.HasBuff("GarenQ") ||
+                    Player.Instance.HasBuff("GarenE"))
                 {
                     return;
                 }

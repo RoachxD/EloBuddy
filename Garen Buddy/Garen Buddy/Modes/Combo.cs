@@ -38,16 +38,17 @@ namespace Garen_Buddy.Modes
                         EntityManager.Heroes.Enemies.Where(
                             enemy =>
                                 enemy.IsValidTarget() && enemy.IsInAutoAttackRange(Player.Instance) &&
-                                enemy.IsAttackingPlayer && enemy.IsFacing(Player.Instance)))
+                                enemy.IsFacing(Player.Instance)))
                 {
                     Utility.Debug(string.Format("Used W to defend from {0} (Combo Mode).", enemy.ChampionName));
-                    Spells.E.Cast();
+                    Spells.W.Cast();
                 }
             }
 
             if (Menu.Combo.E && Spells.E.IsReady())
             {
-                if (Player.Instance.HasBuff("GarenQ") || Player.Instance.HasBuff("GarenE"))
+                if ((Menu.Combo.Q && Spells.Q.IsReady()) || Player.Instance.HasBuff("GarenQ") ||
+                    Player.Instance.HasBuff("GarenE"))
                 {
                     return;
                 }
