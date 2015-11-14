@@ -15,7 +15,7 @@ namespace Warwick_Buddy.Internal
 
         private const int BarWidth = 104;
         private const int LineThickness = 9;
-        private static readonly Vector2 BarOffset = new Vector2(-9, 11);
+        private static readonly Vector2 BarOffset = new Vector2(1, 0); // -9, 11
         private static Dictionary<DamageToUnitDelegate, Color> _spells;
 
         private static float EDamage(AIHeroClient hero)

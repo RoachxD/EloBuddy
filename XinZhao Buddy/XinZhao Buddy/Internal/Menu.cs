@@ -16,7 +16,7 @@ namespace XinZhao_Buddy.Internal
         {
             MainMenu = EloBuddy.SDK.Menu.MainMenu.AddMenu("XinZhao Buddy", "XinZhaoBuddy");
             MainMenu.AddGroupLabel("XinZhao Buddy");
-            MainMenu.AddLabel("Version: " + "1.0.0.2");
+            MainMenu.AddLabel("Version: " + "1.0.0.3");
             MainMenu.AddSeparator();
             MainMenu.AddLabel("Creators: " + "Roach");
 
