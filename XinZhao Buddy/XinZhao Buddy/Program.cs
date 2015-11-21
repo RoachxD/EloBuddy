@@ -28,29 +28,22 @@ namespace XinZhao_Buddy
 
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
-            try
+            if (!Player.Instance.ChampionName.Equals("XinZhao"))
             {
-                if (!Player.Instance.ChampionName.Equals("XinZhao"))
-                {
-                    return;
-                }
-
-                Spells.Initialize();
-
-                Menu.Initialize();
-
-                DamageIndicator.Initialize();
-
-                Game.OnTick += Game_OnTick;
-                Drawing.OnDraw += Drawing_OnDraw;
-                Orbwalker.OnAttack += Orbwalker_OnAttack;
-                Orbwalker.OnPostAttack += Orbwalker_OnPostAttack;
-                Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
+                return;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine("Loading_OnLoadingComplete:" + Environment.NewLine + e);
-            }
+
+            Spells.Initialize();
+
+            Menu.Initialize();
+
+            DamageIndicator.Initialize();
+
+            Game.OnTick += Game_OnTick;
+            Drawing.OnDraw += Drawing_OnDraw;
+            Orbwalker.OnAttack += Orbwalker_OnAttack;
+            Orbwalker.OnPostAttack += Orbwalker_OnPostAttack;
+            Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
         }
 
         private static void Game_OnTick(EventArgs args)
@@ -72,37 +65,30 @@ namespace XinZhao_Buddy
 
         private static void Drawing_OnDraw(EventArgs args)
         {
-            try
+            if (Player.Instance.IsDead)
             {
-                if (Player.Instance.IsDead)
-                {
-                    return;
-                }
-
-                if (Menu.Draw.E && Spells.E.IsReady())
-                {
-                    new Circle {Color = Color.FromArgb(255, 57, 37, 72), Radius = Spells.E.Range}.Draw(
-                        Player.Instance.Position);
-                }
-
-                if (Menu.Draw.R && Spells.R.IsReady())
-                {
-                    new Circle {Color = Color.FromArgb(255, 72, 72, 116), Radius = Spells.R.Range}.Draw(
-                        Player.Instance.Position);
-                }
-
-                var smiteSpell = Player.Instance.Spellbook.GetSpell(Spells.Smite);
-                if (Menu.Draw.Smite && smiteSpell != null)
-                {
-                    var barPos = Player.Instance.HPBarPosition;
-                    var smiteStatus = Menu.Smite.Enable != null && (bool) Menu.Smite.Enable;
-                    Drawing.DrawText(barPos.X - 10, barPos.Y - 8, Color.White,
-                        "Smite: " + (smiteStatus ? "Enabled" : "Disabled"));
-                }
+                return;
             }
-            catch (Exception e)
+
+            if (Menu.Draw.E && Spells.E.IsReady())
             {
-                Console.WriteLine("Drawing_OnDraw:" + Environment.NewLine + e);
+                new Circle {Color = Color.FromArgb(255, 57, 37, 72), Radius = Spells.E.Range}.Draw(
+                    Player.Instance.Position);
+            }
+
+            if (Menu.Draw.R && Spells.R.IsReady())
+            {
+                new Circle {Color = Color.FromArgb(255, 72, 72, 116), Radius = Spells.R.Range}.Draw(
+                    Player.Instance.Position);
+            }
+
+            var smiteSpell = Player.Instance.Spellbook.GetSpell(Spells.Smite);
+            if (Menu.Draw.Smite && smiteSpell != null)
+            {
+                var barPos = Player.Instance.HPBarPosition;
+                var smiteStatus = Menu.Smite.Enable != null && (bool) Menu.Smite.Enable;
+                Drawing.DrawText(barPos.X - 10, barPos.Y - 8, Color.White,
+                    "Smite: " + (smiteStatus ? "Enabled" : "Disabled"));
             }
         }
 

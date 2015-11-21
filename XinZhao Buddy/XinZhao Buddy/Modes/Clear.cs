@@ -15,7 +15,7 @@ namespace XinZhao_Buddy.Modes
             {
                 return;
             }
-            
+
             var minionObj =
                 ObjectManager.Get<Obj_AI_Minion>()
                     .Where(minion => !minion.IsAlly && minion.Distance(Player.Instance) < Spells.E.Range);
@@ -45,8 +45,8 @@ namespace XinZhao_Buddy.Modes
                 var hydra = new Item((int) ItemId.Ravenous_Hydra_Melee_Only, 250);
                 var tiamat = new Item((int) ItemId.Tiamat_Melee_Only, 250);
                 var item = hydra.IsReady() ? hydra : tiamat;
-                if ((Item.HasItem((int) ItemId.Ravenous_Hydra_Melee_Only, Player.Instance) ||
-                     Item.HasItem((int) ItemId.Tiamat_Melee_Only, Player.Instance)) && item.IsReady() &&
+                if ((Item.HasItem(hydra.Id, Player.Instance) ||
+                     Item.HasItem(tiamat.Id, Player.Instance)) && item.IsReady() &&
                     (objAiMinions.Count(i => item.IsInRange(i)) > 2 ||
                      objAiMinions.Any(i => i.MaxHealth >= 1200 && i.Distance(Player.Instance) < item.Range - 80)))
                 {

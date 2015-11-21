@@ -48,8 +48,8 @@ namespace XinZhao_Buddy.Modes
                 var tiamat = new Item((int) ItemId.Tiamat_Melee_Only, 250);
                 var item = hydra.IsReady() ? hydra : tiamat;
                 var target = TargetSelector.GetTarget(item.Range, DamageType.Physical);
-                if ((Item.HasItem((int) ItemId.Ravenous_Hydra_Melee_Only, Player.Instance) ||
-                     Item.HasItem((int) ItemId.Tiamat_Melee_Only, Player.Instance)) && item.IsReady() &&
+                if ((Item.HasItem(hydra.Id, Player.Instance) ||
+                     Item.HasItem(tiamat.Id, Player.Instance)) && item.IsReady() &&
                     target.Distance(Player.Instance) < item.Range - 80)
                 {
                     Utility.Debug("Used Hydra/Tiamat (Combo Mode).");
