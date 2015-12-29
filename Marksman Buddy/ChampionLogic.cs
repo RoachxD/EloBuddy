@@ -11,7 +11,7 @@ namespace Marksman_Buddy
         {
             AvailableChampions = new List<ChampionBase>()
             {
-
+                new Ashe()
             };
 
             AvailableChampions.ForEach(mode =>

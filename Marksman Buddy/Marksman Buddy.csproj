@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChampionLogic.cs" />
+    <Compile Include="Champions\Ashe.cs" />
     <Compile Include="Champions\ChampionBase.cs" />
     <Compile Include="Loader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
