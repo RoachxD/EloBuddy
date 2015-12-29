@@ -20,6 +20,7 @@ namespace Marksman_Buddy
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
             ChampionLogic.Initialize();
+            MarksmanMenu.LoadMenu();
         }
     }
 }
