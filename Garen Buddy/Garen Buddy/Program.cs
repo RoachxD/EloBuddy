@@ -10,11 +10,12 @@ using Garen_Buddy.Internal;
 using Garen_Buddy.Modes;
 using Utility = Garen_Buddy.Internal.Utility;
 
+// ReSharper disable UnusedParameter.Local
+
 namespace Garen_Buddy
 {
     internal class Program
     {
-        // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
             Loading.OnLoadingComplete += Loading_OnLoadingComplete;

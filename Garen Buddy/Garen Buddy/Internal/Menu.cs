@@ -2,6 +2,8 @@
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
 
+// ReSharper disable MemberHidesStaticFromOuterClass
+
 namespace Garen_Buddy.Internal
 {
     internal class Menu
@@ -17,7 +19,7 @@ namespace Garen_Buddy.Internal
         {
             MainMenu = EloBuddy.SDK.Menu.MainMenu.AddMenu("Garen Buddy", "GarenBuddy");
             MainMenu.AddGroupLabel("Garen Buddy");
-            MainMenu.AddLabel("Version: " + "1.0.0.3");
+            MainMenu.AddLabel("Version: " + "1.0.0.4");
             MainMenu.AddSeparator();
             MainMenu.AddLabel("Creators: " + "Roach");
 
@@ -148,44 +150,44 @@ namespace Garen_Buddy.Internal
                 get { return _enable.CurrentValue; }
             }
 
-            public static bool? Baron
+            public static bool Baron
             {
-                get { return _baron.CurrentValue; }
+                get { return _baron != null && _baron.CurrentValue; }
             }
 
-            public static bool? Dragon
+            public static bool Dragon
             {
-                get { return _dragon.CurrentValue; }
+                get { return _dragon != null && _dragon.CurrentValue; }
             }
 
-            public static bool? Red
+            public static bool Red
             {
-                get { return _red.CurrentValue; }
+                get { return _red != null && _red.CurrentValue; }
             }
 
-            public static bool? Blue
+            public static bool Blue
             {
-                get { return _blue.CurrentValue; }
+                get { return _blue != null && _blue.CurrentValue; }
             }
 
-            public static bool? Krug
+            public static bool Krug
             {
-                get { return _krug.CurrentValue; }
+                get { return _krug != null && _krug.CurrentValue; }
             }
 
-            public static bool? Gromp
+            public static bool Gromp
             {
-                get { return _gromp.CurrentValue; }
+                get { return _gromp != null && _gromp.CurrentValue; }
             }
 
-            public static bool? Raptor
+            public static bool Raptor
             {
-                get { return _raptor.CurrentValue; }
+                get { return _raptor != null && _raptor.CurrentValue; }
             }
 
-            public static bool? Wolf
+            public static bool Wolf
             {
-                get { return _wolf.CurrentValue; }
+                get { return _wolf != null && _wolf.CurrentValue; }
             }
 
             public static void Initialize()

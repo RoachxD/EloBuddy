@@ -26,10 +26,8 @@ namespace Garen_Buddy.Internal
 
     internal class SummonerSpells
     {
-        private static readonly int[] SmitePurple = {3713, 3726, 3725, 3724, 3723, 3933};
-        private static readonly int[] SmiteGrey = {3711, 3722, 3721, 3720, 3719, 3932};
-        private static readonly int[] SmiteRed = {3715, 3718, 3717, 3716, 3714, 3931};
-        private static readonly int[] SmiteBlue = {3706, 3710, 3709, 3708, 3707, 3930};
+        private static readonly int[] SmiteRed = {3715, 1415, 1414, 1413, 1412};
+        private static readonly int[] SmiteBlue = {3706, 1403, 1402, 1401, 1400};
 
         public static void Initialize()
         {
@@ -47,18 +45,6 @@ namespace Garen_Buddy.Internal
                     x => Player.Instance.InventoryItems.FirstOrDefault(a => a.Id == (ItemId) x) != null))
             {
                 Spells.Smite = Player.Instance.GetSpellSlotFromName("s5_summonersmiteduel");
-            }
-            else if (
-                SmiteGrey.Any(
-                    x => Player.Instance.InventoryItems.FirstOrDefault(a => a.Id == (ItemId) x) != null))
-            {
-                Spells.Smite = Player.Instance.GetSpellSlotFromName("s5_summonersmitequick");
-            }
-            else if (
-                SmitePurple.Any(
-                    x => Player.Instance.InventoryItems.FirstOrDefault(a => a.Id == (ItemId) x) != null))
-            {
-                Spells.Smite = Player.Instance.GetSpellSlotFromName("itemsmiteaoe");
             }
             else
             {
