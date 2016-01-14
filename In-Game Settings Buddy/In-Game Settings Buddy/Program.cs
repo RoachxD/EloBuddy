@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Drawing;
 using EloBuddy;
 using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Utils;
+
+// ReSharper disable UnusedParameter.Local
 
 namespace In_Game_Settings_Buddy
 {
@@ -31,8 +32,9 @@ namespace In_Game_Settings_Buddy
             _config.Add("ExtendedZoom",
                 new KeyBind("Enable Extended Zoom", Hacks.ZoomHack, KeyBind.BindTypes.PressToggle, 113));
             _config.Add("ExtendedZoomValue", new Slider("Set the max Zoom Value:", 2250, 2250, 5000));
-            _config.Add("MovementHack",
-                new KeyBind("Enable Movement Hack", Hacks.MovementHack, KeyBind.BindTypes.PressToggle, 114));
+            /*_config.Add("MovementHack",
+                new KeyBind("Enable Movement Hack", Hacks.MovementHack, KeyBind.BindTypes.PressToggle, 114));*/
+            _config.Add("TowerRanges", new KeyBind("Show Tower Ranges", false, KeyBind.BindTypes.PressToggle, 120));
             _config.Add("InGameChat",
                 new KeyBind("Enable InGame Chat", Hacks.IngameChat, KeyBind.BindTypes.PressToggle, 118));
             _config.Add("Watermark",
@@ -47,7 +49,8 @@ namespace In_Game_Settings_Buddy
         {
             Hacks.AntiAFK = _config["AntiAFK"].Cast<KeyBind>().CurrentValue;
             Hacks.ZoomHack = _config["ExtendedZoom"].Cast<KeyBind>().CurrentValue;
-            Hacks.MovementHack = _config["MovementHack"].Cast<KeyBind>().CurrentValue;
+            //Hacks.MovementHack = _config["MovementHack"].Cast<KeyBind>().CurrentValue;
+            Hacks.TowerRanges = _config["TowerRanges"].Cast<KeyBind>().CurrentValue;
             Hacks.IngameChat = _config["InGameChat"].Cast<KeyBind>().CurrentValue;
             Hacks.RenderWatermark = _config["Watermark"].Cast<KeyBind>().CurrentValue;
         }
