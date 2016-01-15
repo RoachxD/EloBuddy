@@ -32,6 +32,7 @@ namespace In_Game_Settings_Buddy
 			if ((Environment.TickCount - lastTick) > (float)generator.Next(43, 145))
 			{
 				Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos, false);
+				
 			}
 				
 		}

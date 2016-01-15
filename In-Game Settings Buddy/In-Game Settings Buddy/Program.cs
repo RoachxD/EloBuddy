@@ -13,8 +13,7 @@ namespace In_Game_Settings_Buddy
     internal class Program
     {
         private static Menu _config;
-		private static MovementHackHotfix MovementHotFix;
-		private static TowerRangesHotfix TowerHotFix;
+		private static MovementHackHotfix hf = new MovementHackHotfix();
 		private static void Main(string[] args)
         {
             Loading.OnLoadingComplete += Loading_OnLoadingComplete;
@@ -40,10 +39,7 @@ namespace In_Game_Settings_Buddy
                 new KeyBind("Enable InGame Chat", Hacks.IngameChat, KeyBind.BindTypes.PressToggle, 118));
             _config.Add("Watermark",
                 new KeyBind("Draw Watermark", Hacks.RenderWatermark, KeyBind.BindTypes.PressToggle, 115));
-			MovementHotFix  = new MovementHackHotfix();
-			TowerHotFix  = new TowerRangesHotfix();
-			MovementHotFix.Enabled = false;
-			TowerHotFix.Enabled = false;
+			hf.Enabled = false;
             Game.OnTick += Game_OnTick;
             _config["ExtendedZoom"].Cast<KeyBind>().OnValueChange += ExtendedZoom_OnValueChange;
             _config["ExtendedZoomValue"].Cast<Slider>().OnValueChange += ExtendedZoomValue_OnValueChange;
@@ -53,8 +49,8 @@ namespace In_Game_Settings_Buddy
         {
             Hacks.AntiAFK = _config["AntiAFK"].Cast<KeyBind>().CurrentValue;
             Hacks.ZoomHack = _config["ExtendedZoom"].Cast<KeyBind>().CurrentValue;
-			MovementHotFix.Enabled = _config["MovementHack"].Cast<KeyBind>().CurrentValue;
-			TowerHotFix.Enabled = _config["TowerRanges"].Cast<KeyBind>().CurrentValue;
+			hf.Enabled = _config["MovementHack"].Cast<KeyBind>().CurrentValue;
+            Hacks.TowerRanges = _config["TowerRanges"].Cast<KeyBind>().CurrentValue;
             Hacks.IngameChat = _config["InGameChat"].Cast<KeyBind>().CurrentValue;
             Hacks.RenderWatermark = _config["Watermark"].Cast<KeyBind>().CurrentValue;
         }
