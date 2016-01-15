@@ -13,8 +13,8 @@ namespace In_Game_Settings_Buddy
     internal class Program
     {
         private static Menu _config;
-
-        private static void Main(string[] args)
+		private static MovementHackHotfix hf = new MovementHackHotfix();
+		private static void Main(string[] args)
         {
             Loading.OnLoadingComplete += Loading_OnLoadingComplete;
             AppDomain.CurrentDomain.UnhandledException +=
@@ -27,19 +27,19 @@ namespace In_Game_Settings_Buddy
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
             _config = MainMenu.AddMenu("In-Game Settings Buddy", "ISB");
-
+			_config.AddLabel("Movement Hack HotFix by newchild");
             _config.Add("AntiAFK", new KeyBind("Enable Anti AFK", Hacks.AntiAFK, KeyBind.BindTypes.PressToggle, 112));
             _config.Add("ExtendedZoom",
                 new KeyBind("Enable Extended Zoom", Hacks.ZoomHack, KeyBind.BindTypes.PressToggle, 113));
             _config.Add("ExtendedZoomValue", new Slider("Set the max Zoom Value:", 2250, 2250, 5000));
-            /*_config.Add("MovementHack",
-                new KeyBind("Enable Movement Hack", Hacks.MovementHack, KeyBind.BindTypes.PressToggle, 114));*/
+            _config.Add("MovementHack",
+                new KeyBind("Enable Movement Hack", Hacks.MovementHack, KeyBind.BindTypes.PressToggle, 114));
             _config.Add("TowerRanges", new KeyBind("Show Tower Ranges", false, KeyBind.BindTypes.PressToggle, 120));
             _config.Add("InGameChat",
                 new KeyBind("Enable InGame Chat", Hacks.IngameChat, KeyBind.BindTypes.PressToggle, 118));
             _config.Add("Watermark",
                 new KeyBind("Draw Watermark", Hacks.RenderWatermark, KeyBind.BindTypes.PressToggle, 115));
-
+			hf.Enabled = false;
             Game.OnTick += Game_OnTick;
             _config["ExtendedZoom"].Cast<KeyBind>().OnValueChange += ExtendedZoom_OnValueChange;
             _config["ExtendedZoomValue"].Cast<Slider>().OnValueChange += ExtendedZoomValue_OnValueChange;
@@ -49,7 +49,7 @@ namespace In_Game_Settings_Buddy
         {
             Hacks.AntiAFK = _config["AntiAFK"].Cast<KeyBind>().CurrentValue;
             Hacks.ZoomHack = _config["ExtendedZoom"].Cast<KeyBind>().CurrentValue;
-            //Hacks.MovementHack = _config["MovementHack"].Cast<KeyBind>().CurrentValue;
+			hf.Enabled = _config["MovementHack"].Cast<KeyBind>().CurrentValue;
             Hacks.TowerRanges = _config["TowerRanges"].Cast<KeyBind>().CurrentValue;
             Hacks.IngameChat = _config["InGameChat"].Cast<KeyBind>().CurrentValue;
             Hacks.RenderWatermark = _config["Watermark"].Cast<KeyBind>().CurrentValue;
