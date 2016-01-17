@@ -13,7 +13,7 @@ namespace In_Game_Settings_Buddy
     internal class Program
     {
         private static Menu _config;
-		private static MovementHackHotfix _hf;
+		private static MovementHackHF _hf;
 		private static void Main(string[] args)
         {
             Loading.OnLoadingComplete += Loading_OnLoadingComplete;
@@ -39,7 +39,8 @@ namespace In_Game_Settings_Buddy
                 new KeyBind("Enable InGame Chat", Hacks.IngameChat, KeyBind.BindTypes.PressToggle, 118));
             _config.Add("Watermark",
                 new KeyBind("Draw Watermark", Hacks.RenderWatermark, KeyBind.BindTypes.PressToggle, 115));
-            _hf = new MovementHackHotfix {Enabled = false};
+
+            _hf = new MovementHackHF {Enabled = false};
             Game.OnTick += Game_OnTick;
             _config["ExtendedZoom"].Cast<KeyBind>().OnValueChange += ExtendedZoom_OnValueChange;
             _config["ExtendedZoomValue"].Cast<Slider>().OnValueChange += ExtendedZoomValue_OnValueChange;

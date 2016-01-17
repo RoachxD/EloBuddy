@@ -3,14 +3,15 @@ using EloBuddy;
 
 namespace In_Game_Settings_Buddy
 {
-    internal class MovementHackHotfix
+    internal class MovementHackHF
     {
         private readonly Random _generator = new Random();
         private float _lastTick;
         private bool _rButtonDown;
+        private bool _shouldMove;
         public bool Enabled;
 
-        public MovementHackHotfix()
+        public MovementHackHF()
         {
             Enabled = false;
             _rButtonDown = false;
@@ -22,17 +23,24 @@ namespace In_Game_Settings_Buddy
 
         private void Player_OnIssueOrder(Obj_AI_Base sender, PlayerIssueOrderEventArgs args)
         {
+            if (args.Target != null)
+            {
+                _shouldMove = false;
+                return;
+            }
+
             _lastTick = Environment.TickCount;
+            _shouldMove = true;
         }
 
         private void Game_OnTick(EventArgs args)
         {
-            if (!_rButtonDown)
+            if (!_rButtonDown || !Enabled)
             {
                 return;
             }
 
-            if ((Environment.TickCount - _lastTick) > _generator.Next(43, 145))
+            if ((Environment.TickCount - _lastTick) > _generator.Next(43, 145) && _shouldMove)
             {
                 Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos, false);
             }
