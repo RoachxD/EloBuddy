@@ -13,8 +13,9 @@ namespace In_Game_Settings_Buddy
     internal class Program
     {
         private static Menu _config;
-		private static MovementHackHF _hf;
-		private static void Main(string[] args)
+        private static MovementHackHF _hf;
+
+        private static void Main(string[] args)
         {
             Loading.OnLoadingComplete += Loading_OnLoadingComplete;
             AppDomain.CurrentDomain.UnhandledException +=
@@ -27,7 +28,7 @@ namespace In_Game_Settings_Buddy
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
             _config = MainMenu.AddMenu("In-Game Settings Buddy", "ISB");
-			_config.AddLabel("Movement Hack HotFix by newchild");
+            _config.AddLabel("Movement Hack HotFix by newchild");
             _config.Add("AntiAFK", new KeyBind("Enable Anti AFK", Hacks.AntiAFK, KeyBind.BindTypes.PressToggle, 112));
             _config.Add("ExtendedZoom",
                 new KeyBind("Enable Extended Zoom", Hacks.ZoomHack, KeyBind.BindTypes.PressToggle, 113));
@@ -50,7 +51,7 @@ namespace In_Game_Settings_Buddy
         {
             Hacks.AntiAFK = _config["AntiAFK"].Cast<KeyBind>().CurrentValue;
             Hacks.ZoomHack = _config["ExtendedZoom"].Cast<KeyBind>().CurrentValue;
-			_hf.Enabled = _config["MovementHack"].Cast<KeyBind>().CurrentValue;
+            _hf.Enabled = _config["MovementHack"].Cast<KeyBind>().CurrentValue;
             Hacks.TowerRanges = _config["TowerRanges"].Cast<KeyBind>().CurrentValue;
             Hacks.IngameChat = _config["InGameChat"].Cast<KeyBind>().CurrentValue;
             Hacks.RenderWatermark = _config["Watermark"].Cast<KeyBind>().CurrentValue;

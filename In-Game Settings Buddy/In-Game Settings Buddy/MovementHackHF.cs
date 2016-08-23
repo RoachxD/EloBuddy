@@ -40,7 +40,7 @@ namespace In_Game_Settings_Buddy
                 return;
             }
 
-            if ((Environment.TickCount - _lastTick) > _generator.Next(43, 145) && _shouldMove)
+            if (Environment.TickCount - _lastTick > _generator.Next(43, 145) && _shouldMove)
             {
                 Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos, false);
             }
@@ -48,16 +48,15 @@ namespace In_Game_Settings_Buddy
 
         private void Game_OnWndProc(WndEventArgs args)
         {
-            switch (args.Msg)
+            if (args.Msg == 0x0204)
             {
-                case 0x0204:
-                    //RButtonDown
-                    _rButtonDown = true;
-                    break;
-                case 0x0205:
-                    //RButtonUp
-                    _rButtonDown = false;
-                    break;
+                //RButtonDown
+                _rButtonDown = true;
+            }
+            else if (args.Msg == 0x0205)
+            {
+                //RButtonUp
+                _rButtonDown = false;
             }
         }
     }

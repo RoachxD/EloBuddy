@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("EloBuddy")]
 [assembly: AssemblyProduct("Item Swapper Buddy")]
-[assembly: AssemblyCopyright("Copyright © Roach_ 2015")]
+[assembly: AssemblyCopyright("Copyright © Roach_ 2015 - 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0.1")]
-[assembly: AssemblyFileVersion("1.0.0.1")]
+[assembly: AssemblyVersion("6.16.0.0")]
+[assembly: AssemblyFileVersion("6.16.0.0")]
