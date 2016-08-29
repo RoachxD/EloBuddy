@@ -53,6 +53,24 @@ namespace Item_Swapper_Buddy
                 return;
             }
 
+            var inventorySlot = new[]
+            {
+                new InventorySlot((uint) Player.Instance.NetworkId, Array.IndexOf(Keys, _firstKey)),
+                new InventorySlot((uint) Player.Instance.NetworkId, Array.IndexOf(Keys, key))
+            };
+            if (inventorySlot[0].DisplayName.Equals("Unknown") && inventorySlot[1].DisplayName.Equals("Unknown"))
+            {
+                _firstKey = 0x60;
+                return;
+            }
+
+            if (inventorySlot[0].DisplayName.Equals("Unknown"))
+            {
+                Player.SwapItem(Array.IndexOf(Keys, key), Array.IndexOf(Keys, _firstKey));
+                _firstKey = 0x60;
+                return;
+            }
+
             Player.SwapItem(Array.IndexOf(Keys, _firstKey), Array.IndexOf(Keys, key));
             _firstKey = 0x60;
         }
