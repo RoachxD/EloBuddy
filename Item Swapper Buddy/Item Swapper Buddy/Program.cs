@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Utils;
+using Item_Swapper_Buddy.Internal;
 
 namespace Item_Swapper_Buddy
 {
@@ -12,6 +14,7 @@ namespace Item_Swapper_Buddy
     {
         private static int _firstKey = 0x60;
         private static readonly int[] Keys = {0x64, 0x65, 0x66, 0x61, 0x62, 0x63};
+        private static List<Tuple<int, int, float>> _queueList;
         // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
@@ -27,7 +30,25 @@ namespace Item_Swapper_Buddy
         {
             Chat.Print("Item Swapper Buddy - <font color=\"#FFFFFF\">Loaded</font>", Color.FromArgb(255, 210, 68, 74));
 
+            _queueList = new List<Tuple<int, int, float>>();
+            MenuManager.Initialize();
+
+            Game.OnTick += Game_OnTick;
             Game.OnWndProc += Game_OnWndProc;
+        }
+
+        private static void Game_OnTick(EventArgs args)
+        {
+            if (!MenuManager.Humanizer.Enable)
+            {
+                return;
+            }
+
+            foreach (var item in _queueList.Where(item => item.Item3 <= Game.Time))
+            {
+                Player.SwapItem(item.Item1, item.Item2);
+                _queueList.RemoveAt(_queueList.FindIndex(i => item.Equals(i)));
+            }
         }
 
         private static void Game_OnWndProc(WndEventArgs args)
@@ -66,13 +87,41 @@ namespace Item_Swapper_Buddy
 
             if (inventorySlot[0].DisplayName.Equals("Unknown"))
             {
-                Player.SwapItem(Array.IndexOf(Keys, key), Array.IndexOf(Keys, _firstKey));
-                _firstKey = 0x60;
+                if (MenuManager.Humanizer.Enable)
+                {
+                    var delay = MenuManager.Humanizer.Type == 0
+                        ? MenuManager.Humanizer.Value
+                        : new Random().Next(MenuManager.Humanizer.MinValue, MenuManager.Humanizer.MaxValue);
+                    _queueList.Add(new Tuple<int, int, float>(Array.IndexOf(Keys, key), Array.IndexOf(Keys, _firstKey),
+                        !_queueList.Any()
+                            ? Game.Time + delay
+                            : _queueList.Last().Item3 + delay));
+                    _firstKey = 0x60;
+                }
+                else
+                {
+                    Player.SwapItem(Array.IndexOf(Keys, key), Array.IndexOf(Keys, _firstKey));
+                    _firstKey = 0x60;
+                }
                 return;
             }
 
-            Player.SwapItem(Array.IndexOf(Keys, _firstKey), Array.IndexOf(Keys, key));
-            _firstKey = 0x60;
+            if (MenuManager.Humanizer.Enable)
+            {
+                var delay = MenuManager.Humanizer.Type == 0
+                    ? MenuManager.Humanizer.Value
+                    : new Random().Next(MenuManager.Humanizer.MinValue, MenuManager.Humanizer.MaxValue);
+                _queueList.Add(new Tuple<int, int, float>(Array.IndexOf(Keys, _firstKey), Array.IndexOf(Keys, key),
+                    !_queueList.Any()
+                        ? Game.Time + delay
+                        : _queueList.Last().Item3 + delay));
+                _firstKey = 0x60;
+            }
+            else
+            {
+                Player.SwapItem(Array.IndexOf(Keys, _firstKey), Array.IndexOf(Keys, key));
+                _firstKey = 0x60;
+            }
         }
     }
 }
